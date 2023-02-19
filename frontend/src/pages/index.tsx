@@ -1,7 +1,10 @@
+import React from 'react';
+import App from '../App';
+
 export default function Index() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello World</h1>
-    </div>
-  );
+ return (
+   <App>
+    <h1>Teste</h1>
+   </App>
+ )
 }
