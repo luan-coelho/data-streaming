@@ -6,11 +6,11 @@ import br.com.unitins.mapper.VideoMapper;
 import br.com.unitins.rest.resource.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.resource.dto.video.VideoResponseDTO;
 import br.com.unitins.service.VideoService;
-import org.jboss.logging.annotations.Param;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,7 +37,7 @@ public class VideoResource {
     }
 
     @POST
-    public Response create(VideoCreateDTO videoCreateDTO) {
+    public Response create(@Valid VideoCreateDTO videoCreateDTO) {
         Video video = VideoMapper.INSTANCE.toEntity(videoCreateDTO);
         Video videoPersisted = videoService.create(video);
         return Response.ok(videoPersisted).build();
@@ -64,7 +64,7 @@ public class VideoResource {
     @GET
     @Path("/streaming")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response get(@HeaderParam("Range") String rangeHeader, String videoInputPath) throws IOException {
+    public Response get(@HeaderParam("Range") String rangeHeader, @RestQuery("videopath") String videoInputPath) throws IOException {
         String userHome = System.getProperty("user.home");
 
         File file = new File(userHome + videoInputPath);
