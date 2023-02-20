@@ -3,6 +3,7 @@ import App from '../../../App';
 import Video from '../../../types/Video';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import api from '../../../utils/api';
 
 export default function VideoCreate() {
   const [title, setTitle] = useState('');
@@ -10,7 +11,7 @@ export default function VideoCreate() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await axios.post("http://localhost:8080/api/video", {
+    const response = await api.post("/video", {
       title: title,
       description: description
     } as Video);

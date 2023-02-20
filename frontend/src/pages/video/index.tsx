@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import App from '../../App';
 import Video from '../../types/Video';
 import { Link } from 'react-router-dom';
+import VideoCard from '../../components/video/card';
+import api from '../../utils/api';
+import { ToastContainer } from 'react-toastify';
 
 export default function VideoIndex() {
   const [videos, setVideos] = useState([] as Video[]);
 
   const fetchVideos = async () => {
-    const { data } = await axios.get('http://localhost:8080/api/video');
+    const { data } = await api.get('/video');
     setVideos(data);
   };
 
@@ -18,41 +20,24 @@ export default function VideoIndex() {
 
   return (
     <App>
-      <Link className="text-lg" to="create">
-        Create Video
-      </Link>
-
-      <table className="table-auto">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Resolutions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {videos.map((video, index) => {
-            return (
-              <tr key={index}>
-                <td>{video.id}</td>
-                <td>{video.title}</td>
-                <td>{video.description}</td>
-                <td>
-                  {video.resolutionPaths.map((r) => {
-                    return (
-                      <>
-                        <p>{r.path}</p>
-                        <p>{r.resolution}</p>
-                      </>
-                    );
-                  })}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <main className="flex items-center justify-center">
+        <div className="w-10/12 m-4">
+          <div className="mt-2 flex items-center justify-between">
+            <span className="text-2xl">Vídeos</span>
+            <Link
+              className="text-sm bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mb-2 border-green-700 rounded"
+              to="create">
+              Create Video
+            </Link>
+          </div>
+          <div className="flex items-center justify-center flex-col gap-2">
+            {videos.map((video, index) => {
+              return <VideoCard key={index} video={video} />;
+            })}
+          </div>
+        </div>
+        <ToastContainer />
+      </main>
     </App>
   );
 }
