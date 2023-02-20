@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import VideoCard from '../../components/video/card';
 import api from '../../utils/api';
 import { ToastContainer } from 'react-toastify';
+import VideoCreateForm from '../../components/video/createform';
 
 export default function VideoIndex() {
   const [videos, setVideos] = useState([] as Video[]);
@@ -24,11 +25,13 @@ export default function VideoIndex() {
         <div className="w-10/12 m-4">
           <div className="mt-2 flex items-center justify-between">
             <span className="text-2xl">Vídeos</span>
-            <Link
+            <button
               className="text-sm bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 mb-2 border-green-700 rounded"
-              to="create">
+              data-modal-target="createVideo"
+              data-modal-toggle="createVideo">
               Create Video
-            </Link>
+            </button>
+            <VideoCreateForm dataModal={'createVideo'} />
           </div>
           <div className="flex items-center justify-center flex-col gap-2">
             {videos.map((video, index) => {
