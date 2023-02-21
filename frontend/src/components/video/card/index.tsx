@@ -3,6 +3,7 @@ import Video from '../../../types/Video';
 import VideoUploudButton from '../uploudbutton';
 import api from '../../../utils/api';
 import { notifyError, notifySucess } from '../../../utils/toast';
+import { Link } from 'react-router-dom';
 
 type Prop = {
   video: Video;
@@ -26,7 +27,7 @@ export default function VideoCard({ video }: Prop) {
     );
 
     if (response.status == 200) {
-       notifySucess('Upload done successfully!');
+      notifySucess('Upload done successfully!');
     } else {
       notifyError(response.data?.detail);
     }
@@ -46,12 +47,20 @@ export default function VideoCard({ video }: Prop) {
           <p className="p-2 ext-sm text-gray-700 text-base">
             {video.description}
           </p>
-          {video.resolutionPaths.length == 0 && (
+          {video.resolutionPaths.length == 0 ? (
             <div>
               <VideoUploudButton
                 notifyFather={handleChangeVideoFile}
                 submit={handleSubmit}
               />
+            </div>
+          ) : (
+            <div>
+              <Link to={video.id.toString()}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                type="button">
+                Reproduce
+              </Link>
             </div>
           )}
         </div>

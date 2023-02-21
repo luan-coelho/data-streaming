@@ -1,10 +1,9 @@
 import React from 'react';
-import App from '../App';
 
-export default function Index() {
- return (
-   <App>
-    <h1>Teste</h1>
-   </App>
- )
+export default function IndexPage() {
+  return (
+    <main>
+      <h1>Teste</h1>
+    </main>
+  );
 }

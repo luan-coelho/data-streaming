@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import router from './router/routes';
 import { RouterProvider } from 'react-router-dom';
+import router from './router/routes';
 import 'flowbite/dist/flowbite.min.js';
 import 'flowbite/dist/flowbite.min.css';
 

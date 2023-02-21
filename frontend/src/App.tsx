@@ -1,18 +1,15 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Header from './components/header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Outlet } from 'react-router-dom';
 
-type Prop = {
-  children?: ReactNode;
-};
-
-export default function App({ children }: Prop) {
+export default function App() {
   return (
     <div id="app">
       <ToastContainer />
       <Header />
-      <main className="h-screen bg-slate-100">{children}</main>
+      <Outlet />
     </div>
   );
 }

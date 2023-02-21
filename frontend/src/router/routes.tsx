@@ -1,22 +1,25 @@
 import { createBrowserRouter } from 'react-router-dom';
-import VideoIndex from '../pages/video';
 import React from 'react';
+import IndexPage from '../pages';
 import App from '../App';
-import VideoPlayerPage from '../pages/video/player';
+import NotFoundPage from '../pages/notfound';
+import { videoRoutes } from './video';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-  },
-  {
-    path: '/video',
-    element: <VideoIndex />,
-  },
-  {
-    path: '/video/streaming',
-    element: <VideoPlayerPage />,
+    children: [
+      {
+        index: true,
+        element: <IndexPage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
+      ...videoRoutes
+    ],
   },
 ]);
-
 export default router;
