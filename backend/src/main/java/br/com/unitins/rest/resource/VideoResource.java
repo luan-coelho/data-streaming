@@ -44,7 +44,7 @@ public class VideoResource {
     }
 
     @GET
-    @Path("/id}")
+    @Path("/{id}")
     public Response getById(@RestPath Long id) {
         Video video = videoService.getById(id);
         VideoResponseDTO dto = VideoMapper.INSTANCE.toResponseDTO(video);
@@ -52,7 +52,7 @@ public class VideoResource {
     }
 
     @DELETE
-    @Path("/id}")
+    @Path("/{id}")
     public Response delete(@RestPath Long id) {
         videoService.delete(id);
         return Response.ok().build();
