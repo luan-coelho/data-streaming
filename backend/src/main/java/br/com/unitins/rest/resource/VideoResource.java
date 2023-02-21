@@ -43,10 +43,18 @@ public class VideoResource {
         return Response.ok(videoPersisted).build();
     }
 
+    @GET
+    @Path("/id}")
+    public Response getById(@RestPath Long id) {
+        Video video = videoService.getById(id);
+        VideoResponseDTO dto = VideoMapper.INSTANCE.toResponseDTO(video);
+        return Response.ok(dto).build();
+    }
+
     @DELETE
-    @Path("/{videoId}")
-    public Response delete(@RestPath Long videoId) {
-        videoService.delete(videoId);
+    @Path("/id}")
+    public Response delete(@RestPath Long id) {
+        videoService.delete(id);
         return Response.ok().build();
     }
 
@@ -66,8 +74,8 @@ public class VideoResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response get(@HeaderParam("Range") String rangeHeader, @RestQuery("videopath") String videoInputPath) throws IOException {
         String userHome = System.getProperty("user.home");
-
-        File file = new File(userHome + videoInputPath);
+        String fullPath = userHome + videoInputPath;
+        File file = new File(fullPath);
 
         byte[] videoBytes = Files.readAllBytes(file.toPath());
         int videoLength = videoBytes.length;

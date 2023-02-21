@@ -40,9 +40,13 @@ public class VideoService {
         return video;
     }
 
+    public Video getById(Long id){
+        return videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
+    }
+
     @Transactional
-    public void delete(Long videoId) {
-        Video video = videoRepository.findByIdOptional(videoId).orElseThrow(() -> new NotFoundException("Video not found by id"));
+    public void delete(Long id) {
+        Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
         String userHome = System.getProperty("user.home");
         String fileFolder = userHome + video.getPath();
         deleteFolder(fileFolder);
