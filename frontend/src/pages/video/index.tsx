@@ -35,7 +35,7 @@ export default function VideoPage() {
             data-modal-toggle="createVideo">
             Create Video
           </button>
-          <VideoCreateForm dataModal={'createVideo'} />
+          <VideoCreateForm dataModal={'createVideo'} notifyParent={fetchVideos}/>
         </div>
         <div className="flex items-center justify-center flex-col gap-2">
           {videos.map((video, index) => {

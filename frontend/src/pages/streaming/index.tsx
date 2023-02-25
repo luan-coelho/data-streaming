@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import VideoPlayer from '../../components/video/player';
 import { useParams } from 'react-router-dom';
 import api from '../../utils/api';
 import { notifyError } from '../../utils/toast';
