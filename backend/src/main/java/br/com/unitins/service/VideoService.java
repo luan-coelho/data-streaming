@@ -6,6 +6,7 @@ import br.com.unitins.domain.ResolutionPath;
 import br.com.unitins.domain.Video;
 import br.com.unitins.domain.VideoRepository;
 import br.com.unitins.domain.enums.Resolution;
+import org.apache.commons.io.FileUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -40,7 +41,7 @@ public class VideoService {
         return video;
     }
 
-    public Video getById(Long id){
+    public Video getById(Long id) {
         return videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
     }
 
@@ -115,7 +116,7 @@ public class VideoService {
                 String videoOutputPath = generateOutputFilePath(videoPath, r);
                 generateResolution(videoPath, videoOutputPath, r);
                 String userHome = System.getProperty("user.home");
-                String path = videoPath.replace(userHome, "");
+                String path = videoOutputPath.replace(userHome, "");
                 ResolutionPath resolutionPath = new ResolutionPath(null, r, path);
                 video.getResolutionPaths().add(resolutionPath);
                 video.setPath(path);
@@ -183,24 +184,8 @@ public class VideoService {
         folderPath = getOriginalPath(folderPath);
 
         try {
-            File folder = new File(folderPath);
-            if (folder.exists()) { // verifica se a pasta existe
-                if (folder.isDirectory()) { // verifica se a pasta é realmente uma pasta (não um arquivo)
-                    File[] files = folder.listFiles(); // obtem uma lista de arquivos e pastas na pasta
-                    for (File file : files) {
-                        file.delete(); // exclua cada arquivo e pasta dentro da pasta (recursivamente)
-                    }
-                    folder.delete(); // exclua a pasta em si
-                    System.out.println("Folder deleted successfully");
-                } else {
-                    System.err.println("Não é uma pasta");
-                }
-            } else {
-                System.err.println("folder not found");
-            }
-        } catch (Exception ignored) {
-
-        }
+            FileUtils.deleteDirectory(new File(folderPath));
+        } catch (Exception ignored) {}
     }
 
     private String getOriginalPath(String path) {

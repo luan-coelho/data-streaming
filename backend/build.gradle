@@ -20,6 +20,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-orm'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation("io.quarkus:quarkus-smallrye-openapi")
+    implementation 'commons-io:commons-io:2.11.0'
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
