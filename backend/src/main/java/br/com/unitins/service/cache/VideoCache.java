@@ -12,16 +12,16 @@ public class VideoCache {
 
     private final int MAXIMUM_CACHED_VIDEOS = 10;
 
-    private final Cache<String, Video> cache = Caffeine.newBuilder().maximumSize(MAXIMUM_CACHED_VIDEOS).build();
+    private final Cache<String, Object> cache = Caffeine.newBuilder().maximumSize(MAXIMUM_CACHED_VIDEOS).build();
 
-    public void put(String key, Video video) {
+    public void put(String key, Object video) {
         if (getNumberOfVideos() == MAXIMUM_CACHED_VIDEOS) {
-            evictLeastAccessedVideo();
+//            evictLeastAccessedVideo();
         }
         cache.put(key, video);
     }
 
-    public Video get(String key) {
+    public Object get(String key) {
         return cache.getIfPresent(key);
     }
 
@@ -33,20 +33,20 @@ public class VideoCache {
         return (int) cache.estimatedSize();
     }
 
-    public void evictLeastAccessedVideo() {
-        String leastAccessedKey = null;
-        long leastAccessedValue = Long.MAX_VALUE;
-
-        for (Map.Entry<String, Video> entry : cache.asMap().entrySet()) {
-            long accessCount = entry.getValue().getViews();
-            if (accessCount < leastAccessedValue) {
-                leastAccessedKey = entry.getKey();
-                leastAccessedValue = accessCount;
-            }
-        }
-
-        if (leastAccessedKey != null) {
-            cache.invalidate(leastAccessedKey);
-        }
-    }
+//    public void evictLeastAccessedVideo() {
+//        String leastAccessedKey = null;
+//        long leastAccessedValue = Long.MAX_VALUE;
+//
+//        for (Map.Entry<String, Video> entry : cache.asMap().entrySet()) {
+//            long accessCount = entry.getValue().getViews();
+//            if (accessCount < leastAccessedValue) {
+//                leastAccessedKey = entry.getKey();
+//                leastAccessedValue = accessCount;
+//            }
+//        }
+//
+//        if (leastAccessedKey != null) {
+//            cache.invalidate(leastAccessedKey);
+//        }
+//    }
 }
