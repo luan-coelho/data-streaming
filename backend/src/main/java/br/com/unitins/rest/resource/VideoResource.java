@@ -63,9 +63,8 @@ public class VideoResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) throws IOException {
         // Define o diretório de destino do arquivo
-        java.nio.file.Path filePath = videoService.saveFile(multipartBody);
+        videoService.saveResourceFile(videoId, multipartBody);
 
-        videoService.adjustResolution(videoId, filePath.toString());
         return Response.ok().build();
     }
 

@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum Resolution {
 
-    HIGH("1920", "1080"),
-    MEDIUM("1280", "720"),
-    LOW("854", "480");
+    HD("1280", "720"),
+    SD("720", "480");
 
     String width;
     String height;

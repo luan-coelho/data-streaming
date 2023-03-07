@@ -1,6 +1,6 @@
 package br.com.unitins.mapper;
 
-import br.com.unitins.domain.ResolutionPath;
+import br.com.unitins.domain.ResourcePath;
 import br.com.unitins.rest.resource.ResolutionPathResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -13,5 +13,5 @@ public interface ResolutionPathMapper {
     @Singleton
     ResolutionPathMapper INSTANCE = Mappers.getMapper(ResolutionPathMapper.class);
 
-    ResolutionPathResponseDTO toResponseDto(ResolutionPath resolutionPath);
+    ResolutionPathResponseDTO toResponseDto(ResourcePath resolutionPath);
 }

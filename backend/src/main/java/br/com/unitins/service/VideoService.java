@@ -1,11 +1,13 @@
 package br.com.unitins.service;
 
+import br.com.unitins.commons.AppConstraints;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.config.AppConfig;
-import br.com.unitins.domain.ResolutionPath;
+import br.com.unitins.domain.ResourcePath;
 import br.com.unitins.domain.Video;
 import br.com.unitins.domain.VideoRepository;
 import br.com.unitins.domain.enums.Resolution;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -22,12 +24,17 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @ApplicationScoped
 public class VideoService {
 
     @Inject
     VideoRepository videoRepository;
 
+    /**
+     * Retorna todos os vídeos cadastrados
+     * @return Lista de vídeos
+     */
     public List<Video> getAll() {
         return videoRepository.listAll();
     }
@@ -48,33 +55,41 @@ public class VideoService {
     @Transactional
     public void delete(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
-        String userHome = System.getProperty("user.home");
-        String fileFolder = userHome + video.getPath();
-        deleteFolder(fileFolder);
+        String fileFolder = AppConstraints.USER_HOME + video.getPath();
+
+        try {
+            FileUtils.deleteDirectory(new File(fileFolder));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         videoRepository.deleteById(video.getId());
     }
 
-    public java.nio.file.Path saveFile(MultipartBody multipartBody) throws IOException {
-        String userHome = System.getProperty("user.home");
-        String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
-        String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
-        String outputPath = "/Vídeos/midia/" + userName + "/" + subFolder + "/" + UUID.randomUUID();
-        String directory = userHome + outputPath;
+    public void saveResourceFile(Long videoId, MultipartBody multipartBody) {
+        try {
+            String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
+            String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
+            String outputPath = "/Vídeos/midia/" + userName + "/" + subFolder + "/" + UUID.randomUUID();
+            String directory = AppConstraints.USER_HOME + outputPath;
 
-        java.nio.file.Path path = Paths.get(directory);
+            java.nio.file.Path path = Paths.get(directory);
 
-        // Cria o diretório caso não exista
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
+            // Cria o diretório caso não exista
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+
+            // Define o caminho completo do arquivo
+            java.nio.file.Path filePath = Paths.get(directory, multipartBody.fileName);
+
+            adjustResolutionAndSave(videoId, filePath.toString());
+
+            // Salva o arquivo no diretório
+            Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            log.error("Não foi possivel salvar novos recursos de vídeo. Error message: ".concat(e.getMessage()));
         }
 
-        // Define o caminho completo do arquivo
-        java.nio.file.Path filePath = Paths.get(directory, multipartBody.fileName);
-
-        // Salva o arquivo no diretório
-        Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        return filePath;
     }
 
     /**
@@ -98,32 +113,32 @@ public class VideoService {
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
     @Transactional
-    public void adjustResolution(Long videoId, String videoPath) {
+    public void adjustResolutionAndSave(Long videoId, String videoPath) throws IOException {
         Video video = videoRepository.findByIdOptional(videoId).orElseThrow(() -> new NotFoundException("Video not found by id"));
 
-        String originalVideoResolution = getResolution(videoPath);
+        String originalVideoResolution;
         try {
+            originalVideoResolution = getResolution(videoPath);
+
             int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
             List<Resolution> resolutions;
-            if (width > 1920) {
-                resolutions = List.of(Resolution.HIGH, Resolution.MEDIUM, Resolution.LOW);
-            } else if (width > 1280) {
-                resolutions = List.of(Resolution.MEDIUM, Resolution.LOW);
+            if (width > 1280) {
+                resolutions = List.of(Resolution.HD, Resolution.SD);
             } else {
-                resolutions = List.of(Resolution.LOW);
+                resolutions = List.of(Resolution.SD);
             }
-            resolutions.forEach((r) -> {
-                String videoOutputPath = generateOutputFilePath(videoPath, r);
-                generateResolution(videoPath, videoOutputPath, r);
-                String userHome = System.getProperty("user.home");
-                String path = videoOutputPath.replace(userHome, "");
-                ResolutionPath resolutionPath = new ResolutionPath(null, r, path);
+
+            for (Resolution resolution : resolutions) {
+                String videoOutputPath = generateOutputFilePath(videoPath, resolution);
+                generateResolution(videoPath, videoOutputPath, resolution);
+                String path = videoOutputPath.replace(AppConstraints.USER_HOME, "");
+                ResourcePath resolutionPath = new ResourcePath(resolution);
                 video.getResolutionPaths().add(resolutionPath);
                 video.setPath(path);
                 videoRepository.persist(video);
-            });
+            }
         } catch (Exception e) {
-            deleteFolder(videoPath);
+            FileUtils.deleteDirectory(new File(videoPath));
             throw new RuntimeException("Error getting original video resolution");
         }
     }
@@ -133,7 +148,7 @@ public class VideoService {
      *
      * @param videoInputPath Caminho onde está o arquivo de vídeo original.
      */
-    private void generateResolution(String videoInputPath, String videoOutputPath, Resolution resolution) {
+    private void generateResolution(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
         resizeProcess(videoInputPath, videoOutputPath, resolution);
     }
 
@@ -143,18 +158,13 @@ public class VideoService {
      * @param videoPath Caminho onde está o arquivo de vídeo.
      * @return Resolução do arquivo de vídeo.
      */
-    private String getResolution(String videoPath) {
+    private String getResolution(String videoPath) throws Exception {
         String[] command = {"ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=s=x:p=0", videoPath};
-        String resolution = null;
-        try {
-            ProcessBuilder pb = new ProcessBuilder(command);
-            Process process = pb.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            resolution = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return resolution;
+
+        ProcessBuilder pb = new ProcessBuilder(command);
+        Process process = pb.start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        return reader.readLine();
     }
 
     /**
@@ -164,28 +174,17 @@ public class VideoService {
      * @param videoOutputPath Caminho onde o novo arquivo de vídeo será salvo após a geração.
      * @param resolution      Resolução onde o novo arquivo de vídeo deverá ter.
      */
-    private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) {
+    private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
         String[] command = {"ffmpeg", "-i", videoInputPath, "-vf", "scale=" + resolution.getWidth() + ":" + resolution.getHeight(), "-c:a", "copy", videoOutputPath};
-        try {
-            ProcessBuilder pb = new ProcessBuilder(command);
-            Process process = pb.start();
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("Video successfully resized.");
-            } else {
-                System.err.println("Error resizing video. ffmpeg exit code: " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+
+        ProcessBuilder pb = new ProcessBuilder(command);
+        Process process = pb.start();
+        int exitCode = process.waitFor();
+        if (exitCode == 0) {
+            log.info("Video successfully resized");
+        } else {
+            log.error("Error resizing video. ffmpeg exit code: " + exitCode);
         }
-    }
-
-    public void deleteFolder(String folderPath) {
-        folderPath = getOriginalPath(folderPath);
-
-        try {
-            FileUtils.deleteDirectory(new File(folderPath));
-        } catch (Exception ignored) {}
     }
 
     private String getOriginalPath(String path) {
