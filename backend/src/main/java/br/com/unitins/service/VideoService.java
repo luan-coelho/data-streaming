@@ -41,7 +41,7 @@ public class VideoService {
 
     @Transactional
     public Video create(Video video) {
-        if (videoRepository.findByTitle(video.getTitle())) {
+        if (videoRepository.existsByTitle(video.getTitle())) {
             throw new IllegalArgumentException("There is already a video registered with this name. Try another.");
         }
         videoRepository.persist(video);
@@ -82,12 +82,12 @@ public class VideoService {
             // Define o caminho completo do arquivo
             java.nio.file.Path filePath = Paths.get(directory, multipartBody.fileName);
 
-            adjustResolutionAndSave(videoId, filePath.toString());
-
             // Salva o arquivo no diretório
             Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            adjustResolutionAndSave(videoId, filePath.toString());
         } catch (Exception e) {
-            log.error("Não foi possivel salvar novos recursos de vídeo. Error message: ".concat(e.getMessage()));
+            log.error("Unable to save new video assets. Error message: ".concat(e.getMessage()));
         }
 
     }
@@ -110,6 +110,7 @@ public class VideoService {
     /**
      * Ajusta o vídeo original para uma nova resolução.
      *
+     * @param videoId Identificador do vídeo ao qual este recurso será vinculado.
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
     @Transactional
@@ -131,15 +132,16 @@ public class VideoService {
             for (Resolution resolution : resolutions) {
                 String videoOutputPath = generateOutputFilePath(videoPath, resolution);
                 generateResolution(videoPath, videoOutputPath, resolution);
-                String path = videoOutputPath.replace(AppConstraints.USER_HOME, "");
                 ResourcePath resolutionPath = new ResourcePath(resolution);
                 video.getResolutionPaths().add(resolutionPath);
-                video.setPath(path);
+                videoPath = videoPath.replace(AppConstraints.USER_HOME, "");
+                video.setPath(videoPath);
+
                 videoRepository.persist(video);
             }
         } catch (Exception e) {
             FileUtils.deleteDirectory(new File(videoPath));
-            throw new RuntimeException("Error getting original video resolution");
+            log.error("Error getting original video resolution");
         }
     }
 

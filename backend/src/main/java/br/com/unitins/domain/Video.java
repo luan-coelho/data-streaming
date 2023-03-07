@@ -30,4 +30,9 @@ public class Video {
     public Video(String title) {
         this.title = title;
     }
+
+    public Video(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 }
