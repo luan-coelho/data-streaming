@@ -6,6 +6,7 @@ import br.com.unitins.mapper.VideoMapper;
 import br.com.unitins.rest.resource.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.resource.dto.video.VideoResponseDTO;
 import br.com.unitins.service.VideoService;
+import br.com.unitins.service.log.LogService;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
@@ -18,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,10 +31,16 @@ public class VideoResource {
     @Inject
     VideoService videoService;
 
+    @Inject
+    LogService logService;
+
     @GET
     public Response getAll() {
         List<Video> videoList = videoService.getAll();
         List<VideoResponseDTO> dtos = videoList.stream().map(VideoMapper.INSTANCE::toResponseDto).toList();
+
+        logService.addLog("Testando " + LocalDateTime.now().getMinute());
+
         return Response.ok(dtos).build();
     }
 
