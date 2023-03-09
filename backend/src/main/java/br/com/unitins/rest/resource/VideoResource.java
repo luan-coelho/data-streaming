@@ -38,9 +38,6 @@ public class VideoResource {
     public Response getAll() {
         List<Video> videoList = videoService.getAll();
         List<VideoResponseDTO> dtos = videoList.stream().map(VideoMapper.INSTANCE::toResponseDto).toList();
-
-        logService.addLog("Testando " + LocalDateTime.now().getMinute());
-
         return Response.ok(dtos).build();
     }
 
