@@ -33,12 +33,19 @@ public class VideoService {
 
     /**
      * Retorna todos os vídeos cadastrados
+     *
      * @return Lista de vídeos
      */
     public List<Video> getAll() {
         return videoRepository.listAll();
     }
 
+    /**
+     * Cria uma instância de vídeo e salva na base de dados
+     *
+     * @param video Video que será salvo
+     * @return Instância do vídeo salvo
+     */
     @Transactional
     public Video create(Video video) {
         if (videoRepository.existsByTitle(video.getTitle())) {
@@ -48,10 +55,22 @@ public class VideoService {
         return video;
     }
 
+    /**
+     * Busca um vídeo pelo identificador
+     *
+     * @param id Identificador do vídeo
+     * @return Instância do vídeo
+     * @throws NotFoundException caso nenhum vídeo seja encontrado pelo identificador
+     */
     public Video getById(Long id) {
         return videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
     }
 
+    /**
+     * Deleta o vídeo e seus arquivos
+     *
+     * @param id Identificador do vídeo
+     */
     @Transactional
     public void delete(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
@@ -65,6 +84,12 @@ public class VideoService {
         videoRepository.deleteById(video.getId());
     }
 
+    /**
+     * Salva e vincula um arquivo de vídeo para uma instância de vídeo
+     *
+     * @param videoId       Identificador do vídeo
+     * @param multipartBody Recursos do arquivo de vídeo
+     */
     public void saveResourceFile(Long videoId, MultipartBody multipartBody) {
         try {
             String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
@@ -110,7 +135,7 @@ public class VideoService {
     /**
      * Ajusta o vídeo original para uma nova resolução.
      *
-     * @param videoId Identificador do vídeo ao qual este recurso será vinculado.
+     * @param videoId   Identificador do vídeo ao qual este recurso será vinculado.
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
     @Transactional
@@ -189,7 +214,7 @@ public class VideoService {
         }
     }
 
-    private String getOriginalPath(String path) {
+    /*private String getOriginalPath(String path) {
         if (path.endsWith(".mp4")) {
             int index = path.lastIndexOf("/");
             if (index != -1) {
@@ -197,5 +222,5 @@ public class VideoService {
             }
         }
         return path;
-    }
+    }*/
 }
