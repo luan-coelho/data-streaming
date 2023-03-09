@@ -26,7 +26,8 @@ public class ResourcePath {
     private String path;
     private File file;
 
-    public ResourcePath(Resolution resolution) {
+    public ResourcePath(Resolution resolution, String path) {
         this.resolution = resolution;
+        this.path = path;
     }
 }

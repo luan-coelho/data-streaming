@@ -3,9 +3,9 @@ package br.com.unitins.service.video;
 import br.com.unitins.commons.AppConstraints;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.config.AppConfig;
+import br.com.unitins.domain.enums.Resolution;
 import br.com.unitins.domain.model.ResourcePath;
 import br.com.unitins.domain.model.Video;
-import br.com.unitins.domain.enums.Resolution;
 import br.com.unitins.domain.repository.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @ApplicationScoped
@@ -94,7 +93,7 @@ public class VideoService {
         try {
             String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
             String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
-            String outputPath = "/Vídeos/midia/" + userName + "/" + subFolder + "/" + UUID.randomUUID();
+            String outputPath = "/Vídeos/midia/" + userName + "/" + subFolder;
             String directory = AppConstraints.USER_HOME + outputPath;
 
             java.nio.file.Path path = Paths.get(directory);
@@ -157,7 +156,8 @@ public class VideoService {
             for (Resolution resolution : resolutions) {
                 String videoOutputPath = generateOutputFilePath(videoPath, resolution);
                 generateResolution(videoPath, videoOutputPath, resolution);
-                ResourcePath resolutionPath = new ResourcePath(resolution);
+                videoOutputPath = videoOutputPath.replace(AppConstraints.USER_HOME, "");
+                ResourcePath resolutionPath = new ResourcePath(resolution, videoOutputPath);
                 video.getResolutionPaths().add(resolutionPath);
                 videoPath = videoPath.replace(AppConstraints.USER_HOME, "");
                 video.setPath(videoPath);
@@ -202,7 +202,7 @@ public class VideoService {
      * @param resolution      Resolução onde o novo arquivo de vídeo deverá ter.
      */
     private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
-        String[] command = {"ffmpeg", "-i", videoInputPath, "-vf", "scale=" + resolution.getWidth() + ":" + resolution.getHeight(), "-c:a", "copy", videoOutputPath};
+        String[] command = {"ffmpeg", "-i", videoInputPath, "-vf", "-profile:v main","scale=" + resolution.getWidth() + ":" + resolution.getHeight(), "-c:a", "copy", videoOutputPath};
 
         ProcessBuilder pb = new ProcessBuilder(command);
         Process process = pb.start();
