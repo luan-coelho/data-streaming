@@ -1,4 +1,4 @@
-package br.com.unitins.domain;
+package br.com.unitins.domain.model;
 
 import br.com.unitins.domain.enums.Resolution;
 import lombok.AllArgsConstructor;

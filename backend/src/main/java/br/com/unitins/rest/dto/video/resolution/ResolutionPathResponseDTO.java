@@ -1,4 +1,4 @@
-package br.com.unitins.rest.resource;
+package br.com.unitins.rest.dto.video.resolution;
 
 
 import br.com.unitins.domain.enums.Resolution;

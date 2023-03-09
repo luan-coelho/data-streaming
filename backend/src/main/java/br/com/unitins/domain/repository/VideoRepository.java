@@ -1,5 +1,6 @@
-package br.com.unitins.domain;
+package br.com.unitins.domain.repository;
 
+import br.com.unitins.domain.model.Video;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;

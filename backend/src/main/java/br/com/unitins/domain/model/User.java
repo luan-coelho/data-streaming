@@ -1,4 +1,4 @@
-package br.com.unitins.domain;
+package br.com.unitins.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,13 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 //@Entity
-public class Course {
+public class User {
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String title;
-    private String description;
+    private String nickName;
+    private String name;
+    private String surname;
+    private String email;
     @OneToMany
-    private List<Module> modules;
+    private List<Course> courses;
 }

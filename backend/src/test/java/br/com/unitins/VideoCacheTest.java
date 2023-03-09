@@ -1,17 +1,13 @@
 package br.com.unitins;
 
-import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.domain.Video;
+import br.com.unitins.domain.model.Video;
 import br.com.unitins.service.cache.VideoCache;
-import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 @QuarkusTest
 public class VideoCacheTest {

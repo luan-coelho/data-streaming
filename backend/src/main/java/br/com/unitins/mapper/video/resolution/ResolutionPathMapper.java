@@ -1,7 +1,7 @@
-package br.com.unitins.mapper;
+package br.com.unitins.mapper.video.resolution;
 
-import br.com.unitins.domain.ResourcePath;
-import br.com.unitins.rest.resource.ResolutionPathResponseDTO;
+import br.com.unitins.domain.model.ResourcePath;
+import br.com.unitins.rest.dto.video.resolution.ResolutionPathResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

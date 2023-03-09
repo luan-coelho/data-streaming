@@ -1,12 +1,12 @@
-package br.com.unitins.service;
+package br.com.unitins.service.video;
 
 import br.com.unitins.commons.AppConstraints;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.config.AppConfig;
-import br.com.unitins.domain.ResourcePath;
-import br.com.unitins.domain.Video;
-import br.com.unitins.domain.VideoRepository;
+import br.com.unitins.domain.model.ResourcePath;
+import br.com.unitins.domain.model.Video;
 import br.com.unitins.domain.enums.Resolution;
+import br.com.unitins.domain.repository.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 

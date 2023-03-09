@@ -1,6 +1,6 @@
-package br.com.unitins.rest.resource.dto.video;
+package br.com.unitins.rest.dto.video;
 
-import br.com.unitins.rest.resource.ResolutionPathResponseDTO;
+import br.com.unitins.rest.dto.video.resolution.ResolutionPathResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 

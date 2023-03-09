@@ -1,10 +1,9 @@
 package br.com.unitins.config;
 
-import br.com.unitins.domain.Course;
-import br.com.unitins.domain.Module;
-import br.com.unitins.domain.User;
+import br.com.unitins.domain.model.Course;
+import br.com.unitins.domain.model.Module;
+import br.com.unitins.domain.model.User;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class AppConfig {

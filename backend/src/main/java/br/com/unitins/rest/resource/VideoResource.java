@@ -1,12 +1,12 @@
 package br.com.unitins.rest.resource;
 
 import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.domain.Video;
-import br.com.unitins.mapper.VideoMapper;
-import br.com.unitins.rest.resource.dto.video.VideoCreateDTO;
-import br.com.unitins.rest.resource.dto.video.VideoResponseDTO;
-import br.com.unitins.service.VideoService;
+import br.com.unitins.domain.model.Video;
+import br.com.unitins.mapper.video.VideoMapper;
+import br.com.unitins.rest.dto.video.VideoCreateDTO;
+import br.com.unitins.rest.dto.video.VideoResponseDTO;
 import br.com.unitins.service.log.LogService;
+import br.com.unitins.service.video.VideoService;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 

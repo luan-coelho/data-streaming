@@ -1,4 +1,4 @@
-package br.com.unitins.rest.resource.dto.video.user;
+package br.com.unitins.rest.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
