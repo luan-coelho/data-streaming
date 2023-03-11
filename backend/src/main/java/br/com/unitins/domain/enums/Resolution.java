@@ -14,5 +14,10 @@ public enum Resolution {
 
     String width;
     String height;
+
+    @Override
+    public String toString() {
+        return this.width + "x" + this.height;
+    }
 }
 

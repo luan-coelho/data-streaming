@@ -5,7 +5,6 @@ import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
-import br.com.unitins.service.log.LogService;
 import br.com.unitins.service.video.VideoService;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Path("/api/video")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,9 +29,6 @@ public class VideoResource {
 
     @Inject
     VideoService videoService;
-
-    @Inject
-    LogService logService;
 
     @GET
     public Response getAll() {
@@ -66,9 +63,9 @@ public class VideoResource {
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) throws IOException {
-        // Define o diretório de destino do arquivo
-        videoService.saveResourceFile(videoId, multipartBody);
-
+        CompletableFuture.runAsync(() -> {
+            videoService.saveResourceFile(videoId, multipartBody);
+        });
         return Response.ok().build();
     }
 

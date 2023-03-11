@@ -202,7 +202,7 @@ public class VideoService {
      * @param resolution      Resolução onde o novo arquivo de vídeo deverá ter.
      */
     private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
-        String[] command = {"ffmpeg", "-i", videoInputPath, "-vf", "-profile:v main","scale=" + resolution.getWidth() + ":" + resolution.getHeight(), "-c:a", "copy", videoOutputPath};
+        String[] command = {"ffmpeg", "-i", videoInputPath, "-vf", "scale=" + resolution.getWidth() + ":" + resolution.getHeight(), "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", videoOutputPath};
 
         ProcessBuilder pb = new ProcessBuilder(command);
         Process process = pb.start();
