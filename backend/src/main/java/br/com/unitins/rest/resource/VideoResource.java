@@ -1,10 +1,13 @@
 package br.com.unitins.rest.resource;
 
 import br.com.unitins.commons.MultipartBody;
+import br.com.unitins.commons.Pageable;
+import br.com.unitins.commons.Pagination;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
+import br.com.unitins.rest.dto.video.VideoUpdateDTO;
 import br.com.unitins.service.video.VideoService;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
@@ -19,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Path("/api/video")
@@ -31,10 +33,11 @@ public class VideoResource {
     VideoService videoService;
 
     @GET
-    public Response getAll() {
-        List<Video> videoList = videoService.getAll();
-        List<VideoResponseDTO> dtos = videoList.stream().map(VideoMapper.INSTANCE::toResponseDto).toList();
-        return Response.ok(dtos).build();
+    public Response getAll(Pageable pageable) {
+        Pagination<Video> videoList = videoService.getAll(pageable);
+        videoList.getContent().forEach(VideoMapper.INSTANCE::toResponseDto);
+
+        return Response.ok(videoList).build();
     }
 
     @POST
@@ -42,6 +45,14 @@ public class VideoResource {
         Video video = VideoMapper.INSTANCE.toEntity(videoCreateDTO);
         Video videoPersisted = videoService.create(video);
         return Response.ok(videoPersisted).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response update(Long id, @Valid VideoUpdateDTO videoUpdateDTO) {
+        Video video = VideoMapper.INSTANCE.toEntity(videoUpdateDTO);
+        Video videoUpdated = videoService.update(id, video);
+        return Response.ok(videoUpdated).build();
     }
 
     @GET
@@ -62,10 +73,8 @@ public class VideoResource {
     @POST
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) throws IOException {
-        CompletableFuture.runAsync(() -> {
-            videoService.saveResourceFile(videoId, multipartBody);
-        });
+    public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) {
+        CompletableFuture.runAsync(() -> videoService.saveResourceFile(videoId, multipartBody));
         return Response.ok().build();
     }
 

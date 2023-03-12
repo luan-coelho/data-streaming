@@ -5,6 +5,7 @@ import br.com.unitins.domain.model.Video;
 import br.com.unitins.domain.repository.VideoRepository;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.test.junit.QuarkusTest;
+import org.gradle.internal.SystemProperties;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -24,6 +25,15 @@ class VideoServiceTest {
     @Inject
     VideoRepository videoRepository;
 
+    @Test
+    public void testGetVideoDirectory(){
+        String path = "C:\\Users\\lumyt\\midia\\luancoelho\\video.mp4";
+
+        String directory = videoService.getVideoDirectory(path);
+
+        assert directory.equals("C:\\Users\\lumyt\\midia\\luancoelho\\");
+    }
+
     @Transactional
     @Test
     public void testSaveResourceFile() throws IOException {
@@ -38,7 +48,7 @@ class VideoServiceTest {
 
         videoService.saveResourceFile(video.getId(), body);
 
-        String outputPath = BAR + "midia" + BAR + "luancoelho" + BAR + 1 + BAR + "video_720.mp4";
+        String outputPath = SystemProperties.getInstance().getUserHome() + BAR + "midia" + BAR + "luancoelho" + BAR + 1 + BAR + "video_720.mp4";
         File savedFile = new File(outputPath);
 
         assert savedFile.exists();

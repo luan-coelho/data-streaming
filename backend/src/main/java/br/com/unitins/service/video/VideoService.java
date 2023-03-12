@@ -1,11 +1,14 @@
 package br.com.unitins.service.video;
 
 import br.com.unitins.commons.MultipartBody;
+import br.com.unitins.commons.Pageable;
+import br.com.unitins.commons.Pagination;
 import br.com.unitins.config.AppConfig;
 import br.com.unitins.domain.enums.Resolution;
 import br.com.unitins.domain.model.ResourcePath;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.domain.repository.VideoRepository;
+import br.com.unitins.mapper.video.VideoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -37,8 +40,8 @@ public class VideoService {
      *
      * @return Lista de vídeos
      */
-    public List<Video> getAll() {
-        return videoRepository.listAll();
+    public Pagination<Video> getAll(Pageable pageable){
+        return videoRepository.listAllPaginated(pageable);
     }
 
     /**
@@ -54,6 +57,26 @@ public class VideoService {
         }
         videoRepository.persist(video);
         return video;
+    }
+
+    /**
+     * Atualiza uma instância de vídeo
+     *
+     * @param video Video atualizado
+     * @return Instância do vídeo atualizado
+     */
+    @Transactional
+    public Video update(Long id, Video video) {
+        Video databaseVideo = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
+
+        if (videoRepository.existsByTitle(video.getTitle())) {
+            throw new IllegalArgumentException("There is already a video registered with this name. Try another.");
+        }
+
+        VideoMapper.INSTANCE.copyFields(databaseVideo, video);
+        videoRepository.persist(databaseVideo);
+
+        return databaseVideo;
     }
 
     /**
@@ -126,7 +149,7 @@ public class VideoService {
      * @return Caminho do arquivo de vídeo que será gerado.
      */
     private String generateOutputFilePath(String path, Resolution resolution) {
-        String[] pathStrings = path.split(BAR);
+        String[] pathStrings = path.split("[\\\\/]+");
         String fileName = pathStrings[pathStrings.length - 1].split("\\.")[0];
         String newfileName = pathStrings[pathStrings.length - 1].split("\\.")[0] + "_" + resolution.getWidth();
 
@@ -149,11 +172,11 @@ public class VideoService {
 
             int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
             List<Resolution> resolutions;
+
             if (width > 1280) {
-                resolutions = List.of(Resolution.HD, Resolution.SD);
-            } else {
-                resolutions = List.of(Resolution.SD);
+                resolutions = List.of(Resolution.HD);
             }
+            resolutions = List.of(Resolution.SD);
 
             for (Resolution resolution : resolutions) {
                 String videoOutputPath = generateOutputFilePath(videoPath, resolution);
@@ -167,7 +190,12 @@ public class VideoService {
                 videoRepository.persist(video);
             }
         } catch (Exception e) {
-            FileUtils.deleteDirectory(new File(videoPath));
+            File directory = new File(getVideoDirectory(videoPath));
+            try {
+                FileUtils.deleteDirectory(directory);
+            } catch (Exception ignored) {
+            }
+
             log.error("Error getting original video resolution");
         }
     }
@@ -216,13 +244,14 @@ public class VideoService {
         }
     }
 
-    /*private String getOriginalPath(String path) {
-        if (path.endsWith(".mp4")) {
-            int index = path.lastIndexOf("/");
-            if (index != -1) {
-                path = path.substring(0, index);
-            }
-        }
-        return path;
-    }*/
+    /**
+     * Pega o diretório do arquivo de vídeo
+     *
+     * @param videoPath Caminho onde está o arquivo de vídeo.
+     * @return Diretório do arquivo de vídeo.
+     */
+    public String getVideoDirectory(String videoPath) {
+        String[] pathStrings = videoPath.split("[\\\\/]+");
+        return videoPath.replace(pathStrings[pathStrings.length - 1], "");
+    }
 }

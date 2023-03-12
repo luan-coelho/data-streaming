@@ -4,7 +4,10 @@ import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.resolution.ResolutionPathMapper;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
+import br.com.unitins.rest.dto.video.VideoUpdateDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import javax.inject.Singleton;
@@ -21,4 +24,9 @@ public interface VideoMapper {
     VideoResponseDTO toResponseDTO(Video video);
 
     Video toEntity(VideoCreateDTO dto);
+
+    Video toEntity(VideoUpdateDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    void copyFields(@MappingTarget Video source, Video target);
 }
