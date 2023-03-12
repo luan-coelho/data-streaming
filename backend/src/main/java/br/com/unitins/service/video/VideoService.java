@@ -1,6 +1,5 @@
 package br.com.unitins.service.video;
 
-import br.com.unitins.commons.AppConstraints;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.config.AppConfig;
 import br.com.unitins.domain.enums.Resolution;
@@ -29,6 +28,9 @@ public class VideoService {
 
     @Inject
     VideoRepository videoRepository;
+
+    private final String USER_HOME = System.getProperty("user.home");
+    private final String BAR = File.separator; // "\" ou "/"
 
     /**
      * Retorna todos os vídeos cadastrados
@@ -73,7 +75,7 @@ public class VideoService {
     @Transactional
     public void delete(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
-        String fileFolder = AppConstraints.USER_HOME + video.getPath();
+        String fileFolder = USER_HOME + video.getPath();
 
         try {
             FileUtils.deleteDirectory(new File(fileFolder));
@@ -93,8 +95,8 @@ public class VideoService {
         try {
             String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
             String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
-            String outputPath = "/Vídeos/midia/" + userName + "/" + subFolder;
-            String directory = AppConstraints.USER_HOME + outputPath;
+            String outputPath = BAR + "midia" + BAR + userName + BAR + subFolder;
+            String directory = USER_HOME + outputPath;
 
             java.nio.file.Path path = Paths.get(directory);
 
@@ -124,7 +126,7 @@ public class VideoService {
      * @return Caminho do arquivo de vídeo que será gerado.
      */
     private String generateOutputFilePath(String path, Resolution resolution) {
-        String[] pathStrings = path.split("/");
+        String[] pathStrings = path.split(BAR);
         String fileName = pathStrings[pathStrings.length - 1].split("\\.")[0];
         String newfileName = pathStrings[pathStrings.length - 1].split("\\.")[0] + "_" + resolution.getWidth();
 
@@ -156,10 +158,10 @@ public class VideoService {
             for (Resolution resolution : resolutions) {
                 String videoOutputPath = generateOutputFilePath(videoPath, resolution);
                 generateResolution(videoPath, videoOutputPath, resolution);
-                videoOutputPath = videoOutputPath.replace(AppConstraints.USER_HOME, "");
+                videoOutputPath = videoOutputPath.replace(USER_HOME, "");
                 ResourcePath resolutionPath = new ResourcePath(resolution, videoOutputPath);
                 video.getResolutionPaths().add(resolutionPath);
-                videoPath = videoPath.replace(AppConstraints.USER_HOME, "");
+                videoPath = videoPath.replace(USER_HOME, "");
                 video.setPath(videoPath);
 
                 videoRepository.persist(video);
