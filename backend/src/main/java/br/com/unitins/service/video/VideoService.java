@@ -3,6 +3,7 @@ package br.com.unitins.service.video;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.Pageable;
 import br.com.unitins.commons.Pagination;
+import br.com.unitins.commons.ProcessProperties;
 import br.com.unitins.config.AppConfig;
 import br.com.unitins.domain.enums.Resolution;
 import br.com.unitins.domain.model.ResourcePath;
@@ -12,6 +13,7 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -109,13 +111,17 @@ public class VideoService {
         videoRepository.deleteById(video.getId());
     }
 
+
     /**
      * Salva e vincula um arquivo de vídeo para uma instância de vídeo
      *
-     * @param videoId       Identificador do vídeo
-     * @param multipartBody Recursos do arquivo de vídeo
+     * @param properties Propriedades que serão utilizadas para realizar o processo de salvamento e geração de vídeo
      */
-    public void saveResourceFile(Long videoId, MultipartBody multipartBody) {
+    @Incoming("video-queue")
+    public void saveResourceFile(ProcessProperties properties) {
+        Long videoId = properties.getVideoId();
+        MultipartBody multipartBody = properties.getMultipartBody();
+
         try {
             String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
             String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
@@ -164,7 +170,7 @@ public class VideoService {
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
     @Transactional
-    public void adjustResolutionAndSave(Long videoId, String videoPath) throws IOException {
+    public void adjustResolutionAndSave(Long videoId, String videoPath) throws Exception {
         Video video = videoRepository.findByIdOptional(videoId).orElseThrow(() -> new NotFoundException("Video not found by id"));
 
         String originalVideoResolution;

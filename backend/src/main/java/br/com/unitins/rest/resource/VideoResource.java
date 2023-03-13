@@ -3,6 +3,7 @@ package br.com.unitins.rest.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.Pageable;
 import br.com.unitins.commons.Pagination;
+import br.com.unitins.commons.ProcessProperties;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
@@ -10,6 +11,8 @@ import br.com.unitins.rest.dto.video.VideoResponseDTO;
 import br.com.unitins.rest.dto.video.VideoUpdateDTO;
 import br.com.unitins.rest.filters.VideoFilter;
 import br.com.unitins.service.video.VideoService;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
@@ -23,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 @Path("/api/video")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,6 +34,10 @@ public class VideoResource {
 
     @Inject
     VideoService videoService;
+
+    @Inject
+    @Channel("video-queue")
+    Emitter<ProcessProperties> videoQueue;
 
     @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
@@ -75,7 +81,8 @@ public class VideoResource {
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) {
-        CompletableFuture.runAsync(() -> videoService.saveResourceFile(videoId, multipartBody));
+        ProcessProperties processProperties = new ProcessProperties(videoId, multipartBody);
+        videoQueue.send(processProperties);
         return Response.ok().build();
     }
 
