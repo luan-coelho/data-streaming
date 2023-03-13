@@ -1,7 +1,0 @@
-ffmpeg -i /home/luan/Vídeos/original/video.mp4 -vf scale=1920:-2 -b:v 4000k -b:a 192k -strict -2 /home/luan/Vídeos/generated/video_720.mp4
-
-ffmpeg -i /home/luan/Vídeos/original/video.mp4 -vf scale=1280:-2 -b:v 1000k -b:a 128k -strict -2 /home/luan/Vídeos/generated/video_720.mp4
-
-ffmpeg -i /home/luan/Vídeos/original/video.mp4 -vf scale=640:-2 -b:v 500k -b:a 128k -strict -2 /home/luan/Vídeos/generated/video_360.mp4
-
-ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 /home/luan/Vídeos/original/video.mp4
