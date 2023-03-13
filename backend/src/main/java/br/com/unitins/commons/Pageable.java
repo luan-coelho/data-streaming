@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.QueryParam;
+import java.lang.reflect.Field;
 
 @Setter
 @Getter
@@ -32,7 +33,25 @@ public class Pageable {
     }
 
     /**
-     * Ordem que retornará os objetos da paginação a partir de um campo
+     * Campo para ser ordenado
+     *
+     * @return Campo
+     */
+    public String getSort(Class<?> clazz) {
+        if (this.sort != null) {
+            if (this.sort.contains(",")) {
+                String[] properties = this.sort.split(",");
+                if (existsField(clazz, properties[0])) {
+                    return properties[0];
+                }
+            }
+        }
+        this.sort = getRandomFieldName(clazz);
+        return sort;
+    }
+
+    /**
+     * Ordem para paginação
      *
      * @return Ordem
      */
@@ -45,5 +64,38 @@ public class Pageable {
             }
         }
         return "ASC";
+    }
+
+    /**
+     * Verifica em tempo de execução se o campo passado por query params existe na entidade. Caso não existe é definido
+     *
+     * @param clazz Classe
+     * @param fieldName Nome do campo
+     * @return Verdadeiro se o campo passado como argumento existir na classe
+     */
+    boolean existsField(Class<?> clazz, String fieldName) {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equalsIgnoreCase(fieldName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Pega um nome de qualquer campo da classe
+     * @param clazz Classe
+     * @return Campo aleatorio da classe
+     */
+    String getRandomFieldName(Class<?> clazz) {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType().isArray()) {
+                continue;
+            }
+            return field.getName();
+        }
+        return "";
     }
 }

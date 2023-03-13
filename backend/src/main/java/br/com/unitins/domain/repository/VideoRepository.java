@@ -42,9 +42,9 @@ public class VideoRepository implements PanacheRepository<Video> {
         }
 
         if (pageable.getOrder().equals("ASC")) {
-            query.orderBy(cb.asc(root.get(pageable.getSort())));
+            query.orderBy(cb.asc(root.get(pageable.getSort(Video.class))));
         } else {
-            query.orderBy(cb.desc(root.get(pageable.getSort())));
+            query.orderBy(cb.desc(root.get(pageable.getSort(Video.class))));
         }
 
         TypedQuery<Video> typedQuery = entityManager.createQuery(query);
