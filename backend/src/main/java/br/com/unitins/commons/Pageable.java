@@ -1,6 +1,5 @@
 package br.com.unitins.commons;
 
-import io.quarkus.panache.common.Sort;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +16,11 @@ public class Pageable {
     @QueryParam("sort")
     private String sort;
 
+    /**
+     * Campo para ser ordenado
+     *
+     * @return Campo
+     */
     public String getSort() {
         if (this.sort != null) {
             if (this.sort.contains(",")) {
@@ -27,16 +31,19 @@ public class Pageable {
         return "id";
     }
 
-    public Sort.Direction getOrder() {
+    /**
+     * Ordem que retornará os objetos da paginação a partir de um campo
+     *
+     * @return Ordem
+     */
+    public String getOrder() {
         if (this.sort != null) {
             if (this.sort.contains(",")) {
                 String[] properties = this.sort.split(",");
-                if (properties[1].equalsIgnoreCase("asc"))
-                    return Sort.Direction.Ascending;
-                if (properties[1].equalsIgnoreCase("desc"))
-                    return Sort.Direction.Descending;
+                if (properties[1].equalsIgnoreCase("DESC"))
+                    return properties[1].toUpperCase();
             }
         }
-        return Sort.Direction.Ascending;
+        return "ASC";
     }
 }

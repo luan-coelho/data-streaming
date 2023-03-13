@@ -9,6 +9,7 @@ import br.com.unitins.domain.model.ResourcePath;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.domain.repository.VideoRepository;
 import br.com.unitins.mapper.video.VideoMapper;
+import br.com.unitins.rest.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -40,8 +41,8 @@ public class VideoService {
      *
      * @return Lista de vídeos
      */
-    public Pagination<Video> getAll(Pageable pageable){
-        return videoRepository.listAllPaginated(pageable);
+    public Pagination<Video> getAll(Pageable pageable, VideoFilter filter) {
+        return videoRepository.listAllPaginatedByTitle(pageable, filter);
     }
 
     /**

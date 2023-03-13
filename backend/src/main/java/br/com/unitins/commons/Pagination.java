@@ -45,7 +45,7 @@ public class Pagination<T> {
         paginationInstance.setTotalPages((int) (totalElements / pageable.getSize()));
         paginationInstance.setTotalElements(totalElements);
         paginationInstance.getSort().setField(pageable.getSort());
-        paginationInstance.getSort().setOrder(pageable.getOrder().toString());
+        paginationInstance.getSort().setOrder(pageable.getOrder());
 
         return paginationInstance;
     }

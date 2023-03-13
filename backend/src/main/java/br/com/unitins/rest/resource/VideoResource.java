@@ -8,6 +8,7 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
 import br.com.unitins.rest.dto.video.VideoUpdateDTO;
+import br.com.unitins.rest.filters.VideoFilter;
 import br.com.unitins.service.video.VideoService;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
@@ -33,8 +34,8 @@ public class VideoResource {
     VideoService videoService;
 
     @GET
-    public Response getAll(Pageable pageable) {
-        Pagination<Video> videoList = videoService.getAll(pageable);
+    public Response getAll(Pageable pageable, VideoFilter filter) {
+        Pagination<Video> videoList = videoService.getAll(pageable, filter);
         videoList.getContent().forEach(VideoMapper.INSTANCE::toResponseDto);
 
         return Response.ok(videoList).build();
