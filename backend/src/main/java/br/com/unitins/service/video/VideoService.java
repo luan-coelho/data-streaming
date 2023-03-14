@@ -13,7 +13,6 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -117,7 +116,7 @@ public class VideoService {
      *
      * @param properties Propriedades que serão utilizadas para realizar o processo de salvamento e geração de vídeo
      */
-    @Incoming("video-queue")
+//    @Incoming("video-queue")
     public void saveResourceFile(ProcessProperties properties) {
         Long videoId = properties.getVideoId();
         MultipartBody multipartBody = properties.getMultipartBody();

@@ -11,8 +11,6 @@ import br.com.unitins.rest.dto.video.VideoResponseDTO;
 import br.com.unitins.rest.dto.video.VideoUpdateDTO;
 import br.com.unitins.rest.filters.VideoFilter;
 import br.com.unitins.service.video.VideoService;
-import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
@@ -35,9 +33,9 @@ public class VideoResource {
     @Inject
     VideoService videoService;
 
-    @Inject
+   /* @Inject
     @Channel("video-queue")
-    Emitter<ProcessProperties> videoQueue;
+    Emitter<ProcessProperties> videoQueue;*/
 
     @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
@@ -66,7 +64,7 @@ public class VideoResource {
     @Path("/{id}")
     public Response getById(@RestPath Long id) {
         Video video = videoService.getById(id);
-        VideoResponseDTO dto = VideoMapper.INSTANCE.toResponseDTO(video);
+        VideoResponseDTO dto = VideoMapper.INSTANCE.toResponseDto(video);
         return Response.ok(dto).build();
     }
 
@@ -82,7 +80,7 @@ public class VideoResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) {
         ProcessProperties processProperties = new ProcessProperties(videoId, multipartBody);
-        videoQueue.send(processProperties);
+//        videoQueue.send(processProperties);
         return Response.ok().build();
     }
 
