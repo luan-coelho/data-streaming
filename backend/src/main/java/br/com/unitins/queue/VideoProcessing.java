@@ -1,6 +1,8 @@
 package br.com.unitins.queue;
 
-import br.com.unitins.commons.ProcessProperties;
+import br.com.unitins.commons.MultipartBody;
+import br.com.unitins.domain.model.Video;
+import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.runtime.ShutdownEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,25 +21,25 @@ public class VideoProcessing {
     @Inject
     VideoService videoService;
 
+    @Inject
+    TaskService taskService;
+
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
-    private final Map<Long, Task> tasks = new ConcurrentHashMap<>();
 
-    public CompletableFuture<Void> executeAsyncTask(ProcessProperties processProperties) {
-        Task task = Task.create(processProperties.getVideoId());
+    public void executeAsyncTask(Long videoId, MultipartBody multipartBody) {
+        Video video = videoService.getById(videoId);
+        Task task = Task.create(video);
+        taskService.create(task);
 
-        return CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
-                videoService.saveResourceFile(processProperties);
+                videoService.saveResourceFile(video, multipartBody);
                 task.changeStatusToCompleted();
             } catch (Exception e) {
                 Thread.currentThread().interrupt();
                 task.changeStatusToInterrupted();
             }
         }, executor);
-    }
-
-    public Task getTaskStatus(Long id) {
-        return tasks.get(id);
     }
 
     public void shutdown() {

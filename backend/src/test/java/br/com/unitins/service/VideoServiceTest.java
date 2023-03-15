@@ -3,6 +3,7 @@ package br.com.unitins.service;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.domain.repository.VideoRepository;
+import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.test.junit.QuarkusTest;
 import org.gradle.internal.SystemProperties;
@@ -12,7 +13,6 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
 @QuarkusTest
 class VideoServiceTest {
@@ -23,10 +23,13 @@ class VideoServiceTest {
     VideoService videoService;
 
     @Inject
+    VideoProcessing videoProcessing;
+
+    @Inject
     VideoRepository videoRepository;
 
     @Test
-    public void testGetVideoDirectory(){
+    public void testGetVideoDirectory() {
         String path = "C:\\Users\\lumyt\\midia\\luancoelho\\video.mp4";
 
         String directory = videoService.getVideoDirectory(path);
@@ -36,7 +39,7 @@ class VideoServiceTest {
 
     @Transactional
     @Test
-    public void testSaveResourceFile() throws IOException {
+    public void testSaveResourceFile() throws Exception {
         Video video = new Video("Iniciando no Quarkus", "Começando no Framework");
         videoRepository.persist(video);
 
@@ -46,8 +49,10 @@ class VideoServiceTest {
         body.fileName = "video.mp4";
         body.inputStream = new FileInputStream(file);
 
-//        videoService.saveResourceFile(video.getId(), body);
-//
+        ProcessProperties processProperties = new ProcessProperties(video.getId(), body);
+//        videoService.saveResourceFile(processProperties);
+        videoProcessing.executeAsyncTask(processProperties);
+
         String outputPath = SystemProperties.getInstance().getUserHome() + BAR + "midia" + BAR + "luancoelho" + BAR + 1 + BAR + "video_720.mp4";
         File savedFile = new File(outputPath);
 

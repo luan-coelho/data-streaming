@@ -3,9 +3,10 @@ package br.com.unitins.rest.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.Pageable;
 import br.com.unitins.commons.Pagination;
-import br.com.unitins.commons.ProcessProperties;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.VideoMapper;
+import br.com.unitins.queue.Task;
+import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
 import br.com.unitins.rest.dto.video.VideoUpdateDTO;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
 
 @Path("/api/video")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,15 +35,13 @@ public class VideoResource {
     @Inject
     VideoService videoService;
 
-   /* @Inject
-    @Channel("video-queue")
-    Emitter<ProcessProperties> videoQueue;*/
+    @Inject
+    VideoProcessing videoProcessing;
 
     @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
         Pagination<Video> videoList = videoService.getAll(pageable, filter);
         videoList.getContent().forEach(VideoMapper.INSTANCE::toResponseDto);
-
         return Response.ok(videoList).build();
     }
 
@@ -78,10 +78,23 @@ public class VideoResource {
     @POST
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(MultipartBody multipartBody, @RestQuery("videoid") Long videoId) {
-        ProcessProperties processProperties = new ProcessProperties(videoId, multipartBody);
-//        videoQueue.send(processProperties);
+    public Response uploadFile(@RestQuery("videoid") Long videoId, MultipartBody multipartBody) {
+        videoProcessing.executeAsyncTask(videoId, multipartBody);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/uploud/getAllTasks")
+    public Response getAllTasks() {
+        List<Task> taskList = videoProcessing.getAllTasks();
+        return Response.ok(taskList).build();
+    }
+
+    @GET
+    @Path("/uploud/getActiveTasks")
+    public Response getActiveTasks() {
+        List<Task> taskList = videoProcessing.getActiveTasks();
+        return Response.ok(taskList).build();
     }
 
     @GET
