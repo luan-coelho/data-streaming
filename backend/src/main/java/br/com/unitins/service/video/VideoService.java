@@ -117,11 +117,10 @@ public class VideoService {
      * @param properties Propriedades que serão utilizadas para realizar o processo de salvamento e geração de vídeo
      */
 //    @Incoming("video-queue")
-    public void saveResourceFile(ProcessProperties properties) {
+    public void saveResourceFile(ProcessProperties properties) throws Exception{
         Long videoId = properties.getVideoId();
         MultipartBody multipartBody = properties.getMultipartBody();
 
-        try {
             String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
             String subFolder = AppConfig.getLoggedUser().getCourses().get(0).getModules().get(0).getId().toString();
             String outputPath = BAR + "midia" + BAR + userName + BAR + subFolder;
@@ -141,9 +140,7 @@ public class VideoService {
             Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
             adjustResolutionAndSave(videoId, filePath.toString());
-        } catch (Exception e) {
-            log.error("Unable to save new video assets. Error message: ".concat(e.getMessage()));
-        }
+
 
     }
 

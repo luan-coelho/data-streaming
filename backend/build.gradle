@@ -22,7 +22,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
     implementation 'commons-io:commons-io:2.11.0'
-    implementation 'io.quarkus:quarkus-smallrye-reactive-streams-operators:2.16.4.Final'
+    implementation("io.quarkus:quarkus-smallrye-context-propagation")
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
