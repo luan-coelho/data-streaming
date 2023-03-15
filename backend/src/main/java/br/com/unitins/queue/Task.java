@@ -1,5 +1,6 @@
 package br.com.unitins.queue;
 
+import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.domain.model.Video;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,18 +17,12 @@ import javax.persistence.*;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private TaskStatus status;
     private String result;
     @ManyToOne(fetch = FetchType.LAZY)
     private Video video;
-
-    public enum TaskStatus {
-        PROCESSING,
-        COMPLETED,
-        INTERRUPTED
-    }
 
     public static Task create(Video video) {
         return new Task(null, TaskStatus.PROCESSING, null, video);

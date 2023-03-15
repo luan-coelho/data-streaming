@@ -1,5 +1,6 @@
 package br.com.unitins.domain.repository.task;
 
+import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.queue.Task;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
@@ -27,8 +28,7 @@ public class TaskRepository implements PanacheRepository<Task> {
         query.select(root);
 
         List<Predicate> predicates = new ArrayList<>();
-
-        predicates.add(cb.like(root.get("status"), Task.TaskStatus.PROCESSING.toString()));
+        predicates.add(cb.equal(root.get("status"), TaskStatus.PROCESSING));
 
         query.where(cb.and(predicates.toArray(new Predicate[0])));
 

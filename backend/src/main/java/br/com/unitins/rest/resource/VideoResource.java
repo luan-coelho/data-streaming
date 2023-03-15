@@ -5,7 +5,6 @@ import br.com.unitins.commons.Pageable;
 import br.com.unitins.commons.Pagination;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.mapper.video.VideoMapper;
-import br.com.unitins.queue.Task;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;
 import br.com.unitins.rest.dto.video.VideoResponseDTO;
@@ -25,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 
 @Path("/api/video")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +39,6 @@ public class VideoResource {
     @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
         Pagination<Video> videoList = videoService.getAll(pageable, filter);
-        videoList.getContent().forEach(VideoMapper.INSTANCE::toResponseDto);
         return Response.ok(videoList).build();
     }
 
@@ -81,20 +78,6 @@ public class VideoResource {
     public Response uploadFile(@RestQuery("videoid") Long videoId, MultipartBody multipartBody) {
         videoProcessing.executeAsyncTask(videoId, multipartBody);
         return Response.ok().build();
-    }
-
-    @GET
-    @Path("/uploud/getAllTasks")
-    public Response getAllTasks() {
-        List<Task> taskList = videoProcessing.getAllTasks();
-        return Response.ok(taskList).build();
-    }
-
-    @GET
-    @Path("/uploud/getActiveTasks")
-    public Response getActiveTasks() {
-        List<Task> taskList = videoProcessing.getActiveTasks();
-        return Response.ok(taskList).build();
     }
 
     @GET
