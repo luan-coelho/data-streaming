@@ -1,13 +1,15 @@
 package br.com.unitins.queue;
 
 import br.com.unitins.domain.enums.task.TaskStatus;
-import br.com.unitins.domain.model.Video;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +23,9 @@ public class Task {
     private Long id;
     private TaskStatus status;
     private String result;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Video video;
+    private Long videoId;
 
-    public static Task create(Video video) {
-        return new Task(null, TaskStatus.PROCESSING, null, video);
+    public static Task create(Long videoId) {
+        return new Task(null, TaskStatus.PROCESSING, null, videoId);
     }
 }

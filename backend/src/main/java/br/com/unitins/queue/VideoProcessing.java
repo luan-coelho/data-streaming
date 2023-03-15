@@ -29,7 +29,7 @@ public class VideoProcessing {
 
     public void executeAsyncTask(Long videoId, MultipartBody multipartBody) {
         Video video = videoService.getById(videoId);
-        Task task = Task.create(video);
+        Task task = Task.create(videoId);
         taskService.create(task);
 
         CompletableFuture.runAsync(() -> {
