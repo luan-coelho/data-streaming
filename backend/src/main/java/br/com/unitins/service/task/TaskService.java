@@ -1,5 +1,6 @@
 package br.com.unitins.service.task;
 
+import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.domain.repository.task.TaskRepository;
 import br.com.unitins.queue.Task;
 
@@ -16,6 +17,13 @@ public class TaskService {
 
     @Transactional
     public Task create(Task task) {
+        taskRepository.persist(task);
+        return task;
+    }
+
+    @Transactional
+    public Task changeStatus(Task task, TaskStatus taskStatus) {
+        task.setStatus(taskStatus);
         taskRepository.persist(task);
         return task;
     }

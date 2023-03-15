@@ -1,6 +1,7 @@
 package br.com.unitins.queue;
 
 import br.com.unitins.commons.MultipartBody;
+import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.domain.model.Video;
 import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
@@ -34,10 +35,10 @@ public class VideoProcessing {
         CompletableFuture.runAsync(() -> {
             try {
                 videoService.saveResourceFile(video, multipartBody);
-                task.changeStatusToCompleted();
+                taskService.changeStatus(task, TaskStatus.COMPLETED);
             } catch (Exception e) {
                 Thread.currentThread().interrupt();
-                task.changeStatusToInterrupted();
+                taskService.changeStatus(task, TaskStatus.INTERRUPTED);
             }
         }, executor);
     }

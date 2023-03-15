@@ -27,16 +27,4 @@ public class Task {
     public static Task create(Video video) {
         return new Task(null, TaskStatus.PROCESSING, null, video);
     }
-
-    public void changeStatusToProcessing() {
-        this.status = TaskStatus.PROCESSING;
-    }
-
-    public void changeStatusToCompleted() {
-        this.status = TaskStatus.COMPLETED;
-    }
-
-    public void changeStatusToInterrupted() {
-        this.status = TaskStatus.INTERRUPTED;
-    }
 }
