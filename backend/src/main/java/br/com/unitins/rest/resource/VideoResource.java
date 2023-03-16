@@ -76,7 +76,7 @@ public class VideoResource {
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@RestQuery("videoid") Long videoId, MultipartBody multipartBody) {
-        videoProcessing.executeAsyncTask(videoId, multipartBody);
+        videoProcessing.startProcess(videoId, multipartBody);
         return Response.ok().build();
     }
 

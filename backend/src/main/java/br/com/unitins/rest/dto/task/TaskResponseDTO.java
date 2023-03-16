@@ -10,5 +10,6 @@ public class TaskResponseDTO {
 
     private Long id;
     private TaskStatus status;
+    private String description;
     private Long videoId;
 }

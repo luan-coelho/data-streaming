@@ -22,7 +22,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private TaskStatus status;
-    private String result;
+    private String description;
     private Long videoId;
 
     public static Task create(Long videoId) {

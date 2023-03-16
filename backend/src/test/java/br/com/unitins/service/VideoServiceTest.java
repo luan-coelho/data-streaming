@@ -50,7 +50,7 @@ class VideoServiceTest {
         body.inputStream = new FileInputStream(file);
 
 //        videoService.saveResourceFile(processProperties);
-        videoProcessing.executeAsyncTask(video.getId(), body);
+        videoProcessing.startProcess(video.getId(), body);
 
         String outputPath = SystemProperties.getInstance().getUserHome() + BAR + "midia" + BAR + "luancoelho" + BAR + 1 + BAR + "video_720.mp4";
         File savedFile = new File(outputPath);

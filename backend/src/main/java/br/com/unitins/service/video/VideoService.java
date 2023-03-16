@@ -104,8 +104,7 @@ public class VideoService {
 
         try {
             FileUtils.deleteDirectory(new File(fileFolder));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ignored) {
         }
         videoRepository.deleteById(video.getId());
     }
@@ -155,36 +154,26 @@ public class VideoService {
     @Transactional
     public void adjustResolutionAndSave(Video video, String videoPath) throws Exception {
         String originalVideoResolution;
-        try {
-            originalVideoResolution = getResolution(videoPath);
+        originalVideoResolution = getResolution(videoPath);
 
-            int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
-            List<Resolution> resolutions;
+        int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
+        List<Resolution> resolutions;
 
-            if (width > 1280) {
-                resolutions = List.of(Resolution.HD);
-            }
-            resolutions = List.of(Resolution.SD);
+        if (width > 1280) {
+            resolutions = List.of(Resolution.HD);
+        }
+        resolutions = List.of(Resolution.SD);
 
-            for (Resolution resolution : resolutions) {
-                String videoOutputPath = generateOutputFilePath(videoPath, resolution);
-                resizeProcess(videoPath, videoOutputPath, resolution);
-                videoOutputPath = videoOutputPath.replace(USER_HOME, "");
-                ResourcePath resolutionPath = new ResourcePath(resolution, videoOutputPath);
-                video.getResolutionPaths().add(resolutionPath);
-                videoPath = videoPath.replace(USER_HOME, "");
-                video.setPath(videoPath);
+        for (Resolution resolution : resolutions) {
+            String videoOutputPath = generateOutputFilePath(videoPath, resolution);
+            resizeProcess(videoPath, videoOutputPath, resolution);
+            videoOutputPath = videoOutputPath.replace(USER_HOME, "");
+            ResourcePath resolutionPath = new ResourcePath(resolution, videoOutputPath);
+            video.getResolutionPaths().add(resolutionPath);
+            videoPath = videoPath.replace(USER_HOME, "");
+            video.setPath(videoPath);
 
-                videoRepository.persist(video);
-            }
-        } catch (Exception e) {
-            File directory = new File(getVideoDirectory(videoPath));
-            try {
-                FileUtils.deleteDirectory(directory);
-            } catch (Exception ignored) {
-            }
-
-            log.error("Error getting original video resolution");
+            videoRepository.persist(video);
         }
     }
 
@@ -227,15 +216,10 @@ public class VideoService {
 
         ProcessBuilder processBuilder = new ProcessBuilder(ffmpegCommand);
 
-        try {
-            Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                System.err.println("Ocorreu um erro ao executar o ffmpeg");
-            }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Ocorreu um erro ao gerar a resolução mais baixa do vídeo");
-            e.printStackTrace();
+        Process process = processBuilder.start();
+        int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            System.err.println("An error occurred while running ffmpeg");
         }
     }
 

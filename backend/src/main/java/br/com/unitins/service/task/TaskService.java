@@ -22,10 +22,16 @@ public class TaskService {
     }
 
     @Transactional
-    public Task changeStatus(Task task, TaskStatus taskStatus) {
+    public void changeStatus(Task task, TaskStatus taskStatus) {
         task.setStatus(taskStatus);
         taskRepository.persist(task);
-        return task;
+    }
+
+    @Transactional
+    public void changeStatus(Task task, TaskStatus taskStatus, String description) {
+        task.setStatus(taskStatus);
+        task.setDescription(description);
+        taskRepository.persist(task);
     }
 
     public List<Task> getAll() {
