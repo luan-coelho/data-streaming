@@ -14,7 +14,7 @@ import java.net.URI;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
 @Provider
-public class GlobalExceptionMapper {
+public class GenericExceptionMapper {
 
     @Context
     HttpServerRequest request;

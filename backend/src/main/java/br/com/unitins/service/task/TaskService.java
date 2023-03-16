@@ -15,19 +15,20 @@ public class TaskService {
     @Inject
     TaskRepository taskRepository;
 
-    @Transactional
-    public Task create(Task task) {
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Task create(Long videoId) {
+        Task task = new Task();
+        task.setVideoId(videoId);
+        task.setStatus(TaskStatus.PROCESSING);
         taskRepository.persist(task);
         return task;
     }
 
-    @Transactional
     public void changeStatus(Task task, TaskStatus taskStatus) {
         task.setStatus(taskStatus);
         taskRepository.persist(task);
     }
 
-    @Transactional
     public void changeStatus(Task task, TaskStatus taskStatus, String description) {
         task.setStatus(taskStatus);
         task.setDescription(description);

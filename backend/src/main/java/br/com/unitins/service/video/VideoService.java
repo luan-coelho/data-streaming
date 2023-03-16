@@ -172,8 +172,6 @@ public class VideoService {
             video.getResolutionPaths().add(resolutionPath);
             videoPath = videoPath.replace(USER_HOME, "");
             video.setPath(videoPath);
-
-            videoRepository.persist(video);
         }
     }
 
