@@ -6,10 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,5 +21,17 @@ public class Task {
     private Long id;
     private TaskStatus status;
     private String description;
+    private LocalDateTime localDateTime;
     private Long videoId;
+
+    public Task(TaskStatus status, String description) {
+        this.status = status;
+        this.description = description;
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void changeDateTime() {
+        this.localDateTime = LocalDateTime.now();
+    }
 }

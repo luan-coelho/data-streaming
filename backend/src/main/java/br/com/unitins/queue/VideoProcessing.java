@@ -33,15 +33,9 @@ public class VideoProcessing {
     @Transactional
     public void startProcess(Long videoId, MultipartBody multipartBody) {
         Video video = videoService.getById(videoId);
-
-        Task task = taskService.create(videoId);// TaskStatus.PROCESSING
+        Task task = taskService.create(videoId);
         log.info("Starting asynchronous task of process video resource for id video: {}", videoId);
 
-        run(videoId, multipartBody, video, task);
-    }
-
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private void run(Long videoId, MultipartBody multipartBody, Video video, Task task) {
         CompletableFuture.runAsync(() -> {
             try {
                 videoService.saveResourceFile(video, multipartBody);

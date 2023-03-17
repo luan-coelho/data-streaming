@@ -15,7 +15,6 @@ public class TaskService {
     @Inject
     TaskRepository taskRepository;
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Task create(Long videoId) {
         Task task = new Task();
         task.setVideoId(videoId);
