@@ -1,5 +1,6 @@
 package br.com.unitins.commons.scheduler;
 
+import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.domain.model.task.Task;
 import io.quarkus.scheduler.Scheduled;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,9 @@ public class TaskScheduler {
         while (iterator.hasNext()) {
             Task task = iterator.next();
             em.merge(task);
-            iterator.remove();
+            if (!task.getStatus().equals(TaskStatus.PROCESSING)) {
+                iterator.remove();
+            }
         }
         log.info("Saving video processing tasks completed successfully");
     }
