@@ -197,7 +197,7 @@ public class VideoService {
     private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
         String scale = String.format("scale=%s:%s", resolution.getWidth(), resolution.getHeight());
 
-        String[] ffmpegCommand = new String[]{"ffmpeg", "-i", videoInputPath, "-vf", scale, "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-b:a", "128k", videoOutputPath};
+        String[] ffmpegCommand = new String[]{"ffmpeg", "-i", videoInputPath, "-vf", scale, "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-c:a", "aac", "-b:a", "128k", videoOutputPath};
 
         ProcessBuilder processBuilder = new ProcessBuilder(ffmpegCommand);
 

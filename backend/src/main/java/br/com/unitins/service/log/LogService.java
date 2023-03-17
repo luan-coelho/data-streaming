@@ -17,10 +17,6 @@ public class LogService {
     @Inject
     EntityManager em;
 
-    public void addLog(String message) {
-        logQueue.add(message);
-    }
-
     @Transactional
     public void saveLogs() {
         while (!logQueue.isEmpty()) {

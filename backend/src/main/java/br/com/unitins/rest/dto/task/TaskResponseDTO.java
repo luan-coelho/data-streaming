@@ -4,6 +4,8 @@ import br.com.unitins.domain.enums.task.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 public class TaskResponseDTO {
@@ -11,5 +13,6 @@ public class TaskResponseDTO {
     private Long id;
     private TaskStatus status;
     private String description;
+    private LocalDateTime localDateTime;
     private Long videoId;
 }

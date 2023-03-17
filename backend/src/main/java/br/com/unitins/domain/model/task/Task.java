@@ -24,14 +24,18 @@ public class Task {
     private LocalDateTime localDateTime;
     private Long videoId;
 
-    public Task(TaskStatus status, String description) {
-        this.status = status;
-        this.description = description;
-    }
-
     @PrePersist
     @PreUpdate
     public void changeDateTime() {
         this.localDateTime = LocalDateTime.now();
+    }
+
+    public void changeStatus(TaskStatus taskStatus) {
+        this.setStatus(taskStatus);
+    }
+
+    public void changeStatus(TaskStatus taskStatus, String description) {
+        this.setStatus(taskStatus);
+        this.setDescription(description);
     }
 }

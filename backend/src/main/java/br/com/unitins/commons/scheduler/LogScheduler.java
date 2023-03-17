@@ -1,4 +1,4 @@
-package br.com.unitins.commons;
+package br.com.unitins.commons.scheduler;
 
 import br.com.unitins.service.log.LogService;
 import io.quarkus.scheduler.Scheduled;

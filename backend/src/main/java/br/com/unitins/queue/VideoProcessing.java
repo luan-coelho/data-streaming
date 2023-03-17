@@ -1,9 +1,10 @@
 package br.com.unitins.queue;
 
 import br.com.unitins.commons.MultipartBody;
+import br.com.unitins.commons.scheduler.TaskScheduler;
 import br.com.unitins.domain.enums.task.TaskStatus;
-import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.domain.model.task.Task;
+import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.runtime.ShutdownEvent;
@@ -29,24 +30,24 @@ public class VideoProcessing {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
-
     @Transactional
     public void startProcess(Long videoId, MultipartBody multipartBody) {
         Video video = videoService.getById(videoId);
         Task task = taskService.create(videoId);
         log.info("Starting asynchronous task of process video resource for id video: {}", videoId);
+        TaskScheduler.addTask(task);
 
         CompletableFuture.runAsync(() -> {
             try {
                 videoService.saveResourceFile(video, multipartBody);
-
-                taskService.changeStatus(task, TaskStatus.COMPLETED);
-                log.warn("Asynchronous processing completed successfully for id's video: {}", videoId);
+                task.changeStatus(TaskStatus.COMPLETED);
+                log.info("Asynchronous processing completed successfully for id's video: {}", videoId);
+                TaskScheduler.addTask(task);
             } catch (Exception e) {
                 Thread.currentThread().interrupt();
-
-                taskService.changeStatus(task, TaskStatus.INTERRUPTED, e.getMessage());
+                task.changeStatus(TaskStatus.INTERRUPTED, e.getMessage());
                 log.error("Error when trying to save id video resource: {} - Message: {}", videoId, e.getMessage());
+                TaskScheduler.addTask(task);
             }
         }, executor);
     }
