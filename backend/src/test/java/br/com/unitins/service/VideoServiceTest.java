@@ -1,8 +1,8 @@
 package br.com.unitins.service;
 
 import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.domain.model.Video;
-import br.com.unitins.domain.repository.VideoRepository;
+import br.com.unitins.domain.model.video.Video;
+import br.com.unitins.domain.repository.video.VideoRepository;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.test.junit.QuarkusTest;

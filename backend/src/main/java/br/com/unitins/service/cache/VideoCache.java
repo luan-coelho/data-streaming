@@ -1,6 +1,6 @@
 package br.com.unitins.service.cache;
 
-import br.com.unitins.domain.model.Video;
+import br.com.unitins.domain.model.video.Video;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Getter;

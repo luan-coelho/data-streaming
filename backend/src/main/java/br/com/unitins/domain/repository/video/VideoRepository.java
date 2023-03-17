@@ -1,8 +1,8 @@
-package br.com.unitins.domain.repository;
+package br.com.unitins.domain.repository.video;
 
-import br.com.unitins.commons.Pageable;
-import br.com.unitins.commons.Pagination;
-import br.com.unitins.domain.model.Video;
+import br.com.unitins.commons.pagination.Pageable;
+import br.com.unitins.commons.pagination.Pagination;
+import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.rest.filters.VideoFilter;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 

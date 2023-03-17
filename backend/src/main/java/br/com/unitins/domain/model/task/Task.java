@@ -1,4 +1,4 @@
-package br.com.unitins.queue;
+package br.com.unitins.domain.model.task;
 
 import br.com.unitins.domain.enums.task.TaskStatus;
 import lombok.AllArgsConstructor;
@@ -24,8 +24,4 @@ public class Task {
     private TaskStatus status;
     private String description;
     private Long videoId;
-
-    public static Task create(Long videoId) {
-        return new Task(null, TaskStatus.PROCESSING, null, videoId);
-    }
 }

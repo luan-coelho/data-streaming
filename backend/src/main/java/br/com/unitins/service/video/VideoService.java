@@ -1,13 +1,12 @@
 package br.com.unitins.service.video;
 
 import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.commons.Pageable;
-import br.com.unitins.commons.Pagination;
-import br.com.unitins.config.AppConfig;
-import br.com.unitins.domain.enums.Resolution;
-import br.com.unitins.domain.model.ResourcePath;
-import br.com.unitins.domain.model.Video;
-import br.com.unitins.domain.repository.VideoRepository;
+import br.com.unitins.commons.pagination.Pageable;
+import br.com.unitins.commons.pagination.Pagination;
+import br.com.unitins.domain.enums.video.Resolution;
+import br.com.unitins.domain.model.video.ResourcePath;
+import br.com.unitins.domain.model.video.Video;
+import br.com.unitins.domain.repository.video.VideoRepository;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.rest.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +23,9 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 @Slf4j
 @ApplicationScoped
@@ -111,8 +111,7 @@ public class VideoService {
 
     @Transactional
     public void saveResourceFile(Video video, MultipartBody multipartBody) throws Exception {
-        String userName = AppConfig.getLoggedUser().getNickName().toLowerCase();
-        String outputPath = BAR + "midia" + BAR + userName + BAR + new Random().nextInt(1000);
+        String outputPath = BAR + "midia" + BAR + new Random().nextInt(1000);
         String directory = USER_HOME + outputPath;
 
         java.nio.file.Path path = Paths.get(directory);
@@ -153,16 +152,14 @@ public class VideoService {
      */
     @Transactional
     public void adjustResolutionAndSave(Video video, String videoPath) throws Exception {
-        String originalVideoResolution;
-        originalVideoResolution = getResolution(videoPath);
-
+        String originalVideoResolution = getResolution(videoPath);
         int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
-        List<Resolution> resolutions;
 
+        Set<Resolution> resolutions = new HashSet<>();
         if (width > 1280) {
-            resolutions = List.of(Resolution.HD);
+            resolutions.add(Resolution.HD);
         }
-        resolutions = List.of(Resolution.SD);
+        resolutions.add(Resolution.SD);
 
         for (Resolution resolution : resolutions) {
             String videoOutputPath = generateOutputFilePath(videoPath, resolution);
@@ -200,17 +197,7 @@ public class VideoService {
     private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
         String scale = String.format("scale=%s:%s", resolution.getWidth(), resolution.getHeight());
 
-        String[] ffmpegCommand = new String[]{
-                "ffmpeg",
-                "-i", videoInputPath,
-                "-vf", scale,
-                "-c:v", "libx264",
-                "-preset", "veryfast",
-                "-crf", "23",
-                "-c:a", "aac",
-                "-b:a", "128k",
-                videoOutputPath
-        };
+        String[] ffmpegCommand = new String[]{"ffmpeg", "-i", videoInputPath, "-vf", scale, "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-b:a", "128k", videoOutputPath};
 
         ProcessBuilder processBuilder = new ProcessBuilder(ffmpegCommand);
 

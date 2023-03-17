@@ -1,7 +1,7 @@
 package br.com.unitins.rest.dto.video.resolution;
 
 
-import br.com.unitins.domain.enums.Resolution;
+import br.com.unitins.domain.enums.video.Resolution;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package br.com.unitins.service.log;
 
-import br.com.unitins.domain.model.Log;
+import br.com.unitins.domain.model.log.Log;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

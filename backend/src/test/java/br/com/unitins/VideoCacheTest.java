@@ -1,6 +1,6 @@
 package br.com.unitins;
 
-import br.com.unitins.domain.model.Video;
+import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.service.cache.VideoCache;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;

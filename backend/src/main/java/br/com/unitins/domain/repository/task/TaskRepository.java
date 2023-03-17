@@ -1,7 +1,7 @@
 package br.com.unitins.domain.repository.task;
 
 import br.com.unitins.domain.enums.task.TaskStatus;
-import br.com.unitins.queue.Task;
+import br.com.unitins.domain.model.task.Task;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;

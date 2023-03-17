@@ -1,6 +1,6 @@
-package br.com.unitins.domain.model;
+package br.com.unitins.domain.model.video;
 
-import br.com.unitins.domain.enums.Resolution;
+import br.com.unitins.domain.enums.video.Resolution;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

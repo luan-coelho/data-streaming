@@ -1,4 +1,4 @@
-package br.com.unitins.domain.enums;
+package br.com.unitins.domain.enums.video;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

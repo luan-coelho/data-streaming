@@ -1,5 +1,6 @@
-package br.com.unitins.commons;
+package br.com.unitins.commons.pagination;
 
+import br.com.unitins.commons.pagination.Pagination;
 import lombok.Getter;
 import lombok.Setter;
 

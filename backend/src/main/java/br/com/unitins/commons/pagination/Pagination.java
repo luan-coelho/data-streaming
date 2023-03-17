@@ -1,6 +1,5 @@
-package br.com.unitins.commons;
+package br.com.unitins.commons.pagination;
 
-import br.com.unitins.commons.pagination.Sort;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

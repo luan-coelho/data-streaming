@@ -1,9 +1,9 @@
 package br.com.unitins.rest.resource;
 
 import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.commons.Pageable;
-import br.com.unitins.commons.Pagination;
-import br.com.unitins.domain.model.Video;
+import br.com.unitins.commons.pagination.Pageable;
+import br.com.unitins.commons.pagination.Pagination;
+import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.rest.dto.video.VideoCreateDTO;

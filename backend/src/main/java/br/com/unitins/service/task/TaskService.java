@@ -1,8 +1,8 @@
 package br.com.unitins.service.task;
 
 import br.com.unitins.domain.enums.task.TaskStatus;
+import br.com.unitins.domain.model.task.Task;
 import br.com.unitins.domain.repository.task.TaskRepository;
-import br.com.unitins.queue.Task;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
