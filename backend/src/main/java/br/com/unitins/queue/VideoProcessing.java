@@ -41,7 +41,7 @@ public class VideoProcessing {
                 log.info("Asynchronous processing completed successfully for id's video: {}", videoId);
             } catch (Exception e) {
                 Thread.currentThread().interrupt();
-                taskService.changeStatus(task, TaskStatus.INTERRUPTED);
+                taskService.changeStatus(task, TaskStatus.INTERRUPTED, e.getMessage());
                 log.error("Error when trying to save id video resource: {} - Message: {}", videoId, e.getMessage());
             }
         }, executor);

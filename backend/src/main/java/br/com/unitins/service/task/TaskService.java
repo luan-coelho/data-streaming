@@ -38,4 +38,11 @@ public class TaskService {
         task.setStatus(taskStatus);
         entityManager.merge(task);
     }
+
+    @Transactional
+    public void changeStatus(Task task, TaskStatus taskStatus, String details) {
+        task.setStatus(taskStatus);
+        task.setDetails(details);
+        entityManager.merge(task);
+    }
 }
