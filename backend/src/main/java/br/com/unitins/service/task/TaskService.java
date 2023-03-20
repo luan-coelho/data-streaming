@@ -6,6 +6,8 @@ import br.com.unitins.domain.repository.task.TaskRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
@@ -14,12 +16,8 @@ public class TaskService {
     @Inject
     TaskRepository taskRepository;
 
-    public Task create(Long videoId) {
-        Task task = new Task();
-        task.setVideoId(videoId);
-        task.setStatus(TaskStatus.PROCESSING);
-        return task;
-    }
+    @Inject
+    EntityManager entityManager;
 
     public List<Task> getAll() {
         return taskRepository.listAll();
@@ -27,5 +25,17 @@ public class TaskService {
 
     public List<Task> getActive() {
         return taskRepository.listAllActive();
+    }
+
+    @Transactional
+    public Task create(Long videoId) {
+        Task task = new Task(videoId);
+        return entityManager.merge(task);
+    }
+
+    @Transactional
+    public void changeStatus(Task task, TaskStatus taskStatus) {
+        task.setStatus(taskStatus);
+        entityManager.merge(task);
     }
 }

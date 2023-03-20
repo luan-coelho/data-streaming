@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.io.BufferedReader;
@@ -33,6 +34,9 @@ public class VideoService {
 
     @Inject
     VideoRepository videoRepository;
+
+    @Inject
+    EntityManager entityManager;
 
     private final String USER_HOME = System.getProperty("user.home");
     private final String BAR = File.separator; // "\" ou "/"
@@ -111,7 +115,7 @@ public class VideoService {
 
     @Transactional
     public void saveResourceFile(Video video, MultipartBody multipartBody) throws Exception {
-        String outputPath = BAR + "midia" + BAR + new Random().nextInt(1000);
+        String outputPath = BAR + "Vídeos" + BAR + "midia" + BAR + new Random().nextInt(1000);
         String directory = USER_HOME + outputPath;
 
         java.nio.file.Path path = Paths.get(directory);
@@ -150,7 +154,7 @@ public class VideoService {
      *
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
-    @Transactional
+    @Transactional()
     public void adjustResolutionAndSave(Video video, String videoPath) throws Exception {
         String originalVideoResolution = getResolution(videoPath);
         int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
@@ -170,6 +174,7 @@ public class VideoService {
             videoPath = videoPath.replace(USER_HOME, "");
             video.setPath(videoPath);
         }
+        entityManager.merge(video);
     }
 
     /**

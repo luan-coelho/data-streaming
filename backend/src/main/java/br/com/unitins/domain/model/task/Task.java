@@ -9,10 +9,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Task {
 
@@ -30,12 +30,8 @@ public class Task {
         this.localDateTime = LocalDateTime.now();
     }
 
-    public void changeStatus(TaskStatus taskStatus) {
-        this.setStatus(taskStatus);
-    }
-
-    public void changeStatus(TaskStatus taskStatus, String description) {
-        this.setStatus(taskStatus);
-        this.setDescription(description);
+    public Task(Long videoId) {
+        this.videoId = videoId;
+        this.status = TaskStatus.PROCESSING;
     }
 }
