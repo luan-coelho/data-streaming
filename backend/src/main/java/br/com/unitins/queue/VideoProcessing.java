@@ -8,6 +8,7 @@ import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.runtime.ShutdownEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -26,7 +27,9 @@ public class VideoProcessing {
     @Inject
     TaskService taskService;
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    @ConfigProperty(name = "app.executor.max-threads")
+    int nMaxThreads;
+    private final ExecutorService executor = Executors.newFixedThreadPool(nMaxThreads);
 
     public void startProcess(Long videoId, MultipartBody multipartBody) {
         Video video = videoService.getById(videoId);
