@@ -41,6 +41,10 @@ public class VideoService {
     private final String USER_HOME = System.getProperty("user.home");
     private final String BAR = File.separator; // "\" ou "/"
 
+    public void incrementViews(Long videoId) {
+        videoRepository.incrementViews(videoId);
+    }
+
     /**
      * Retorna todos os vídeos cadastrados
      *

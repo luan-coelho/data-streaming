@@ -4,55 +4,44 @@ import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
 import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.rest.filters.VideoFilter;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class VideoRepository implements PanacheRepository<Video> {
 
-    @Inject
-    EntityManager entityManager;
-
     public Pagination<Video> listAllPaginatedByTitle(Pageable pageable, VideoFilter filter) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Video> query = cb.createQuery(Video.class);
-        Root<Video> root = query.from(Video.class);
-        query.select(root);
+        String query = "FROM Video v WHERE 1 = 1";
+        Map<String, Object> queryParams = new HashMap<>();
 
-        List<Predicate> predicates = new ArrayList<>();
         if (filter.getTitle() != null) {
-            predicates.add(cb.like(cb.lower(root.get("title")), "%" + filter.getTitle().toLowerCase() + "%"));
+            query += " AND lower(v.title) LIKE lower(:title)";
+            queryParams.put("title", "%" + filter.getTitle() + "%");
         }
         if (filter.getDescription() != null) {
-            predicates.add(cb.like(cb.lower(root.get("description")), "%" + filter.getDescription().toLowerCase() + "%"));
+            query += " AND lower(v.description) LIKE lower(:description)";
+            queryParams.put("description", "%" + filter.getDescription() + "%");
         }
 
-        if (!predicates.isEmpty()) {
-            query.where(cb.and(predicates.toArray(new Predicate[0])));
-        }
+        String sortOrder = pageable.getOrder().equalsIgnoreCase("ASC") ? "ASC" : "DESC";
+        query += " ORDER BY v." + pageable.getSort(Video.class) + " " + sortOrder;
 
-        if (pageable.getOrder().equals("ASC")) {
-            query.orderBy(cb.asc(root.get(pageable.getSort(Video.class))));
-        } else {
-            query.orderBy(cb.desc(root.get(pageable.getSort(Video.class))));
-        }
+        PanacheQuery<Video> panacheQuery = find(query, queryParams);
+        panacheQuery.page(pageable.getPage(), pageable.getSize());
 
-        TypedQuery<Video> typedQuery = entityManager.createQuery(query);
-        typedQuery.setFirstResult(pageable.getPage() * pageable.getSize());
-        typedQuery.setMaxResults(pageable.getSize());
+        return Pagination.of(panacheQuery.list(), pageable, count());
+    }
 
-        List<Video> resultList = typedQuery.getResultList();
-        return Pagination.of(resultList, pageable, count());
+    public void incrementViews(Long videoId) {
+        getEntityManager().createQuery("UPDATE Video v SET v.views = v.views + 1 WHERE v.id = :videoId")
+                .setParameter("videoId", videoId)
+                .executeUpdate();
     }
 
     public boolean existsByTitle(String title) {

@@ -14,5 +14,7 @@ public class VideoResponseDTO {
     private String title;
     private String description;
     private String path;
+    private long duration;
+    private int views = 0;
     private List<ResolutionPathResponseDTO> resolutionPaths;
 }

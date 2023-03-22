@@ -17,12 +17,12 @@ import java.util.List;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String title;
     private String description;
     private String path;
-    private long duration;
+    private long duration = 0;
     private int views = 0;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ResourcePath> resolutionPaths = new ArrayList<>();
