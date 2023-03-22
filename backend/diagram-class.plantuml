@@ -1,28 +1,14 @@
 @startuml
-class User {
-    - id: Long
-    - name: String
-    - email: String
-    - password: String
+
+class Video {
 }
 
-class Course {
+class VideoMetrics {
     - id: Long
-    - title: String
-    - description: String
+    - views: long
+    - date: LocalDate
 }
 
-class Module {
-    - id: Long
-    - title: String
-    - description: String
-}
-
-class Video {}
-
-User "1" o-> "*" Course
-Course "1" *-> "*" Module
-Module "1" *-> "*" Video
-
+VideoMetrics "*" o-> "1" Video
 
 @enduml
