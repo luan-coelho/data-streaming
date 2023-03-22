@@ -58,11 +58,7 @@ public class VideoProcessing {
         }, executor);
     }
 
-    public void shutdown() {
-        executor.shutdown();
-    }
-
     public void onStop(@Observes ShutdownEvent ev) {
-        shutdown();
+        executor.shutdown();
     }
 }
