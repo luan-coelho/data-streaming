@@ -10,6 +10,7 @@ import io.quarkus.runtime.ShutdownEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -27,9 +28,16 @@ public class VideoProcessing {
     @Inject
     TaskService taskService;
 
+    @Inject
     @ConfigProperty(name = "app.executor.max-threads")
     int nMaxThreads;
-    private final ExecutorService executor = Executors.newFixedThreadPool(nMaxThreads);
+
+    private ExecutorService executor;
+
+    @PostConstruct
+    void init() {
+        executor = Executors.newFixedThreadPool(nMaxThreads);
+    }
 
     public void startProcess(Long videoId, MultipartBody multipartBody) {
         Video video = videoService.getById(videoId);
