@@ -2,9 +2,7 @@ package br.com.unitins.rest.resource;
 
 import br.com.unitins.domain.model.video.VideoMetrics;
 import br.com.unitins.service.video.VideoMetricsService;
-import org.jboss.logging.annotations.Param;
 import org.jboss.resteasy.reactive.RestPath;
-import org.jboss.resteasy.reactive.RestQuery;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
