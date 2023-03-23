@@ -23,6 +23,8 @@ dependencies {
     implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation("io.quarkus:quarkus-smallrye-context-propagation")
+    implementation 'com.sun.mail:jakarta.mail:1.6.7'
+    implementation 'javax.activation:javax.activation-api:1.2.0'
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testCompileOnly 'org.projectlombok:lombok:1.18.26'

@@ -6,7 +6,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
     <title>Erro de Servidor</title>
     <style>
         img {
@@ -87,7 +88,6 @@
             color: #000000;
             font-weight: 400;
             line-height: 1.4;
-            margin: 0 0 30px;
         }
 
         h1 {
@@ -266,24 +266,21 @@
                                 <tr>
                                     <td>
                                         <h2>Ocorreu um problema no servidor</h2>
-                                        <h3>Resumo da mensagem</h3>
+                                        <span><strong>Mensagem</strong></span>
                                         <p>***message***</p>
-                                        <h3>StackTrace</h3>
-                                        <pre><code class="language-java">***stacktrace***</code></pre>
+                                        <span><strong>StackTrace</strong></span>
+                                        <pre><code class="language-java hljs">***stacktrace***</code></pre>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
             </div>
         </td>
-        <td>&nbsp;</td>
     </tr>
 </table>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>highlightTheme('atom-one-dark');</script>
 </body>
 </html>

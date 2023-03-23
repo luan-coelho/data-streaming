@@ -37,6 +37,12 @@ public class VideoResource {
     VideoProcessing videoProcessing;
 
     @GET
+    @Path("/send-email")
+    public Response sendEmail() throws Exception {
+        throw new Exception("Testando endpoint");
+    }
+
+    @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
         Pagination<Video> videoList = videoService.getAll(pageable, filter);
         return Response.ok(videoList).build();
