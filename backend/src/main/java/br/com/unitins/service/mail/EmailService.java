@@ -1,5 +1,6 @@
 package br.com.unitins.service.mail;
 
+import io.quarkus.arc.profile.IfBuildProfile;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -34,6 +35,7 @@ public class EmailService {
 
     public void buildAndSend(Exception exception) {
         try {
+            log.info("Building email to notify {}", username);
             String htmlWithOriginalContent = readHtmlFile();
             String htmlWithNewContent = injectContentInHtml(htmlWithOriginalContent, exception);
 
@@ -58,7 +60,9 @@ public class EmailService {
             message.setContent(htmlWithNewContent, "text/html");
 
             Transport.send(message);
+            log.info("Email successfully sent to {}", username);
         } catch (Exception ignored) {
+            log.info("Error sending email to {}", username);
         }
     }
 

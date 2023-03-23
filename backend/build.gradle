@@ -22,7 +22,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
     implementation 'commons-io:commons-io:2.11.0'
-    implementation("io.quarkus:quarkus-smallrye-context-propagation")
+    implementation 'io.quarkus:quarkus-smallrye-context-propagation'
     implementation 'com.sun.mail:jakarta.mail:1.6.7'
     implementation 'javax.activation:javax.activation-api:1.2.0'
     compileOnly 'org.projectlombok:lombok:1.18.26'
@@ -30,6 +30,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    testImplementation 'com.h2database:h2:2.1.214'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }

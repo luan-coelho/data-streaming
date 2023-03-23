@@ -3,6 +3,7 @@ package br.com.unitins.rest.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
+import br.com.unitins.config.AppConfig;
 import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.queue.VideoProcessing;
@@ -36,10 +37,13 @@ public class VideoResource {
     @Inject
     VideoProcessing videoProcessing;
 
+    @Inject
+    AppConfig appConfig;
+
     @GET
-    @Path("/send-email")
-    public Response sendEmail() throws Exception {
-        throw new Exception("Testando endpoint");
+    @Path("/profile")
+    public Response getQuarkusProfile() throws Exception {
+        throw new Exception("Teste");
     }
 
     @GET
