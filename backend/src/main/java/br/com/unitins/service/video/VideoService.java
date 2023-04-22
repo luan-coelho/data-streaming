@@ -216,15 +216,4 @@ public class VideoService {
             System.err.println("An error occurred while running ffmpeg");
         }
     }
-
-    /**
-     * Pega o diretório do arquivo de vídeo original.
-     *
-     * @param videoPath Caminho onde está o arquivo de vídeo.
-     * @return Diretório do arquivo de vídeo original.
-     */
-    public String getVideoDirectory(String videoPath) {
-        String[] pathStrings = videoPath.split("[\\\\/]+");
-        return videoPath.replace(pathStrings[pathStrings.length - 1], "");
-    }
 }

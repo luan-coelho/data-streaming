@@ -1,14 +1,11 @@
 package br.com.unitins.handler;
 
-import br.com.unitins.config.AppConfig;
 import br.com.unitins.exception.ErrorResponse;
-import br.com.unitins.service.mail.EmailService;
 import io.vertx.core.http.HttpServerRequest;
 import lombok.SneakyThrows;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
-import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
@@ -18,12 +15,6 @@ import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
 @Provider
 public class GenericExceptionMapper {
-
-    @Inject
-    EmailService emailService;
-
-    @Inject
-    AppConfig appConfig;
 
     @Context
     HttpServerRequest request;
@@ -38,10 +29,6 @@ public class GenericExceptionMapper {
                 .instance(new URI(request.absoluteURI()))
                 .status(RestResponse.StatusCode.INTERNAL_SERVER_ERROR)
                 .build();
-
-        if (appConfig.isInProduction()) {
-            emailService.buildAndSend(exception);
-        }
 
         return RestResponse.status(INTERNAL_SERVER_ERROR, errorResponse);
     }
