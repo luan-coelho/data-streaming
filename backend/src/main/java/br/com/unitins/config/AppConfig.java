@@ -13,8 +13,4 @@ public class AppConfig {
     public AppEnvironment getEnvironment() {
         return AppEnvironment.getEnvironmentByDescription(quarkusProfile);
     }
-
-    public boolean isInProduction() {
-        return quarkusProfile.equals(AppEnvironment.PRODUCTION.getDescription());
-    }
 }
