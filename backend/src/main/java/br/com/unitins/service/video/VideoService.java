@@ -12,6 +12,7 @@ import br.com.unitins.rest.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
+import java.nio.file.Path;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -122,7 +123,7 @@ public class VideoService {
         String outputPath = BAR + "Vídeos" + BAR + "midia" + BAR + new Random().nextInt(1000);
         String directory = USER_HOME + outputPath;
 
-        java.nio.file.Path path = Paths.get(directory);
+        Path path = Paths.get(directory);
 
         // Cria o diretório caso não exista
         if (!Files.exists(path)) {
@@ -130,7 +131,7 @@ public class VideoService {
         }
 
         // Define o caminho completo do arquivo
-        java.nio.file.Path filePath = Paths.get(directory, multipartBody.fileName);
+        Path filePath = Paths.get(directory, multipartBody.fileName);
 
         // Salva o arquivo no diretório
         Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
