@@ -16,7 +16,8 @@ import java.time.LocalDate;
 public class VideoMetrics {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "VIDEOMETRICS_SEQ", sequenceName = "VIDEOMETRICS_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "VIDEOMETRICS_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
     @ManyToOne
     private Video video;

@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Setter
 @Getter
@@ -19,7 +16,8 @@ import javax.persistence.Id;
 public class ResourcePath {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "RESOURCEPATH_SEQ", sequenceName = "RESOURCEPATH_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RESOURCEPATH_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
     private Resolution resolution;
     private String path;
