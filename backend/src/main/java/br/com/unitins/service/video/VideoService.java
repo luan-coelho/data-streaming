@@ -159,7 +159,7 @@ public class VideoService {
      *
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
-    @Transactional()
+    @Transactional
     public void adjustResolutionAndSave(Video video, String videoPath) throws Exception {
         String originalVideoResolution = getResolution(videoPath);
         int width = Integer.parseInt(originalVideoResolution.split("x")[0]);

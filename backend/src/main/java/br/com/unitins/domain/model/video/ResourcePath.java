@@ -19,6 +19,7 @@ public class ResourcePath {
     @SequenceGenerator(name = "RESOURCEPATH_SEQ", sequenceName = "RESOURCEPATH_SEQ", allocationSize = 1)
     @GeneratedValue(generator = "RESOURCEPATH_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private Resolution resolution;
     private String path;
 

@@ -25,7 +25,7 @@ public class Video {
     private String path;
     private long duration = 0;
     private int views = 0;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ResourcePath> resolutionPaths = new ArrayList<>();
 
     public Video(String title) {

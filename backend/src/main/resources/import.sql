@@ -9,6 +9,13 @@ INSERT INTO Video (id, title, description, path, duration, views) VALUES (8, 'Vi
 INSERT INTO Video (id, title, description, path, duration, views) VALUES (9, 'Video 9', 'Descrição do vídeo 9', null, 240, 123);
 INSERT INTO Video (id, title, description, path, duration, views) VALUES (10, 'Video 10', 'Descrição do vídeo 10', null, 300, 32);
 
+INSERT INTO resourcepath(id, path, resolution) values (1, '/home/luan/Vídeos/midia/331', 'HD');
+INSERT INTO resourcepath(id, path, resolution) values (2, '/home/luan/Vídeos/midia/331', 'SD');
+INSERT INTO resourcepath(id, path, resolution) values (3, '/home/luan/Vídeos/midia/331', 'HD');
+
+INSERT INTO video_resourcepath (video_id, resolutionpaths_id)
+values (1, 1);
+
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (100, 1, 100, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (101, 1, 5, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (102, 2, 20, '2023-03-22');
