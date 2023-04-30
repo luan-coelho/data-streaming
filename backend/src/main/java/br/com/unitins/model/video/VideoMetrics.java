@@ -1,4 +1,4 @@
-package br.com.unitins.domain.model.video;
+package br.com.unitins.model.video;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

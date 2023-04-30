@@ -1,6 +1,6 @@
 package br.com.unitins.mapper.video;
 
-import br.com.unitins.domain.model.video.Video;
+import br.com.unitins.model.video.Video;
 import br.com.unitins.dto.video.VideoCreateDTO;
 import br.com.unitins.dto.video.VideoResponseDTO;
 import br.com.unitins.dto.video.VideoUpdateDTO;

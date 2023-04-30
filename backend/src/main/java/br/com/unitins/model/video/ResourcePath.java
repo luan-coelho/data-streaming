@@ -1,12 +1,11 @@
-package br.com.unitins.domain.model.video;
+package br.com.unitins.model.video;
 
-import br.com.unitins.domain.enums.video.Resolution;
+import br.com.unitins.model.enums.video.Resolution;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.*;
 
 @Setter
 @Getter

@@ -2,12 +2,12 @@ package br.com.unitins.repository.video;
 
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
-import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.filters.VideoFilter;
+import br.com.unitins.model.video.Video;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-
 import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.HashMap;
 import java.util.Map;
 

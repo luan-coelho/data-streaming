@@ -3,20 +3,20 @@ package br.com.unitins.service.video;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
-import br.com.unitins.domain.enums.video.Resolution;
-import br.com.unitins.domain.model.video.ResourcePath;
-import br.com.unitins.domain.model.video.Video;
-import br.com.unitins.repository.video.VideoRepository;
-import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.filters.VideoFilter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-
+import br.com.unitins.mapper.video.VideoMapper;
+import br.com.unitins.model.enums.video.Resolution;
+import br.com.unitins.model.video.ResourcePath;
+import br.com.unitins.model.video.Video;
+import br.com.unitins.repository.video.VideoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

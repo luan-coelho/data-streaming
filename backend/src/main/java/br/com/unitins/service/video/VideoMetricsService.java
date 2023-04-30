@@ -1,7 +1,7 @@
 package br.com.unitins.service.video;
 
-import br.com.unitins.domain.model.video.Video;
-import br.com.unitins.domain.model.video.VideoMetrics;
+import br.com.unitins.model.video.Video;
+import br.com.unitins.model.video.VideoMetrics;
 import br.com.unitins.repository.video.VideoMetricsRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;

@@ -1,4 +1,4 @@
-package br.com.unitins.domain.enums.task;
+package br.com.unitins.model.enums.task;
 
 public enum TaskStatus {
 

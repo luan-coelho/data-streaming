@@ -3,7 +3,7 @@ package br.com.unitins.queue;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.domain.enums.task.TaskStatus;
 import br.com.unitins.domain.model.task.Task;
-import br.com.unitins.domain.model.video.Video;
+import br.com.unitins.model.video.Video;
 import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.runtime.ShutdownEvent;

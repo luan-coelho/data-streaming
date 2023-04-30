@@ -1,13 +1,13 @@
 package br.com.unitins.resource;
 
-import br.com.unitins.domain.model.video.VideoMetrics;
+import br.com.unitins.model.video.VideoMetrics;
 import br.com.unitins.service.video.VideoMetricsService;
-import org.jboss.resteasy.reactive.RestPath;
-
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestPath;
+
 import java.time.LocalDate;
 import java.util.List;
 

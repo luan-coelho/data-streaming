@@ -1,12 +1,12 @@
-package br.com.unitins.domain.model.task;
+package br.com.unitins.model.task;
 
-import br.com.unitins.domain.enums.task.TaskStatus;
+import br.com.unitins.model.enums.task.TaskStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Setter

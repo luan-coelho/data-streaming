@@ -3,7 +3,7 @@ package br.com.unitins.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
-import br.com.unitins.domain.model.video.Video;
+import br.com.unitins.model.video.Video;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.dto.video.VideoCreateDTO;

@@ -1,4 +1,4 @@
-package br.com.unitins.domain.model.log;
+package br.com.unitins.model.log;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

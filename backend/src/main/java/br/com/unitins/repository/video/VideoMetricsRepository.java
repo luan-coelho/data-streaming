@@ -1,8 +1,7 @@
 package br.com.unitins.repository.video;
 
-import br.com.unitins.domain.model.video.VideoMetrics;
+import br.com.unitins.model.video.VideoMetrics;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.List;

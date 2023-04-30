@@ -1,13 +1,13 @@
 package br.com.unitins.service.task;
 
-import br.com.unitins.domain.enums.task.TaskStatus;
-import br.com.unitins.domain.model.task.Task;
-
+import br.com.unitins.model.enums.task.TaskStatus;
+import br.com.unitins.model.task.Task;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @ApplicationScoped
