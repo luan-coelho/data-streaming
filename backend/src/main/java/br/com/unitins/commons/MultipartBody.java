@@ -1,6 +1,6 @@
 package br.com.unitins.commons;
 
-import javax.ws.rs.FormParam;
+import jakarta.ws.rs.FormParam;
 import java.io.File;
 import java.io.InputStream;
 

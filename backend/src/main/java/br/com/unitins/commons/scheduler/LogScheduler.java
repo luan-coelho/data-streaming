@@ -3,8 +3,8 @@ package br.com.unitins.commons.scheduler;
 import br.com.unitins.service.log.LogService;
 import io.quarkus.scheduler.Scheduled;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class LogScheduler {

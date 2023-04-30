@@ -1,9 +1,9 @@
 package br.com.unitins.mapper.video;
 
 import br.com.unitins.domain.model.video.Video;
-import br.com.unitins.rest.dto.video.VideoCreateDTO;
-import br.com.unitins.rest.dto.video.VideoResponseDTO;
-import br.com.unitins.rest.dto.video.VideoUpdateDTO;
+import br.com.unitins.dto.video.VideoCreateDTO;
+import br.com.unitins.dto.video.VideoResponseDTO;
+import br.com.unitins.dto.video.VideoUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

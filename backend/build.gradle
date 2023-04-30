@@ -11,32 +11,25 @@ repositories {
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
-    implementation 'io.quarkus:quarkus-vertx'
     implementation 'io.quarkus:quarkus-resteasy-reactive'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
-    implementation 'io.quarkus:quarkus-arc'
-    implementation 'io.quarkus:quarkus-hibernate-orm'
     implementation 'io.quarkus:quarkus-scheduler'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
     implementation 'commons-io:commons-io:2.11.0'
-    implementation 'io.quarkus:quarkus-smallrye-context-propagation'
-    implementation 'com.sun.mail:jakarta.mail:1.6.7'
-    implementation 'javax.activation:javax.activation-api:1.2.0'
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-    testImplementation 'com.h2database:h2:2.1.214'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }
 
 group 'br.com.unitins'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

@@ -3,7 +3,7 @@ package br.com.unitins.commons.pagination;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.lang.reflect.Field;
 
 @Setter

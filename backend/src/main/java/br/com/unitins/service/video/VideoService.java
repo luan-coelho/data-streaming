@@ -6,23 +6,23 @@ import br.com.unitins.commons.pagination.Pagination;
 import br.com.unitins.domain.enums.video.Resolution;
 import br.com.unitins.domain.model.video.ResourcePath;
 import br.com.unitins.domain.model.video.Video;
-import br.com.unitins.domain.repository.video.VideoRepository;
+import br.com.unitins.repository.video.VideoRepository;
 import br.com.unitins.mapper.video.VideoMapper;
-import br.com.unitins.rest.filters.VideoFilter;
+import br.com.unitins.filters.VideoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
-import java.nio.file.Path;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
@@ -39,8 +39,8 @@ public class VideoService {
     @Inject
     EntityManager entityManager;
 
-    private final String USER_HOME = System.getProperty("user.home");
-    private final String BAR = File.separator; // "\" ou "/"
+    private static final String USER_HOME = System.getProperty("user.home");
+    private static final String SEPARATOR = File.separator; // "\" ou "/"
 
     public void incrementViews(Long videoId) {
         videoRepository.incrementViews(videoId);
@@ -120,10 +120,9 @@ public class VideoService {
 
     @Transactional
     public void saveResourceFile(Video video, MultipartBody multipartBody) throws Exception {
-        String outputPath = BAR + "Vídeos" + BAR + "midia" + BAR + new Random().nextInt(1000);
-        String directory = USER_HOME + outputPath;
-
-        Path path = Paths.get(directory);
+        // Monta o diretório no qual será salvo o vídeo de entrada
+        String PathInput = generatePathInput();
+        Path path = Paths.get(PathInput);
 
         // Cria o diretório caso não exista
         if (!Files.exists(path)) {
@@ -131,12 +130,17 @@ public class VideoService {
         }
 
         // Define o caminho completo do arquivo
-        Path filePath = Paths.get(directory, multipartBody.fileName);
+        Path filePath = Paths.get(PathInput, multipartBody.fileName);
 
         // Salva o arquivo no diretório
         Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
         adjustResolutionAndSave(video, filePath.toString());
+    }
+
+    private String generatePathInput() {
+        String outputPath = SEPARATOR + "Vídeos" + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
+        return USER_HOME + outputPath;
     }
 
     /**
@@ -173,13 +177,21 @@ public class VideoService {
         for (Resolution resolution : resolutions) {
             String videoOutputPath = generateOutputFilePath(videoPath, resolution);
             resizeProcess(videoPath, videoOutputPath, resolution);
-            videoOutputPath = videoOutputPath.replace(USER_HOME, "");
-            ResourcePath resolutionPath = new ResourcePath(resolution, videoOutputPath);
+            ResourcePath resolutionPath = new ResourcePath(resolution, removeUserPath(videoOutputPath));
             video.getResolutionPaths().add(resolutionPath);
-            videoPath = videoPath.replace(USER_HOME, "");
-            video.setPath(videoPath);
+            video.setPath(removeUserPath(videoPath));
         }
         entityManager.merge(video);
+    }
+
+    /**
+     * Remove caminho do usuário do caminho passado
+     *
+     * @param path caminho
+     * @return caminho sem caminho de usuário
+     */
+    private String removeUserPath(String path) {
+        return path.replace(USER_HOME, "");
     }
 
     /**

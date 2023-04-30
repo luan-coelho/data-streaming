@@ -2,11 +2,11 @@ package br.com.unitins.service.video;
 
 import br.com.unitins.domain.model.video.Video;
 import br.com.unitins.domain.model.video.VideoMetrics;
-import br.com.unitins.domain.repository.video.VideoMetricsRepository;
+import br.com.unitins.repository.video.VideoMetricsRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
