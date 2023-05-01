@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="pt-br">
+    <Html lang="pt-br" className="h-full">
       <Head />
       <body>
         <Main />
