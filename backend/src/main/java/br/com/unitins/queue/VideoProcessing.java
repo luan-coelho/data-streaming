@@ -1,8 +1,9 @@
 package br.com.unitins.queue;
 
 import br.com.unitins.commons.MultipartBody;
-import br.com.unitins.domain.enums.task.TaskStatus;
-import br.com.unitins.domain.model.task.Task;
+
+import br.com.unitins.model.enums.task.TaskStatus;
+import br.com.unitins.model.task.Task;
 import br.com.unitins.model.video.Video;
 import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
@@ -47,7 +48,7 @@ public class VideoProcessing {
 
         CompletableFuture.runAsync(() -> {
             try {
-                videoService.saveResourceFile(video, multipartBody);
+                videoService.processResource(video, multipartBody);
                 taskService.changeStatus(task, TaskStatus.COMPLETED);
                 log.info("Asynchronous processing completed successfully for id's video: {}", videoId);
             } catch (Exception e) {

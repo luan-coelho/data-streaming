@@ -119,28 +119,31 @@ public class VideoService {
     }
 
     @Transactional
-    public void saveResourceFile(Video video, MultipartBody multipartBody) throws Exception {
-        // Monta o diretório no qual será salvo o vídeo de entrada
-        String PathInput = generatePathInput();
-        Path path = Paths.get(PathInput);
+    public void processResource(Video video, MultipartBody multipartBody) throws Exception {
+        // Gera e cria o diretório no qual será salvo o arquivo de vídeo
+        String PathInput = buildResourcePathAndCreate();
+
+        // Define o caminho completo do arquivo
+        Path filePath = Paths.get(PathInput, multipartBody.fileName);
+
+        // Salva o arquivo de víde e preenche a instância de vídeo com este diretório
+        Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        video.setPath(removeUserPath(filePath.toString()));
+
+        adjustResolutionAndSave(video, filePath.toString());
+    }
+
+    private String buildResourcePathAndCreate() throws IOException {
+        String outputPath = SEPARATOR + "Vídeos" + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
+        String pathBuilt = USER_HOME + outputPath;
+        Path path = Paths.get(pathBuilt);
 
         // Cria o diretório caso não exista
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
 
-        // Define o caminho completo do arquivo
-        Path filePath = Paths.get(PathInput, multipartBody.fileName);
-
-        // Salva o arquivo no diretório
-        Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        adjustResolutionAndSave(video, filePath.toString());
-    }
-
-    private String generatePathInput() {
-        String outputPath = SEPARATOR + "Vídeos" + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
-        return USER_HOME + outputPath;
+        return pathBuilt;
     }
 
     /**
@@ -175,13 +178,16 @@ public class VideoService {
         resolutions.add(Resolution.SD);
 
         for (Resolution resolution : resolutions) {
-            String videoOutputPath = generateOutputFilePath(videoPath, resolution);
-            resizeProcess(videoPath, videoOutputPath, resolution);
-            ResourcePath resolutionPath = new ResourcePath(resolution, removeUserPath(videoOutputPath));
-            video.getResolutionPaths().add(resolutionPath);
-            video.setPath(removeUserPath(videoPath));
+            generateResolution(video, videoPath, resolution);
         }
         entityManager.merge(video);
+    }
+
+    private void generateResolution(Video video, String videoPath, Resolution resolution) throws Exception {
+        String videoOutputPath = generateOutputFilePath(videoPath, resolution);
+        resizeProcess(videoPath, videoOutputPath, resolution);
+        ResourcePath resolutionPath = new ResourcePath(resolution, removeUserPath(videoOutputPath));
+        video.addResolutionPatch(resolutionPath);
     }
 
     /**

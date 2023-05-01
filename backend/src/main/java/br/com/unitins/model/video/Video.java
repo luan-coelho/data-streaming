@@ -36,4 +36,8 @@ public class Video {
         this.title = title;
         this.description = description;
     }
+
+    public void addResolutionPatch(ResourcePath resourcePath) {
+        this.resolutionPaths.add(resourcePath);
+    }
 }
