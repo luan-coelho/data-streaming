@@ -1,7 +1,7 @@
 package br.com.unitins.mapper.task;
 
-import br.com.unitins.domain.model.task.Task;
 import br.com.unitins.dto.task.TaskResponseDTO;
+import br.com.unitins.model.task.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
