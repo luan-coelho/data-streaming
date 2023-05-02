@@ -13,6 +13,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -116,6 +117,15 @@ public class VideoService {
         } catch (IOException ignored) {
         }
         videoRepository.deleteById(video.getId());
+    }
+
+    public File getResourceByPath(String path) {
+        String fullPath = USER_HOME + path;
+        try {
+            return new File(fullPath);
+        } catch (Exception e) {
+            throw new BadRequestException("Resource not found. Invalid path or missing file");
+        }
     }
 
     @Transactional

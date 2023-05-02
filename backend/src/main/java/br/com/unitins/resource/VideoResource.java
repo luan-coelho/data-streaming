@@ -3,22 +3,22 @@ package br.com.unitins.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
-import br.com.unitins.model.video.Video;
-import br.com.unitins.mapper.video.VideoMapper;
-import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.dto.video.VideoCreateDTO;
 import br.com.unitins.dto.video.VideoResponseDTO;
 import br.com.unitins.dto.video.VideoUpdateDTO;
 import br.com.unitins.filters.VideoFilter;
+import br.com.unitins.mapper.video.VideoMapper;
+import br.com.unitins.model.video.Video;
+import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.video.VideoService;
-import org.jboss.resteasy.reactive.RestPath;
-import org.jboss.resteasy.reactive.RestQuery;
-
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestPath;
+import org.jboss.resteasy.reactive.RestQuery;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -84,11 +84,9 @@ public class VideoResource {
     @Path("/streaming")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response get(@HeaderParam("Range") String rangeHeader, @RestQuery("videopath") String videoInputPath) throws IOException {
-        String userHome = System.getProperty("user.home");
-        String fullPath = userHome + videoInputPath;
-        File file = new File(fullPath);
+        File resource = videoService.getResourceByPath(videoInputPath);
 
-        byte[] videoBytes = Files.readAllBytes(file.toPath());
+        byte[] videoBytes = Files.readAllBytes(resource.toPath());
         int videoLength = videoBytes.length;
 
         String[] rangeParts = rangeHeader.split("=")[1].split("-");
