@@ -6,7 +6,7 @@ type LayoutProps = {
 
 export default function Layout({children}: LayoutProps) {
     return (
-        <div className="flex">
+        <div>
             <main>{children}</main>
         </div>
     )
