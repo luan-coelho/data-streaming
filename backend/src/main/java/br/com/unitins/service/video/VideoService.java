@@ -119,6 +119,12 @@ public class VideoService {
         videoRepository.deleteById(video.getId());
     }
 
+    /**
+     * Pega o arquivo de vídeo conforme o caminho passado
+     *
+     * @param path caminho do arquivo
+     * @return arquivo de vídeo
+     */
     public File getResourceByPath(String path) {
         String fullPath = USER_HOME + path;
         try {
@@ -128,19 +134,29 @@ public class VideoService {
         }
     }
 
+    /**
+     * Realiza o processamento do arquivo de vídeo
+     *
+     * @param video         Instância que representa um vídeo
+     * @param multipartBody recursos de vídeo
+     */
     @Transactional
     public void processResource(Video video, MultipartBody multipartBody) throws Exception {
-        // Gera e cria o diretório no qual será salvo o arquivo de vídeo
-        String PathInput = buildResourcePathAndCreate();
+        try {
+            // Gera e cria o diretório no qual será salvo o arquivo de vídeo
+            String PathInput = buildResourcePathAndCreate();
 
-        // Define o caminho completo do arquivo
-        Path filePath = Paths.get(PathInput, multipartBody.fileName);
+            // Define o caminho completo do arquivo
+            Path filePath = Paths.get(PathInput, multipartBody.fileName);
 
-        // Salva o arquivo de víde e preenche a instância de vídeo com este diretório
-        Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        video.setPath(removeUserPath(filePath.toString()));
+            // Salva o arquivo de víde e preenche a instância de vídeo com este diretório
+            Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            video.setPath(removeUserPath(filePath.toString()));
 
-        adjustResolutionAndSave(video, filePath.toString());
+            adjustResolutionAndSave(video, filePath.toString());
+        } catch (Exception e) {
+            throw new Exception("Não foi possível processar o recurso de vídeo. Motivo: ".concat(e.getMessage()));
+        }
     }
 
     private String buildResourcePathAndCreate() throws IOException {
