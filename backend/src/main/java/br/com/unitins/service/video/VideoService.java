@@ -159,6 +159,11 @@ public class VideoService {
         }
     }
 
+    /**
+     * Constroi caminho do arquivo de vídeo que veio do uploud, e caso não exista cria-o
+     *
+     * @return Caminho do arquivo de vídeo
+     */
     private String buildResourcePathAndCreate() throws IOException {
         String outputPath = SEPARATOR + "Vídeos" + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
         String pathBuilt = USER_HOME + outputPath;
@@ -209,6 +214,13 @@ public class VideoService {
         entityManager.merge(video);
     }
 
+    /**
+     * Gera um novo arquivo de vídeo com uma nova resolução especifíca
+     *
+     * @param video      Video que será salvo
+     * @param videoPath  Caminho no qual o arquivo de vídeo gerado será salvo
+     * @param resolution Resolução que será aplicada no arquivo de vídeo
+     */
     private void generateResolution(Video video, String videoPath, Resolution resolution) throws Exception {
         String videoOutputPath = generateOutputFilePath(videoPath, resolution);
         resizeProcess(videoPath, videoOutputPath, resolution);
