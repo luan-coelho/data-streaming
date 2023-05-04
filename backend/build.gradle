@@ -16,6 +16,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'io.quarkus:quarkus-scheduler'
+    implementation 'io.quarkus:quarkus-resteasy-reactive-qute'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.hibernate:hibernate-validator:8.0.0.Final'
     implementation 'commons-io:commons-io:2.11.0'

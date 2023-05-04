@@ -11,6 +11,8 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.video.Video;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.video.VideoService;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -31,10 +33,20 @@ import java.util.Arrays;
 public class VideoResource {
 
     @Inject
+    Template upload;
+
+    @Inject
     VideoService videoService;
 
     @Inject
     VideoProcessing videoProcessing;
+
+    @GET
+    @Path("/uploud")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance uploadForm() {
+        return upload.instance();
+    }
 
     @GET
     public Response getAll(Pageable pageable, VideoFilter filter) {
