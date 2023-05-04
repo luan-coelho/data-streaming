@@ -1,10 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+main {
+  @apply m-4;
+}
+
 body {
-    font-family: 'Saira', sans-serif;
-    background-color: #b4b4b4;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1a1b17;
 }

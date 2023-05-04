@@ -1,13 +1,15 @@
-import React from "react";
+import React from 'react';
+import Sidebar from './sidebar';
 
 type LayoutProps = {
-    children: React.ReactNode,
+  children: React.ReactNode;
 };
 
-export default function Layout({children}: LayoutProps) {
-    return (
-        <div>
-            <main>{children}</main>
-        </div>
-    )
+export default function Layout({ children }: LayoutProps) {
+  return (
+    <div>
+      <Sidebar />
+      <main>{children}</main>
+    </div>
+  );
 }
