@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
     quality1280Btn.hidden = buttonElement === quality1280Btn;
   }
 
-  changeQuality(src720, quality720Btn);
-
   quality720Btn.addEventListener('click', function () {
     changeQuality(src720, quality720Btn);
   });
@@ -30,4 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
   quality1280Btn.addEventListener('click', function () {
     changeQuality(src1280, quality1280Btn);
   });
+
+  if (navigator.connection) {
+    navigator.connection.addEventListener('change', function () {
+      updateQualityByNetworkSpeed(navigator.connection.downlink);
+    });
+  }
 });
+
+function updateQualityByNetworkSpeed(downlinkSpeed) {
+  if (downlinkSpeed >= 5) {
+    changeQuality(src1280, quality1280Btn);
+  } else {
+    changeQuality(src720, quality720Btn);
+  }
+}
