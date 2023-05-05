@@ -3,15 +3,29 @@
   <h1 class="text-xl text-white font-bold my-4">{video.title}</h1>
   <h2 class="text-white mt-2">{video.description}</h2>
 
-  <div class="flex items-center justify-items-center justify-center">
+  <div class="flex items-center justify-items-center justify-center flex-col">
     {#if !video.resolutionPaths.isEmpty}
-    <video class="w-full mt-10 mb-10 rounded" controls>
+    <video id="video-player" class="w-full mt-10 rounded" controls>
       {#for resolution in video.resolutionPaths}
       <source
+        id="{resolution.resolution.toString.toLowerCase}"
         src="http://localhost:8080/api/video/streaming?videopath={resolution.path}"
         type="video/mp4" />
       {/for}
     </video>
+
+    <div class="flex gap-3 mt-3 mb-10">
+      <button
+        id="quality-720"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        720p
+      </button>
+      <button
+        id="quality-1280"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        1280p
+      </button>
+    </div>
     {#else}
     <div
       class="flex items-center justify-items-center justify-center flex-col gap-4">
@@ -24,4 +38,6 @@
     {/if}
   </div>
 </div>
+
+<script src="/static/streaming.js"></script>
 {/include}
