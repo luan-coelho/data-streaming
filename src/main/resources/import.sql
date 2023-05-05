@@ -14,7 +14,7 @@ INSERT INTO resourcepath(id, path, resolution) values (8, '/home/luan/Vídeos/mi
 INSERT INTO resourcepath(id, path, resolution) values (9, '/home/luan/Vídeos/midia/331', 'HD');
 
 INSERT INTO video_resourcepath (video_id, resolutionpaths_id)
-values (1, 1);
+values (1, 7);
 
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (100, 1, 100, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (101, 1, 5, '2023-03-22');
