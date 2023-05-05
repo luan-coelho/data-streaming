@@ -38,6 +38,7 @@ public class VideoTemplateResource {
         public static native TemplateInstance index();
         public static native TemplateInstance uploud();
         public static native TemplateInstance streaming();
+        public static native TemplateInstance create();
     }
 
     @Inject
@@ -64,6 +65,12 @@ public class VideoTemplateResource {
     public TemplateInstance getById(@RestPath Long id) {
         Video video = videoService.getById(id);
         return Templates.streaming().data("video", video);
+    }
+
+    @GET
+    @Path("/create")
+    public TemplateInstance create() {
+        return Templates.create();
     }
 
     @POST

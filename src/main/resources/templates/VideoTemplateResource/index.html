@@ -1,32 +1,41 @@
 {#include components/layout}
 
-<div class="flex gap-2 flex-col">
-  {#for video in videos}
-  <div
-    class="p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-    <h5
-      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-      {video.title}
-    </h5>
-    <div>
-      <div class="flex items-center gap-2">
-        <span>Visualizações: {video.views}</span>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <span>Duração: {video.duration}</span>
-      </div>
-
-      <div class="flex items-center justify-items-end">
+<div class="w-9/12 mx-auto flex content-center justify-end gap-2 flex-col">
+    <div class="flex justify-end">
         <a
-          href="/video/{video.id}"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Visualizar vídeo
+                href="/video/create"
+                class="bg-green-700 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">
+            Criar novo
         </a>
-      </div>
     </div>
-  </div>
-  {/for}
+    <div class="flex items-center justify-center gap-2 flex-col">
+      {#for video in videos}
+      <div
+        class="w-full shadow p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 duration-200">
+        <h5
+          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {video.title}
+        </h5>
+        <div class="flex items-center justify-end gap-5">
+          <div class="flex items-center gap-2">
+            <span>Visualizações: {video.views}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span>Duração: {video.duration}</span>
+          </div>
+
+          <div class="flex items-center justify-items-end">
+            <a
+              href="/video/{video.id}"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+              Visualizar vídeo
+            </a>
+          </div>
+        </div>
+      </div>
+      {/for}
+    </div>
 </div>
 
 {/include}
