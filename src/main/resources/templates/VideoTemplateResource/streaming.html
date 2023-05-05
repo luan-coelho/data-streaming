@@ -8,7 +8,7 @@
   </div>
 
   <div class="flex items-center justify-items-center justify-center flex-col">
-    {#if !video.resolutionPaths.isEmpty}
+    {#if !video.hasValidResolution}
     <video id="video-player" class="w-8/12 mt-10 rounded" controls>
       {#for resolution in video.resolutionPaths}
       <source
@@ -37,13 +37,17 @@
     </div>
 
     {#else}
-    <div
-      class="flex items-center justify-items-center justify-center flex-col gap-4">
+    <div class="flex items-center justify-items-center justify-center flex-col gap-4 my-6">
       <span>Video ainda não possui nenhum arquivo</span>
       <input
+              class="block w-full text-sm text-white
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-blue-500 file:text-white
+      hover:file:bg-blue-600"
         type="file"
-        accept="video/mp4"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" />
+        accept="video/mp4"/>
     </div>
     {/if}
   </div>

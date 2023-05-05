@@ -40,4 +40,17 @@ public class Video {
     public void addResolutionPatch(ResourcePath resourcePath) {
         this.resolutionPaths.add(resourcePath);
     }
+
+    public boolean hasValidResolution() {
+        if (this.resolutionPaths == null || this.resolutionPaths.isEmpty()) {
+            return false;
+        }
+
+        for (ResourcePath resolutionPath : this.resolutionPaths) {
+            if (resolutionPath.getPath() == null || resolutionPath.getPath().isBlank()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
