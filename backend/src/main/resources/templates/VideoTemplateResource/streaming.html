@@ -1,0 +1,27 @@
+{#include components/layout}
+<div class="mx-64 flex justify-center flex-col">
+  <h1 class="text-xl text-white font-bold my-4">{video.title}</h1>
+  <h2 class="text-white mt-2">{video.description}</h2>
+
+  <div class="flex items-center justify-items-center justify-center">
+    {#if !video.resolutionPaths.isEmpty}
+    <video class="w-full mt-10 mb-10 rounded" controls>
+      {#for resolution in video.resolutionPaths}
+      <source
+        src="http://localhost:8080/api/video/streaming?videopath={resolution.path}"
+        type="video/mp4" />
+      {/for}
+    </video>
+    {#else}
+    <div
+      class="flex items-center justify-items-center justify-center flex-col gap-4">
+      <span>Video ainda não possui nenhum arquivo</span>
+      <input
+        type="file"
+        accept="video/mp4"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" />
+    </div>
+    {/if}
+  </div>
+</div>
+{/include}

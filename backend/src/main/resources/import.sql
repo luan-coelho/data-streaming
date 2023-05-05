@@ -1,17 +1,17 @@
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (1, 'Video 1', 'Descrição do vídeo 1', null, 180, 1010);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (2, 'Video 2', 'Descrição do vídeo 2', null, 240, 502);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (3, 'Video 3', 'Descrição do vídeo 3', null, 300, 323);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (4, 'Video 4', 'Descrição do vídeo 4', null, 120, 523);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (5, 'Video 5', 'Descrição do vídeo 5', null, 90, 43);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (6, 'Video 6', 'Descrição do vídeo 6', null, 150, 52);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (7, 'Video 7', 'Descrição do vídeo 7', null, 210, 516);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (8, 'Video 8', 'Descrição do vídeo 8', null, 180, 672);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (9, 'Video 9', 'Descrição do vídeo 9', null, 240, 123);
-INSERT INTO Video (id, title, description, path, duration, views) VALUES (10, 'Video 10', 'Descrição do vídeo 10', null, 300, 32);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (1, 'Java: Introdução e Ambiente de Desenvolvimento', 'Neste vídeo, conheça a linguagem Java e aprenda a configurar o ambiente de desenvolvimento', null, 180, 1010);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (2, 'Java: Sintaxe Básica e Variáveis', 'Aprenda a sintaxe básica do Java e como declarar e utilizar variáveis', null, 240, 502);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (3, 'Java: Estruturas Condicionais e de Repetição', 'Entenda as estruturas condicionais e de repetição no Java e como usá-las em seu código', null, 300, 323);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (4, 'Java: Arrays e Coleções', 'Descubra como trabalhar com arrays e coleções no Java para armazenar e manipular dados', null, 120, 523);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (5, 'Java: Orientação a Objetos - Parte 1', 'Introdução aos conceitos fundamentais da orientação a objetos no Java', null, 90, 43);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (6, 'Java: Orientação a Objetos - Parte 2', 'Continue explorando os conceitos da orientação a objetos no Java com exemplos práticos', null, 150, 52);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (7, 'Java: Exceções e Tratamento de Erros', 'Aprenda a lidar com exceções e realizar tratamento de erros em suas aplicações Java', null, 210, 516);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (8, 'Java: Trabalhando com Arquivos e I/O', 'Entenda como manipular arquivos e realizar operações de entrada e saída no Java', null, 180, 672);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (9, 'Java: Conexão com Banco de Dados', 'Aprenda a conectar seu aplicativo Java a bancos de dados e realizar operações CRUD', null, 240, 123);
+INSERT INTO Video (id, title, description, path, duration, views) VALUES (10, 'Java: Desenvolvimento Web com Servlets e JSP', 'Conheça o desenvolvimento web em Java com Servlets e JavaServer Pages (JSP)', null, 300, 32);
 
-INSERT INTO resourcepath(id, path, resolution) values (1, '/home/luan/Vídeos/midia/331', 'HD');
-INSERT INTO resourcepath(id, path, resolution) values (2, '/home/luan/Vídeos/midia/331', 'SD');
-INSERT INTO resourcepath(id, path, resolution) values (3, '/home/luan/Vídeos/midia/331', 'HD');
+INSERT INTO resourcepath(id, path, resolution) values (7, '/home/luan/Vídeos/midia/331', 'HD');
+INSERT INTO resourcepath(id, path, resolution) values (8, '/home/luan/Vídeos/midia/331', 'SD');
+INSERT INTO resourcepath(id, path, resolution) values (9, '/home/luan/Vídeos/midia/331', 'HD');
 
 INSERT INTO video_resourcepath (video_id, resolutionpaths_id)
 values (1, 1);

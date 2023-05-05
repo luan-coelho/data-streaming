@@ -2,7 +2,6 @@ package br.com.unitins.resource;
 
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
-import br.com.unitins.commons.pagination.Pagination;
 import br.com.unitins.dto.video.VideoCreateDTO;
 import br.com.unitins.dto.video.VideoResponseDTO;
 import br.com.unitins.dto.video.VideoUpdateDTO;
@@ -11,6 +10,9 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.video.Video;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.video.VideoService;
+import io.quarkus.qute.CheckedTemplate;
+import io.quarkus.qute.TemplateInstance;
+import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -24,9 +26,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
 
-@Path("/api/video")
-public class VideoResource {
+@Blocking
+@Path("/video")
+@Produces(MediaType.TEXT_HTML)
+public class VideoTemplateResource {
+
+    @CheckedTemplate(requireTypeSafeExpressions = false)
+    public static class Templates {
+        public static native TemplateInstance index();
+        public static native TemplateInstance uploud();
+        public static native TemplateInstance streaming();
+    }
 
     @Inject
     VideoService videoService;
@@ -35,9 +47,23 @@ public class VideoResource {
     VideoProcessing videoProcessing;
 
     @GET
-    public Response getAll(Pageable pageable, VideoFilter filter) {
-        Pagination<Video> videoList = videoService.getAll(pageable, filter);
-        return Response.ok(videoList).build();
+    @Path("/")
+    public TemplateInstance index(Pageable pageable, VideoFilter filter) {
+        List<Video> videos = videoService.getAll(pageable, filter).getContent();
+        return Templates.index().data("videos", videos);
+    }
+
+    @GET
+    @Path("/uploud")
+    public TemplateInstance uploud() {
+        return Templates.uploud();
+    }
+
+    @GET
+    @Path("/{id}")
+    public TemplateInstance getById(@RestPath Long id) {
+        Video video = videoService.getById(id);
+        return Templates.streaming().data("video", video);
     }
 
     @POST
@@ -53,14 +79,6 @@ public class VideoResource {
         Video video = VideoMapper.INSTANCE.toEntity(videoUpdateDTO);
         Video videoUpdated = videoService.update(id, video);
         return Response.ok(videoUpdated).build();
-    }
-
-    @GET
-    @Path("/{id}")
-    public Response getById(@RestPath Long id) {
-        Video video = videoService.getById(id);
-        VideoResponseDTO dto = VideoMapper.INSTANCE.toResponseDto(video);
-        return Response.ok(dto).build();
     }
 
     @DELETE
