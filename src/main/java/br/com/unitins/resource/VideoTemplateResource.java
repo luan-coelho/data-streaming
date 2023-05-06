@@ -36,7 +36,6 @@ public class VideoTemplateResource {
     @CheckedTemplate(requireTypeSafeExpressions = false)
     public static class Templates {
         public static native TemplateInstance index();
-        public static native TemplateInstance uploud();
         public static native TemplateInstance streaming();
         public static native TemplateInstance create();
     }
@@ -55,12 +54,6 @@ public class VideoTemplateResource {
     }
 
     @GET
-    @Path("/uploud")
-    public TemplateInstance uploud() {
-        return Templates.uploud();
-    }
-
-    @GET
     @Path("/{id}")
     public TemplateInstance getById(@RestPath Long id) {
         Video video = videoService.getById(id);
@@ -73,7 +66,9 @@ public class VideoTemplateResource {
         return Templates.create();
     }
 
+    
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     public Response create(@Valid VideoCreateDTO videoCreateDTO) {
         Video video = VideoMapper.INSTANCE.toEntity(videoCreateDTO);
         Video videoPersisted = videoService.create(video);

@@ -4,60 +4,39 @@
     <h1 class="text-xl font-bold my-5 mx-5">{video.title}</h1>
   </div>
 
-  <div class="rounded shadow p-4 bg-white border border-gray-200 flex items-center justify-items-center justify-center flex-col">
+  <div
+    class="rounded shadow p-4 bg-white border border-gray-200 flex items-center justify-items-center justify-center flex-col">
     {#if video.hasValidResolution}
-    <video id="video-player" class="w-full rounded" controls>
+    <video id="player" class="w-full rounded" controls crossorigin>
       {#for resolution in video.resolutionPaths}
       <source
         id="{resolution.resolution.toString.toLowerCase}"
-        data-quality="720"
         src="http://localhost:8080/api/video/streaming?videopath={resolution.path}"
         type="video/mp4" />
       {/for}
     </video>
-      <div id="quality-btn-container"></div>
-
-    <div class="my-4 flex items-center justify-items-end gap-3">
-      <div>
-        <span>Qualidades disponiveis:</span>
-      </div>
-      <div class="flex items-center gap-3">
-        <button
-          id="quality-720"
-          class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          720p
-        </button>
-        <button
-          id="quality-1280"
-          class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          1280p
-        </button>
-      </div>
-    </div>
-
-      <div class="w-full bg-black text-white rounded">
-      <h2 class="px-4 py-4">{video.description}</h2>
-      </div>
-
     {#else}
-    <div class="flex items-center justify-items-center justify-center flex-col gap-4 my-6 py-6 rounded">
-      <img class="w-7/12" src="/static/images/uploud.svg" alt="Mulher">
+    <div
+      class="flex items-center justify-items-center justify-center flex-col gap-4 my-6 py-6 rounded">
+      <img class="w-7/12" src="/static/images/uploud.svg" alt="Mulher" />
       <div class="mt-3 flex gap-3 flex-col">
         <span class="font-bold">Video ainda não possui nenhum arquivo</span>
         <input
-                class="block w-full text-sm text-black
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-md file:border-0
-      file:text-sm file:font-semibold
-      file:bg-blue-500 file:text-white
-      hover:file:bg-blue-600"
-                type="file"
-                accept="video/mp4"/>
+          class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+          type="file"
+          accept="video/mp4" />
       </div>
     </div>
     {/if}
   </div>
-</div>
 
-<script src="/static/js/streaming.js"></script>
+  <div class="flex flex-col w-full bg-black text-white rounded mt-4 p-5">
+    <h2 class="bg-blue-700 text-white font-bold rounded text-sm p-2 px-4">
+      DESCRIÇÃO
+    </h2>
+    <span class="mt-4">{video.description}</span>
+  </div>
+</div>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="/static/js/plyr.js"></script>
 {/include}
