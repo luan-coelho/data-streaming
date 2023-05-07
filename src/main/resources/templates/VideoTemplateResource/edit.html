@@ -1,10 +1,11 @@
 {#include components/layout} {#pageTitle}Create Vídeo{/pageTitle}
 {#include components/video/form}
+{video}
 {#button}
 <div class="flex items-center justify-end mt-5">
-    <button onclick="create(event)" type="submit"
+    <button onclick="update(event, {video.id})" type="submit"
         class="bg-green-700 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">
-        Cadastrar
+        Atualizar
     </button>
 </div>
 {/button}

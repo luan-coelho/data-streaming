@@ -1,7 +1,7 @@
 <div class="w-full flex content-center justify-center">
     <div class="w-7/12 bg-white shadow border border-gray-200 p-4">
         <h2 class="bg-blue-700 text-white font-bold rounded text-xs p-1 px-2 inline">
-            CADASTRAR VÍDEO
+            VÍDEO
         </h2>
         <form id="form" class="mt-5">
             <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
@@ -10,8 +10,9 @@
                         Título
                     </label>
                     <div class="mt-2">
-                        <input type="text" name="title" id="title" autocomplete="given-name"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input value="{video.title ? video.title : ''}" type="text" name="title" id="title"
+                            autocomplete="given-name"
+                            class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                     </div>
                 </div>
 
@@ -20,18 +21,14 @@
                         Descrição
                     </label>
                     <div class="mt-2">
-                        <input type="text" name="description" id="description" autocomplete="given-name"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input value="{video.description ? video.description : ''}" type="text" name="description"
+                            id="description" autocomplete="given-name"
+                            class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                     </div>
                 </div>
             </div>
-
-            <div class="flex items-center justify-end mt-5">
-                <button onclick="create(event)" type="submit"
-                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-1 px-2 rounded">
-                    Cadastrar
-                </button>
-            </div>
+            {#insert button}{/}
         </form>
     </div>
 </div>
+<script src="/static/js/video/crud.js"></script>

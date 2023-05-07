@@ -79,9 +79,10 @@ public class VideoService {
      */
     @Transactional
     public Video update(Long id, Video video) {
-        Video databaseVideo = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
+        Video databaseVideo = videoRepository.findById(id);
 
-        if (videoRepository.existsByTitle(video.getTitle())) {
+        Video videoAux = videoRepository.findByTitle(video.getTitle());
+        if (videoAux != null && !videoAux.getId().equals(id)) {
             throw new IllegalArgumentException("Já existe um vídeo cadastrado com este nome. Tente outro.");
         }
 

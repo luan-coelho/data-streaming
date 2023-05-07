@@ -10,7 +10,7 @@
     {#for video in videos}
     <div
       class="w-full p-4 bg-white shadow border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 duration-200">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
         {video.title}
       </h5>
       <div class="flex items-center justify-end gap-5">
@@ -22,9 +22,14 @@
           <span>Duração: {video.duration}</span>
         </div>
 
-        <div class="flex items-center justify-items-end">
-          <a href="/video/{video.id}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-            Visualizar vídeo
+        <div class="flex items-center justify-items-end gap-2">
+          <a href="/video/{video.id}"
+            class="bg-blue-500 text-xs hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            Visualizar
+          </a>
+          <a href="/video/edit/{video.id}"
+            class="bg-blue-700 text-xs hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
+            Editar
           </a>
         </div>
       </div>

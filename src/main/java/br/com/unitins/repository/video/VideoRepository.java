@@ -6,6 +6,7 @@ import br.com.unitins.filters.VideoFilter;
 import br.com.unitins.model.video.Video;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.HashMap;
@@ -42,7 +43,17 @@ public class VideoRepository implements PanacheRepository<Video> {
                 .executeUpdate();
     }
 
+    public Video findByTitle(String title) {
+        return find("title", title).firstResult();
+    }
+
+    public boolean existsById(Long id){
+        return find("id", id).count() > 0;
+    }
+
     public boolean existsByTitle(String title) {
-        return find("title", title).count() > 0;
+        String query = "LOWER(title) = LOWER(:title)";
+        Parameters params = Parameters.with("title", title);
+        return count(query, params) > 0;
     }
 }

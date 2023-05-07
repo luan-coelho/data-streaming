@@ -38,6 +38,7 @@ public class VideoTemplateResource {
         public static native TemplateInstance index();
         public static native TemplateInstance streaming();
         public static native TemplateInstance create();
+        public static native TemplateInstance edit();
     }
 
     @Inject
@@ -75,8 +76,16 @@ public class VideoTemplateResource {
         return Response.ok(videoPersisted).build();
     }
 
+    @GET
+    @Path("/edit/{id}")
+    public TemplateInstance edit(Long id) {
+        Video video = videoService.getById(id);
+        return Templates.edit().data("video", video);
+    }
+
     @PUT
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response update(Long id, @Valid VideoUpdateDTO videoUpdateDTO) {
         Video video = VideoMapper.INSTANCE.toEntity(videoUpdateDTO);
         Video videoUpdated = videoService.update(id, video);
