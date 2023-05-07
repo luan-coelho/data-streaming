@@ -11,15 +11,17 @@
     <div
       class="w-full p-4 bg-white shadow border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 duration-200">
       <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-        {video.title}
+        <i class="fas fa-film mr-2"></i> {video.title}
       </h5>
-      <div class="flex items-center justify-end gap-5">
-        <div class="flex items-center gap-2">
-          <span>Visualizações: {video.views}</span>
-        </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center justify-items-center gap-3">
+          <div class="flex items-center gap-1">
+            <i class="fas fa-eye"></i> <span>{video.views}</span>
+          </div>
 
-        <div class="flex items-center gap-2">
-          <span>Duração: {video.duration}</span>
+          <div class="flex items-center gap-1">
+            <i class="fas fa-hourglass-start"></i><span>{video.duration}</span>
+          </div>
         </div>
 
         <div class="flex items-center justify-items-end gap-2">
