@@ -65,7 +65,7 @@ public class VideoService {
     @Transactional
     public Video create(Video video) {
         if (videoRepository.existsByTitle(video.getTitle())) {
-            throw new IllegalArgumentException("There is already a video registered with this name. Try another.");
+            throw new IllegalArgumentException("Já existe um vídeo cadastrado com este nome. Tente outro.");
         }
         videoRepository.persist(video);
         return video;
@@ -79,10 +79,10 @@ public class VideoService {
      */
     @Transactional
     public Video update(Long id, Video video) {
-        Video databaseVideo = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
+        Video databaseVideo = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
 
         if (videoRepository.existsByTitle(video.getTitle())) {
-            throw new IllegalArgumentException("There is already a video registered with this name. Try another.");
+            throw new IllegalArgumentException("Já existe um vídeo cadastrado com este nome. Tente outro.");
         }
 
         VideoMapper.INSTANCE.copyFields(databaseVideo, video);
@@ -99,7 +99,7 @@ public class VideoService {
      * @throws NotFoundException caso nenhum vídeo seja encontrado pelo identificador
      */
     public Video getById(Long id) {
-        return videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
+        return videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
     }
 
     /**
@@ -109,7 +109,7 @@ public class VideoService {
      */
     @Transactional
     public void delete(Long id) {
-        Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Video not found by id"));
+        Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
         String fileFolder = USER_HOME + video.getPath();
 
         try {
@@ -130,7 +130,7 @@ public class VideoService {
         try {
             return new File(fullPath);
         } catch (Exception e) {
-            throw new BadRequestException("Resource not found. Invalid path or missing file");
+            throw new BadRequestException("Recurso não encontrado. Caminho inválido ou arquivo ausente");
         }
     }
 
@@ -270,7 +270,7 @@ public class VideoService {
         Process process = processBuilder.start();
         int exitCode = process.waitFor();
         if (exitCode != 0) {
-            System.err.println("An error occurred while running ffmpeg");
+            System.err.println("Ocorreu um erro ao executar o ffmpeg");
         }
     }
 }
