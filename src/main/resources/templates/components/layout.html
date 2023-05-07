@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  {#include components/head} {#title}{#insert pageTitle}{/}{/title} {/include}
-  <body class="bg-gray-200">
-    {#include components/header /}
-    <main class="m-10">{#insert}No body!{/}</main>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </body>
+{#include components/head} {#title}{#insert pageTitle}{/}{/title} {/include}
+
+<body class="bg-gray-200">
+  {#include components/header /}
+  <main class="m-10">{#insert}No body!{/}</main>
+  <script src="/static/js/toast.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
 </html>

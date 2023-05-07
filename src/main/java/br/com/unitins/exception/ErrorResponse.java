@@ -14,6 +14,6 @@ public class ErrorResponse {
     private URI type;
     private String title;
     private int status;
-    private String detail;
+    private Object detail;
     private URI instance;
 }
