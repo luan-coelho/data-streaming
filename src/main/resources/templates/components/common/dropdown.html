@@ -1,0 +1,23 @@
+<div onblur="toggleDropdown()">
+    <button class="bg-white text-black rounded px-2 py-1 focus:outline-none" type="button" id="dropdownMenuButton"
+        onclick="toggleDropdown()">
+        <i class="fas fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu absolute hidden mt-1 text-gray-700 bg-white shadow rounded w-36" id="dropdownMenu">
+        <li onclick="openModal()">
+            <span class="dropdown-item block px-4 py-2 hover:bg-gray-200" href="#">
+                <i class="fas fa-trash text-red-700 cursor-pointer mr-2"></i>
+                Deletar
+            </span>
+        </li>
+    </ul>
+</div>
+
+{#include components/common/modal/}
+
+<script>
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        dropdownMenu.classList.toggle('hidden');
+    }
+</script>

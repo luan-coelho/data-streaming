@@ -3,7 +3,6 @@ package br.com.unitins.resource;
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.dto.video.VideoCreateDTO;
-import br.com.unitins.dto.video.VideoResponseDTO;
 import br.com.unitins.dto.video.VideoUpdateDTO;
 import br.com.unitins.filters.VideoFilter;
 import br.com.unitins.mapper.video.VideoMapper;
@@ -94,6 +93,7 @@ public class VideoTemplateResource {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@RestPath Long id) {
         videoService.delete(id);
         return Response.ok().build();

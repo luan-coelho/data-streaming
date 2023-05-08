@@ -9,14 +9,7 @@ INSERT INTO Video (id, title, description, path, duration, views) VALUES (80, 'J
 INSERT INTO Video (id, title, description, path, duration, views) VALUES (90, 'Java: Conexão com Banco de Dados', 'Aprenda a conectar seu aplicativo Java a bancos de dados e realizar operações CRUD', null, 240, 123);
 INSERT INTO Video (id, title, description, path, duration, views) VALUES (100, 'Java: Desenvolvimento Web com Servlets e JSP', 'Conheça o desenvolvimento web em Java com Servlets e JavaServer Pages (JSP)', null, 300, 32);
 
-INSERT INTO resourcepath(id, path, resolution) values (70, '/home/luan/Vídeos/midia/331', 'HD');
-INSERT INTO resourcepath(id, path, resolution) values (80, '/home/luan/Vídeos/midia/331', 'SD');
-INSERT INTO resourcepath(id, path, resolution) values (90, '/home/luan/Vídeos/midia/331', 'HD');
-
-INSERT INTO video_resourcepath (video_id, resolutionpaths_id)
-values (1, 7);
-
-INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (100, 10, 100, '2023-03-22');
+/*INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (100, 10, 100, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (101, 10, 50, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (102, 20, 20, '2023-03-22');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (103, 20, 80, '2023-03-22');
@@ -30,8 +23,6 @@ INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (11, 30, 28, '2023-0
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (12, 40, 11, '2023-03-05');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (13, 40, 120, '2023-03-06');
 INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (14, 50, 43, '2023-03-05');
-INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (15, 50, 90, '2023-03-06');
+INSERT INTO VideoMetrics (id, video_id, views, date) VALUES (15, 50, 90, '2023-03-06');*/
 
-UPDATE video_seq SET start_value = 11;
-UPDATE resourcepath_seq SET last_value = 11;
 

@@ -1,0 +1,40 @@
+<div id="modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden opacity-0"
+    onclick="closeModal(event)">
+    <div id="modal-content"
+        class="bg-white rounded shadow-lg p-8 text-gray-700 w-full md:w-1/2 transition-opacity duration-200 border border-3">
+        <h2 class="text-xl font-bold mb-4">Você tem certeza?</h2>
+        <p>O vídeo será apagado juntamente com seus recursos (caso aja). Esta exclusão não poderá ser revertida</p>
+        <div class="flex items-center justify-end gap-2">
+            <button class="bg-red-500 text-white text-bold px-2 py-1 rounded mt-4" type="button"
+                onclick="closeModal(event)">
+                Cancelar
+            </button>
+            <button class="bg-gray-500 text-white text-bold px-2 py-1 rounded mt-4" type="button"
+                onclick="closeModal(event); remove({video.id})">
+                Confirmar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        const modal = document.getElementById('modal');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+        }, 50);
+    }
+
+    function closeModal(event) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        if (event.target === modal || event.target.innerText === 'Fechar') {
+            modalContent.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalContent.classList.remove('opacity-0');
+            }, 200);
+        }
+    }
+</script>

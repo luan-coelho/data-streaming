@@ -51,7 +51,6 @@ function update(event, id) {
   event.preventDefault();
   const title = document.getElementById('title').value;
   const description = document.getElementById('description').value;
-  const form = document.getElementById('form');
 
   const requestOptions = {
     method: 'PUT',
@@ -94,6 +93,24 @@ function update(event, id) {
       }
     );
   }
+}
+
+function remove(id) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  fetch(`http://localhost:8080/video/${id}`, requestOptions)
+    .then((response) => {
+      if (response.status == 200 || response.status == 201) {
+        showToast('Vídeo deletado com sucesso!', 'success');
+        redirect('/video');
+      } else {
+        showToast(data.detail, 'error');
+      }
+    })
+    .catch((error) => console.error(error));
 }
 
 function redirect(endpoint = '', timeout = 3000) {
