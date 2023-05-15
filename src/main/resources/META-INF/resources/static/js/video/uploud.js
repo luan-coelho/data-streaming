@@ -20,19 +20,18 @@ function removeFile() {
 function submitUploudFile(id) {
   const uploudInput = document.getElementById('uploud-input');
   const file = uploudInput.files[0];
-  var data = new FormData();
+  const data = new FormData();
   data.append('file', file);
   data.append('fileName', file.name);
 
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
     body: data
   };
 
   fetch(`http://localhost:8080/video/uploud/?videoId=${id}`, requestOptions)
     .then((response) => {
-      if (response.status == 200 || response.status == 201) {
+      if (response.status === 200 || response.status === 201) {
         showToast('Uploud realizado com sucesso!', 'success');
         window.reload();
       } else {
