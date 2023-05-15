@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
   const playerElement = document.getElementById('player');
 
+  let videoResources = document.getElementById('video-resources');
+  let resources = videoResources.getElementsByTagName('div');
+
+  let videoSources = [];
+
+  for (let i = 0; i < resources.length; i++) {
+    let rwidthValue = resources[i].getAttribute('rwidth');
+    let pathValue = resources[i].getAttribute('path');
+
+    if (rwidthValue && pathValue) {
+      videoSources.push({
+        size: rwidthValue,
+        type: 'video/mp4',
+        src: `http://localhost:8080/video/streaming?videopath=${pathValue}`
+      });
+    }
+  }
+
   const configs = {
     controls: [
       'play-large',
@@ -23,17 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
   player.source = {
     type: 'video',
     title: 'Example title',
-    sources: [
-      {
-        src: 'http://localhost:8080/static/video/video.mp4',
-        type: 'video/mp4',
-        size: 720
-      },
-      {
-        src: 'http://localhost:8080/static/video/video.mp4',
-        type: 'video/mp4',
-        size: 1080
-      }
-    ]
+    sources: videoSources
   };
 });

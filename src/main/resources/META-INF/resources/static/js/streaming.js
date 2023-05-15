@@ -2,7 +2,7 @@ const videoPlayer = document.getElementById('video-player');
 const qualityBtnContainer = document.getElementById('quality-btn-container');
 
 const sources = Array.from(videoPlayer.getElementsByTagName('source')).map(
-  (source, index) => {
+  (source) => {
     const quality = source.getAttribute('data-quality');
     const button = document.createElement('button');
     button.textContent = quality;
