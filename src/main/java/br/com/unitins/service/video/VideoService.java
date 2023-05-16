@@ -30,6 +30,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import static br.com.unitins.commons.AppConstants.SEPARATOR;
+import static br.com.unitins.commons.AppConstants.USER_HOME;
+
 @Slf4j
 @ApplicationScoped
 public class VideoService {
@@ -40,8 +43,6 @@ public class VideoService {
     @Inject
     EntityManager entityManager;
 
-    private static final String USER_HOME = System.getProperty("user.home");
-    private static final String SEPARATOR = File.separator; // "\" ou "/"
 
     public void incrementViews(Long videoId) {
         videoRepository.incrementViews(videoId);

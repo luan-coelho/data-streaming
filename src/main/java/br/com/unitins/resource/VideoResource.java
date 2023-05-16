@@ -77,29 +77,4 @@ public class VideoResource {
         videoProcessing.startProcess(videoId, multipartBody);
         return Response.ok().build();
     }
-
-    @GET
-    @Path("/streaming")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response get(@HeaderParam("Range") String rangeHeader, @RestQuery("videopath") String videoInputPath) throws IOException {
-        File resource = videoService.getResourceByPath(videoInputPath);
-
-        byte[] videoBytes = Files.readAllBytes(resource.toPath());
-        int videoLength = videoBytes.length;
-
-        String[] rangeParts = rangeHeader.split("=")[1].split("-");
-        int start = Integer.parseInt(rangeParts[0]);
-        int end = videoLength - 1;
-        if (rangeParts.length > 1) {
-            end = Integer.parseInt(rangeParts[1]);
-        }
-
-        Response.ResponseBuilder responseBuilder = Response.status(206);
-        responseBuilder.header("Accept-Ranges", "bytes");
-        responseBuilder.header("Content-Range", "bytes " + start + "-" + end + "/" + videoLength);
-        responseBuilder.header("Content-Length", end - start + 1);
-        responseBuilder.entity(new ByteArrayInputStream(Arrays.copyOfRange(videoBytes, start, end + 1)));
-
-        return responseBuilder.build();
-    }
 }

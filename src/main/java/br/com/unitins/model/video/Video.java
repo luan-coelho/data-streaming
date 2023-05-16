@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static br.com.unitins.commons.AppConstants.USER_HOME;
 
 @Setter
 @Getter
@@ -48,6 +51,17 @@ public class Video {
 
         for (ResourcePath resolutionPath : this.resolutionPaths) {
             if (resolutionPath.getPath() == null || resolutionPath.getPath().isBlank()) {
+                return false;
+            }
+
+            try {
+                String filePath = USER_HOME + resolutionPath.getPath();
+                File file = new File(filePath);
+                if (file.exists()) {
+                    continue;
+                }
+                return false;
+            } catch (NullPointerException e) {
                 return false;
             }
         }
