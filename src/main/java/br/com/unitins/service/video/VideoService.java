@@ -114,7 +114,8 @@ public class VideoService {
         String fileFolder = USER_HOME + video.getPath();
 
         try {
-            FileUtils.deleteDirectory(new File(fileFolder));
+            File directory = new File(fileFolder).getParentFile();
+            FileUtils.deleteDirectory(directory);
         } catch (IOException ignored) {
         }
         videoRepository.deleteById(video.getId());
