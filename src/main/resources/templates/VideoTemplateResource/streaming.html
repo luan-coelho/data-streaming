@@ -22,6 +22,14 @@
       {/for}
     </video>
 
+    {#else if videoProcessing}
+    <div class="flex items-center justify-around flex-col p-4">
+      <span class="text-sm">Obrigado por enviar seu vídeo! Agora, ele está sendo processado para garantir a melhor
+        experiência de
+        visualização possível. Esse procedimento pode levar alguns minutos, mas pedimos sua paciência.</span>
+      <img class="w-3/12" src="/static/images/processing.svg" alt="Mulher" />
+    </div>
+
     {#else}
 
     <div class="flex items-center justify-items-center justify-center flex-col gap-4 my-2 py-6 rounded">

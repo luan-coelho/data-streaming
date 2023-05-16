@@ -33,7 +33,7 @@ function submitUploudFile(id) {
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
         showToast('Uploud realizado com sucesso!', 'success');
-        window.reload();
+        location.reload();
       } else {
         showToast(data.detail, 'error');
       }

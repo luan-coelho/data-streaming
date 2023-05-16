@@ -8,6 +8,7 @@ import br.com.unitins.filters.VideoFilter;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.video.Video;
 import br.com.unitins.queue.VideoProcessing;
+import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
@@ -35,13 +36,19 @@ public class VideoTemplateResource {
     @CheckedTemplate(requireTypeSafeExpressions = false)
     public static class Templates {
         public static native TemplateInstance index();
+
         public static native TemplateInstance streaming();
+
         public static native TemplateInstance create();
+
         public static native TemplateInstance edit();
     }
 
     @Inject
     VideoService videoService;
+
+    @Inject
+    TaskService taskService;
 
     @Inject
     VideoProcessing videoProcessing;
@@ -57,7 +64,10 @@ public class VideoTemplateResource {
     @Path("/{id}")
     public TemplateInstance getById(@RestPath Long id) {
         Video video = videoService.getById(id);
-        return Templates.streaming().data("video", video);
+        boolean videoProcessing = taskService.activeTaskVideoById(id);
+        return Templates.streaming()
+                .data("video", video)
+                .data("videoProcessing", videoProcessing);
     }
 
     @GET
@@ -66,7 +76,7 @@ public class VideoTemplateResource {
         return Templates.create();
     }
 
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@Valid VideoCreateDTO videoCreateDTO) {

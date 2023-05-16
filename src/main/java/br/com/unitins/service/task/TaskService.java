@@ -29,6 +29,14 @@ public class TaskService {
         return query.getResultList();
     }
 
+    public boolean activeTaskVideoById(Long videoId) {
+        String jpql = "SELECT t FROM Task t WHERE t.status = :status AND t.videoId = :videoId";
+        TypedQuery<Task> query = entityManager.createQuery(jpql, Task.class);
+        query.setParameter("status", TaskStatus.PROCESSING);
+        query.setParameter("videoId", videoId);
+        return query.getResultList().size() > 0;
+    }
+
     @Transactional
     public Task create(Long videoId) {
         Task task = new Task(videoId);
