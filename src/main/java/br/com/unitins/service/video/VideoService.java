@@ -276,4 +276,25 @@ public class VideoService {
             System.err.println("Ocorreu um erro ao executar o ffmpeg");
         }
     }
+
+    /**
+     * Captura a duração em segundos de um determinado vídeo.
+     *
+     * @param videoPath Caminho onde está o arquivo de vídeo original.
+     * @return Valor númerico que se refere a quantidade de segundos do vídeo
+     * @throws Exception Qualquer exceção lançada.
+     */
+    public static long getDuration(String videoPath) throws Exception {
+        ProcessBuilder processBuilder = new ProcessBuilder("ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", videoPath);
+        Process process = processBuilder.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = reader.readLine();
+
+        if (line != null) {
+            return Math.round(Double.parseDouble(line));
+        }
+
+        throw new Exception("Não foi possível determinar a duração do vídeo.");
+    }
 }
