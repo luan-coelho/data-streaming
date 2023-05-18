@@ -34,7 +34,7 @@
 
     <div class="flex items-center justify-items-center justify-center flex-col gap-4 my-2 py-6 rounded">
       <img class="w-3/12" src="/static/images/uploud.svg" alt="Mulher" />
-      <div class="mt-3 flex gap-3 flex-col">
+      <div id="uploud-container" class="mt-3 flex gap-3 flex-col">
         <span class="font-bold">Video ainda não possui nenhum arquivo</span>
         <form id="uploud-form" class="flex items-center gap-2">
           <input onchange="hiddenUploudButton()" id="uploud-input"
@@ -61,6 +61,7 @@
     <span class="mt-4">{video.description}</span>
   </div>
 </div>
+
 <script src="/static/js/plyr.js"></script>
 <script src="/static/js/video/crud.js"></script>
 <script src="/static/js/video/uploud.js"></script>

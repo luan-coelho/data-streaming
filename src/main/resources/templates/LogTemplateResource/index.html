@@ -1,11 +1,26 @@
 {#include components/layout}{#pageTitle}Logs{/pageTitle}
 
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center flex-col gap-4">
   {#if logs.isEmpty}
   <div class="bg-white text-black font-bold border rounded p-2">
     <span>No momento ainda não há nenhum logo registrado</span>
   </div>
   {#else}
+  <div class="flex items-center gap-3 font-bold">
+    <div class="flex items-center flex-col bg-green-700 rounded p-2">
+      Sucesso
+      <span class="text-lg">14</span>
+    </div>
+    <div class="flex items-center flex-col bg-yellow-500 rounded p-2">
+      Pendente
+      <span class="text-lg">2</span>
+    </div>
+    <div class="flex items-center flex-col bg-red-700 rounded p-2">
+      Erro
+      <span class="text-lg">0</span>
+    </div>
+  </div>
+
   <ol class="border-l border-blue-300 dark:border-neutral-500">
     {#for log in logs} {#include components/log/card} {log} {/} {/for}
   </ol>

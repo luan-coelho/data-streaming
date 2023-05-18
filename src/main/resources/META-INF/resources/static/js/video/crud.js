@@ -28,7 +28,6 @@ function create(event) {
       response
         .json('http://localhost:8080/video')
         .then((data) => {
-          console.log(data);
           if (
             data.status == 200 ||
             data.status == 201 ||
@@ -37,7 +36,7 @@ function create(event) {
           ) {
             showToast('Vídeo cadastrado com sucesso!', 'success');
             form.reset();
-            redirect('video');
+            redirect(`video/${data.id}`);
           } else {
             showToast(data.detail, 'error');
           }

@@ -18,8 +18,8 @@ function removeFile() {
 }
 
 function hiddenInput() {
-  const uploudForm = document.getElementById('uploud-form');
-  uploudForm.hidden = true;
+  const uploudContainer = document.getElementById('uploud-container');
+  uploudContainer.style.visibility = 'hidden';
 }
 
 function submitUploudFile(id) {
