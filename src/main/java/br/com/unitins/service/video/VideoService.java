@@ -9,6 +9,7 @@ import br.com.unitins.model.enums.video.Resolution;
 import br.com.unitins.model.video.ResourcePath;
 import br.com.unitins.model.video.Video;
 import br.com.unitins.repository.video.VideoRepository;
+import br.com.unitins.service.log.LogService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -39,6 +40,9 @@ public class VideoService {
 
     @Inject
     VideoRepository videoRepository;
+
+    @Inject
+    LogService logService;
 
     @Inject
     EntityManager entityManager;
@@ -120,6 +124,7 @@ public class VideoService {
         } catch (IOException ignored) {
         }
         videoRepository.deleteById(video.getId());
+        logService.add("Deleção realizada com sucesso", String.format("Vídeo de id %d deletado com sucesso.", video.getId()));
     }
 
     /**
@@ -157,7 +162,9 @@ public class VideoService {
             video.setPath(removeUserPath(filePath.toString()));
 
             adjustResolutionAndSave(video, filePath.toString());
+            logService.add("Processamento realizado com sucesso", String.format("Vídeo de id %d processado com sucesso.", video.getId()));
         } catch (Exception e) {
+            logService.add("Aconteceu um erro inesperado", String.format("Aconteceu o seguinte erro ao tentar processar os recursos do vídeo de id %d. Motivo do erro: %s", video.getId(), e.getMessage()));
             throw new Exception("Não foi possível processar o recurso de vídeo. Motivo: ".concat(e.getMessage()));
         }
     }

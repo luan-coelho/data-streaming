@@ -1,28 +1,45 @@
 package br.com.unitins.service.log;
 
 import br.com.unitins.model.log.Log;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Slf4j
 @ApplicationScoped
 public class LogService {
 
-    private final Queue<String> logQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Log> logQueue = new ConcurrentLinkedQueue<>();
 
     @Inject
     EntityManager em;
 
+    @Scheduled(every = "25s")
     @Transactional
     public void saveLogs() {
-        while (!logQueue.isEmpty()) {
-            String message = logQueue.poll();
-            Log log = new Log(null, message, null);
-            em.persist(log);
+        log.info("Checking for outstanding logs for persistence...");
+        if (!logQueue.isEmpty()) {
+            try {
+                log.info("Pending logs for persistence. Starting persistence...");
+                while (!logQueue.isEmpty()) {
+                    Log log = logQueue.poll();
+                    em.persist(log);
+                }
+                log.info("Logs successfully persisted.");
+            } catch (Exception e) {
+                log.error("An unexpected error occurred while trying to persist the logs. Message: {}", e.getMessage());
+            }
         }
+    }
+
+    public void add(String message, String details) {
+        this.logQueue.add(new Log(null, message, details, null));
     }
 }
 

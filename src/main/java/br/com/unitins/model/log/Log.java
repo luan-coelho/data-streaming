@@ -19,6 +19,7 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String message;
+    private String details;
     private LocalDateTime timestamp;
 
     @PrePersist
