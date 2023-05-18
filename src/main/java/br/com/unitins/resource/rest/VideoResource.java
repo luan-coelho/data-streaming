@@ -19,12 +19,6 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-
 @Path("/api/video")
 public class VideoResource {
 

@@ -7,6 +7,7 @@ import br.com.unitins.dto.video.VideoUpdateDTO;
 import br.com.unitins.filters.VideoFilter;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.video.Video;
+import br.com.unitins.model.video.VideoWatchTime;
 import br.com.unitins.queue.VideoProcessing;
 import br.com.unitins.service.task.TaskService;
 import br.com.unitins.service.video.VideoService;
@@ -143,5 +144,29 @@ public class VideoTemplateResource {
             return responseBuilder.build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/incrementView")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response incrementView(@RestQuery("videoid") Long videoId) {
+        videoService.incrementViews(videoId);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/updateWatchTime")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateWatchTime(VideoWatchTime videoWatchTime) {
+        videoService.updateWatchTime(videoWatchTime);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/getWatchTime/{videoId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWatchTime(@RestPath Long videoId) {
+        double watchTime = videoService.getWatchTime(videoId);
+        return Response.ok(watchTime).build();
     }
 }

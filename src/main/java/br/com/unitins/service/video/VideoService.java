@@ -8,6 +8,7 @@ import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.enums.video.Resolution;
 import br.com.unitins.model.video.ResourcePath;
 import br.com.unitins.model.video.Video;
+import br.com.unitins.model.video.VideoWatchTime;
 import br.com.unitins.repository.video.VideoRepository;
 import br.com.unitins.service.log.LogService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -46,9 +47,22 @@ public class VideoService {
     @Inject
     EntityManager entityManager;
 
-
+    @Transactional
     public void incrementViews(Long videoId) {
         videoRepository.incrementViews(videoId);
+    }
+
+    @Transactional
+    public void updateWatchTime(VideoWatchTime videoWatchTime) {
+        if (videoRepository.existsWatchTimeByVideoId(videoWatchTime.getVideoId())) {
+            videoRepository.updateWatchTime(videoWatchTime);
+        } else {
+            videoRepository.persistWatchTime(videoWatchTime);
+        }
+    }
+
+    public double getWatchTime(Long videoId) {
+        return videoRepository.getWatchTime(videoId);
     }
 
     /**

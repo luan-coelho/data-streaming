@@ -10,7 +10,7 @@
     class="rounded shadow p-4 bg-white border border-gray-200 flex items-center justify-items-center justify-center flex-col">
     {#if video.hasValidResolution}
 
-    <div id="video-resources" class="hidden">
+    <div id="video-resources" videoId="{video.id}" class="hidden">
       {#for resolution in video.resolutionPaths}
       <div rwidth="{resolution.resolution.height}" path="{resolution.path}"></div>
       {/for}
