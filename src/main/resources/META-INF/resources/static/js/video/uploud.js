@@ -17,6 +17,11 @@ function removeFile() {
   hiddenUploudButton();
 }
 
+function hiddenInput() {
+  const uploudForm = document.getElementById('uploud-form');
+  uploudForm.hidden = true;
+}
+
 function submitUploudFile(id) {
   const uploudInput = document.getElementById('uploud-input');
   const file = uploudInput.files[0];
@@ -33,6 +38,8 @@ function submitUploudFile(id) {
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
         showToast('Uploud realizado com sucesso!', 'success');
+        removeFile();
+        hiddenInput();
         setTimeout(() => {
           location.reload();
         }, 3000);

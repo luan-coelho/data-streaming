@@ -31,8 +31,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static br.com.unitins.commons.AppConstants.SEPARATOR;
-import static br.com.unitins.commons.AppConstants.USER_HOME;
+import static br.com.unitins.commons.AppConstants.*;
 
 @Slf4j
 @ApplicationScoped
@@ -116,13 +115,17 @@ public class VideoService {
     @Transactional
     public void delete(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
-        String fileFolder = USER_HOME + video.getPath();
 
-        try {
-            File directory = new File(fileFolder).getParentFile();
-            FileUtils.deleteDirectory(directory);
-        } catch (IOException ignored) {
+        if (video.getPath() != null && !video.getPath().isBlank() && video.getPath().contains(SEPARATOR + RESOURCES_DIRECTORY_PARENT)) {
+            try {
+                String fileFolder = USER_HOME + video.getPath();
+                File directory = new File(fileFolder).getParentFile();
+                FileUtils.deleteDirectory(directory);
+            } catch (IOException e) {
+                logService.add("Falha ao deletar recursos de vídeo", String.format("Vídeo de id %d. Motivo: %s", video.getId(), e.getMessage()));
+            }
         }
+
         videoRepository.deleteById(video.getId());
         logService.add("Deleção realizada com sucesso", String.format("Vídeo de id %d deletado com sucesso.", video.getId()));
     }
@@ -175,7 +178,7 @@ public class VideoService {
      * @return Caminho do arquivo de vídeo
      */
     private String buildResourcePathAndCreate() throws IOException {
-        String outputPath = SEPARATOR + "Vídeos" + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
+        String outputPath = SEPARATOR + RESOURCES_DIRECTORY_PARENT + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
         String pathBuilt = USER_HOME + outputPath;
         Path path = Paths.get(pathBuilt);
 

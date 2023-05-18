@@ -6,4 +6,5 @@ public class AppConstants {
 
     public static final String USER_HOME = System.getProperty("user.home");
     public static final String SEPARATOR = File.separator; // "\" ou "/"
+    public static final String RESOURCES_DIRECTORY_PARENT = "Vídeos"; // "\" ou "/"
 }
