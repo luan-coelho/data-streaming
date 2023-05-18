@@ -1,9 +1,15 @@
 {#include components/layout}{#pageTitle}Logs{/pageTitle}
 
 <div class="flex items-center justify-center">
+  {#if logs.isEmpty}
+  <div class="bg-white text-black font-bold border rounded p-2">
+    <span>No momento ainda não há nenhum logo registrado</span>
+  </div>
+  {#else}
   <ol class="border-l border-blue-300 dark:border-neutral-500">
     {#for log in logs} {#include components/log/card} {log} {/} {/for}
   </ol>
+  {/if}
 </div>
 
 {/include}

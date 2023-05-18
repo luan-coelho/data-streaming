@@ -1,4 +1,4 @@
-package br.com.unitins.resource;
+package br.com.unitins.resource.rest;
 
 import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;

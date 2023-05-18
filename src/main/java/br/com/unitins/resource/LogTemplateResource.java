@@ -16,7 +16,7 @@ import java.util.List;
 @Blocking
 @Path("/log")
 @Produces(MediaType.TEXT_HTML)
-public class LogResource {
+public class LogTemplateResource {
 
     @Inject
     LogService logService;

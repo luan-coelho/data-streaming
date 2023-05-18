@@ -1,4 +1,4 @@
-package br.com.unitins.resource;
+package br.com.unitins.resource.rest;
 
 import br.com.unitins.mapper.task.TaskMapper;
 import br.com.unitins.dto.task.TaskResponseDTO;
