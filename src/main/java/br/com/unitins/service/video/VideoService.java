@@ -214,6 +214,9 @@ public class VideoService {
         for (Resolution resolution : resolutions) {
             generateResolution(video, videoPath, resolution);
         }
+        long duration = getDuration(videoPath);
+        video.setDuration(duration);
+
         entityManager.merge(video);
     }
 
