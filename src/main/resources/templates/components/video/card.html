@@ -1,28 +1,37 @@
 <div
-    class="w-full py-3 px-4 bg-white shadow border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-400 duration-500">
-    <div class="flex items-center mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-        <i class="fas fa-film mr-2"></i> <span class="text-sm">{video.title}</span>
-    </div>
-    <div class="flex items-center justify-between mt-3">
-        <div class="flex items-center justify-items-center gap-3 bg-blue-700 text-white rounded px-2 py-1">
-            <div class="flex items-center gap-1">
-                <i class="fas fa-eye"></i> <span class="text-sm font-bold">{video.views}</span>
-            </div>
+  class="w-full py-3 px-4 bg-white shadow border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-400 duration-500">
+  <div
+    class="flex items-center mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <i class="fas fa-film mr-2"></i>
+    <span class="text-sm">{video.title}</span>
+  </div>
+  <div class="flex items-center justify-end mt-3 gap-2">
+    {#if video.hasValidResolution}
+    <div
+      class="flex items-center justify-items-center gap-3 bg-blue-700 text-white rounded px-2 py-1">
+      <div class="flex items-center gap-1">
+        <i class="fas fa-eye"></i>
+        <span class="text-sm font-bold">{video.views}</span>
+      </div>
 
-            <div class="flex items-center gap-1">
-                <i class="fas fa-hourglass-start"></i><span class="text-sm font-bold duration">{video.duration}</span>
-            </div>
-        </div>
-
-        <div class="flex items-center justify-items-end gap-2">
-            <a href="/video/{video.id}"
-                class="bg-blue-500 text-xs hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-                Visualizar
-            </a>
-            <a href="/video/edit/{video.id}"
-                class="bg-blue-700 text-xs hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
-                Editar
-            </a>
-        </div>
+      <div class="flex items-center gap-1">
+        <i class="fas fa-hourglass-start"></i>
+        <span class="text-sm font-bold duration">{video.duration}</span>
+      </div>
     </div>
+    {/if}
+
+    <div class="flex items-center justify-items-end gap-2">
+      <a
+        href="/video/{video.id}"
+        class="bg-blue-500 text-xs hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+        Visualizar
+      </a>
+      <a
+        href="/video/edit/{video.id}"
+        class="bg-blue-700 text-xs hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
+        Editar
+      </a>
+    </div>
+  </div>
 </div>

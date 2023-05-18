@@ -1,0 +1,9 @@
+{#include components/layout}{#pageTitle}Logs{/pageTitle}
+
+<div class="flex items-center justify-center">
+  <ol class="border-l border-blue-300 dark:border-neutral-500">
+    {#for log in logs} {#include components/log/card} {log} {/} {/for}
+  </ol>
+</div>
+
+{/include}

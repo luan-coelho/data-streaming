@@ -5,9 +5,11 @@ import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -40,6 +42,11 @@ public class LogService {
 
     public void add(String message, String details) {
         this.logQueue.add(new Log(null, message, details, null));
+    }
+
+    public List<Log> getAll() {
+        TypedQuery<Log> query = em.createQuery("FROM Log ORDER BY timestamp DESC", Log.class);
+        return query.getResultList();
     }
 }
 

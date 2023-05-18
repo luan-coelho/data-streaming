@@ -1,12 +1,14 @@
 package br.com.unitins.model.log;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Setter
 @Getter
@@ -25,5 +27,13 @@ public class Log {
     @PrePersist
     private void setTimestamp() {
         this.timestamp = LocalDateTime.now();
+    }
+
+    public String getTimestamp() {
+        if (this.timestamp != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", new Locale("pt", "BR"));
+            return this.timestamp.format(formatter);
+        }
+        return null;
     }
 }
