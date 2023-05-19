@@ -12,17 +12,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ResourcePath {
+public class VideoResource {
 
     @Id
-    @SequenceGenerator(name = "RESOURCEPATH_SEQ", sequenceName = "RESOURCEPATH_SEQ", allocationSize = 1)
-    @GeneratedValue(generator = "RESOURCEPATH_SEQ", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "VIDEORESOURCE_SEQ", sequenceName = "VIDEORESOURCE_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "VIDEORESOURCE_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
     @Enumerated(EnumType.STRING)
     private Resolution resolution;
     private String path;
+    private long processingTime;
 
-    public ResourcePath(Resolution resolution, String path) {
+    public VideoResource(Resolution resolution, String path) {
         this.resolution = resolution;
         this.path = path;
     }

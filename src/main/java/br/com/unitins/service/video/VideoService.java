@@ -6,8 +6,8 @@ import br.com.unitins.commons.pagination.Pagination;
 import br.com.unitins.filters.VideoFilter;
 import br.com.unitins.mapper.video.VideoMapper;
 import br.com.unitins.model.enums.video.Resolution;
-import br.com.unitins.model.video.ResourcePath;
 import br.com.unitins.model.video.Video;
+import br.com.unitins.model.video.VideoResource;
 import br.com.unitins.model.video.VideoWatchTime;
 import br.com.unitins.repository.video.VideoRepository;
 import br.com.unitins.service.log.LogService;
@@ -253,9 +253,10 @@ public class VideoService {
      */
     private void generateResolution(Video video, String videoPath, Resolution resolution) throws Exception {
         String videoOutputPath = generateOutputFilePath(videoPath, resolution);
-        resizeProcess(videoPath, videoOutputPath, resolution);
-        ResourcePath resolutionPath = new ResourcePath(resolution, removeUserPath(videoOutputPath));
-        video.addResolutionPatch(resolutionPath);
+        VideoResource resource = new VideoResource(resolution, removeUserPath(videoOutputPath));
+        long processingTime = resizeProcess(videoPath, videoOutputPath, resolution);
+        resource.setProcessingTime(processingTime);
+        video.addResource(resource);
     }
 
     /**
@@ -289,19 +290,24 @@ public class VideoService {
      * @param videoInputPath  Caminho onde está o arquivo de vídeo original.
      * @param videoOutputPath Caminho onde o novo arquivo de vídeo será salvo após a geração.
      * @param resolution      Resolução onde o novo arquivo de vídeo deverá ter.
+     * @return Tempo que o vídeo levou para ser processado
      */
-    private void resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
+    private long resizeProcess(String videoInputPath, String videoOutputPath, Resolution resolution) throws Exception {
         String scale = String.format("scale=%s:%s", resolution.getWidth(), resolution.getHeight());
 
         String[] ffmpegCommand = new String[]{"ffmpeg", "-i", videoInputPath, "-vf", scale, "-c:v", "libx264", "-preset", "medium", "-crf", "23", "-c:a", "aac", "-b:a", "128k", videoOutputPath};
 
         ProcessBuilder processBuilder = new ProcessBuilder(ffmpegCommand);
 
+        long startTime = System.currentTimeMillis();
         Process process = processBuilder.start();
         int exitCode = process.waitFor();
+
         if (exitCode != 0) {
             System.err.println("Ocorreu um erro ao executar o ffmpeg");
         }
+
+        return System.currentTimeMillis() - startTime;
     }
 
     /**

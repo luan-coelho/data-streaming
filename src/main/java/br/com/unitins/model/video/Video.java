@@ -29,7 +29,7 @@ public class Video {
     private long duration = 0;
     private int views = 0;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ResourcePath> resolutionPaths = new ArrayList<>();
+    private List<VideoResource> resources = new ArrayList<>();
 
     public Video(String title) {
         this.title = title;
@@ -40,16 +40,16 @@ public class Video {
         this.description = description;
     }
 
-    public void addResolutionPatch(ResourcePath resourcePath) {
-        this.resolutionPaths.add(resourcePath);
+    public void addResource(VideoResource videoResource) {
+        this.resources.add(videoResource);
     }
 
     public boolean hasValidResolution() {
-        if (this.resolutionPaths == null || this.resolutionPaths.isEmpty()) {
+        if (this.resources == null || this.resources.isEmpty()) {
             return false;
         }
 
-        for (ResourcePath resolutionPath : this.resolutionPaths) {
+        for (VideoResource resolutionPath : this.resources) {
             if (resolutionPath.getPath() == null || resolutionPath.getPath().isBlank()) {
                 return false;
             }

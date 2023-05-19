@@ -5,46 +5,24 @@
     <h1 class="font-bold uppercase text-center mt-2 mb-4">Logs</h1>
 
     <div class="flex justify-center gap-10">
-      {#if logs.isEmpty}
+     {#if tasks.isEmpty}
       <div class="bg-white text-black font-bold border rounded p-2">
         <span>No momento ainda não há nenhum logo registrado</span>
       </div>
       {#else}
       <div class="flex flex-col items-start gap-3 font-bold">
         <div
-          class="flex items-center justify-center bg-green-600 rounded p-2 min-w-full gap-2">
-          Sucesso
-          <span class="text-2xl">{countSuccess}</span>
-        </div>
-        <div
-          class="flex items-center justify-center bg-yellow-500 rounded p-2 min-w-full gap-3">
-          Pendente
-          <span class="text-2xl">{countPending}</span>
-        </div>
-        <div
-          class="flex items-center justify-center bg-red-600 rounded p-2 min-w-full gap-3">
-          Erro
-          <span class="text-2xl">{countError}</span>
-        </div>
-      </div>
-      {/if} {#if tasks.isEmpty}
-      <div class="bg-white text-black font-bold border rounded p-2">
-        <span>No momento ainda não há nenhum logo registrado</span>
-      </div>
-      {#else}
-      <div class="flex flex-col items-start gap-3 font-bold">
-        <div
-          class="flex items-center justify-center bg-green-600 rounded p-2 min-w-full gap-2">
+          class="flex items-center flex-col justify-center bg-green-600 rounded p-2 min-w-full">
           Processados
           <span class="text-2xl">{countCompleted}</span>
         </div>
         <div
-          class="flex items-center justify-center bg-yellow-500 rounded p-2 min-w-full gap-3">
+          class="flex items-center flex-col justify-center bg-yellow-500 rounded p-2 min-w-full">
           Em Processamento
           <span class="text-2xl">{countProcessing}</span>
         </div>
         <div
-          class="flex items-center justify-center bg-red-600 rounded p-2 min-w-full gap-3">
+          class="flex items-center flex-col justify-center bg-red-600 rounded p-2 min-w-full">
           Interrupido
           <span class="text-2xl">{countInterrupted}</span>
         </div>

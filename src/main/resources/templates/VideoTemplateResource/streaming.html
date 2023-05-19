@@ -11,8 +11,8 @@
     {#if video.hasValidResolution}
 
     <div id="video-resources" videoId="{video.id}" class="hidden">
-      {#for resolution in video.resolutionPaths}
-      <div rwidth="{resolution.resolution.height}" path="{resolution.path}"></div>
+      {#for resource in video.resources}
+      <div rwidth="{resource.resolution.height}" path="{resource.path}"></div>
       {/for}
     </div>
 
