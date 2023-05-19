@@ -136,12 +136,12 @@ public class VideoService {
                 File directory = new File(fileFolder).getParentFile();
                 FileUtils.deleteDirectory(directory);
             } catch (IOException e) {
-                logService.add("Falha ao deletar recursos de vídeo", String.format("Vídeo de id %d. Motivo: %s", video.getId(), e.getMessage()));
+                logService.addError("Falha ao deletar recursos de vídeo", String.format("Vídeo de id %d. Motivo: %s", video.getId(), e.getMessage()));
             }
         }
 
         videoRepository.deleteById(video.getId());
-        logService.add("Deleção realizada com sucesso", String.format("Vídeo de id %d deletado com sucesso.", video.getId()));
+        logService.addInfo("Deleção realizada com sucesso", String.format("Vídeo de id %d deletado com sucesso.", video.getId()));
     }
 
     /**
@@ -179,9 +179,9 @@ public class VideoService {
             video.setPath(removeUserPath(filePath.toString()));
 
             adjustResolutionAndSave(video, filePath.toString());
-            logService.add("Processamento realizado com sucesso", String.format("Vídeo de id %d processado com sucesso.", video.getId()));
+            logService.addInfo("Processamento realizado com sucesso", String.format("Vídeo de id %d processado com sucesso.", video.getId()));
         } catch (Exception e) {
-            logService.add("Aconteceu um erro inesperado", String.format("Aconteceu o seguinte erro ao tentar processar os recursos do vídeo de id %d. Motivo do erro: %s", video.getId(), e.getMessage()));
+            logService.addError("Aconteceu um erro inesperado", String.format("Aconteceu o seguinte erro ao tentar processar os recursos do vídeo de id %d. Motivo do erro: %s", video.getId(), e.getMessage()));
             throw new Exception("Não foi possível processar o recurso de vídeo. Motivo: ".concat(e.getMessage()));
         }
     }

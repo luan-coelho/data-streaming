@@ -22,6 +22,7 @@ public class Log {
     private Long id;
     private String message;
     private String details;
+    private LogType logType;
     private LocalDateTime timestamp;
 
     @PrePersist

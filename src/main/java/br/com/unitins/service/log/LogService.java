@@ -1,6 +1,7 @@
 package br.com.unitins.service.log;
 
 import br.com.unitins.model.log.Log;
+import br.com.unitins.model.log.LogType;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -40,13 +41,25 @@ public class LogService {
         }
     }
 
-    public void add(String message, String details) {
-        this.logQueue.add(new Log(null, message, details, null));
-    }
-
     public List<Log> getAll() {
         TypedQuery<Log> query = em.createQuery("FROM Log ORDER BY timestamp DESC", Log.class);
         return query.getResultList();
+    }
+
+    private void add(String message, String details, LogType type) {
+        this.logQueue.add(new Log(null, message, details, type, null));
+    }
+
+    public void addInfo(String message, String details) {
+        add(message, details, LogType.INFO);
+    }
+
+    public void addWarn(String message, String details) {
+        add(message, details, LogType.WARN);
+    }
+
+    public void addError(String message, String details) {
+        add(message, details, LogType.ERROR);
     }
 }
 
