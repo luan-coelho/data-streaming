@@ -10,6 +10,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,10 +58,10 @@ public class VideoRepository implements PanacheRepository<Video> {
     }
 
     public boolean existsWatchTimeByVideoId(Long videoId) {
-        boolean result = getEntityManager().createNativeQuery("SELECT COUNT(vw) FROM VideoWatchTime vw WHERE vw.videoId = :videoId")
-                .setParameter("videoId", videoId)
-                .getMaxResults() > 0;
-        return result;
+        Query query = getEntityManager().createNativeQuery("SELECT COUNT(vw) FROM VideoWatchTime vw WHERE vw.videoid = :videoId")
+                .setParameter("videoId", videoId);
+        Object singleResult = query.getSingleResult();
+        return (long) singleResult > 0;
     }
 
     public double getWatchTime(Long videoId) {
