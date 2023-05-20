@@ -12,6 +12,7 @@ import br.com.unitins.model.video.VideoWatchTime;
 import br.com.unitins.repository.video.VideoRepository;
 import br.com.unitins.repository.video.VideoResourceRepository;
 import br.com.unitins.service.log.LogService;
+import br.com.unitins.websocket.NotificationWebSocket;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -56,6 +57,9 @@ public class VideoService {
 
     @Inject
     UserTransaction transaction;
+
+    @Inject
+    NotificationWebSocket webSocket;
 
     @Transactional
     public void incrementViews(Long videoId) {
@@ -278,6 +282,7 @@ public class VideoService {
             generateResolution(video, videoPath, resolution);
             video = entityManager.merge(video);
             transaction.commit();
+            webSocket.sendNotification("Vídeo de resolução " + resolution.toString() + " foi processado com sucesso!");
         }
     }
 

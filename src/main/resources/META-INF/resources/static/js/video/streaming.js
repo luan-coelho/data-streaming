@@ -1,3 +1,12 @@
+var socket = new WebSocket('ws://localhost:8080/notifications');
+
+socket.onmessage = function (event) {
+  showToast(event.data, 'success');
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
+};
+
 function hiddenUploudButton() {
   const uploudButton = document.getElementById('uploud-button');
   const uploudInput = document.getElementById('uploud-input');
