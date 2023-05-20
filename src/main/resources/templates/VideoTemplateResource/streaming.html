@@ -25,12 +25,12 @@
 
     {#else if videoProcessing}
     <div class="flex items-center justify-around flex-col p-4">
-      <span class="text-sm">
+      <span class="text-sm font-bold">
         Obrigado por enviar seu vídeo! Agora, ele está sendo processado para
         garantir a melhor experiência de visualização possível. Esse
         procedimento pode levar alguns minutos, mas pedimos sua paciência.
       </span>
-      <img class="w-3/12" src="/static/images/processing.svg" alt="Mulher" />
+      <img class="w-2/12" src="/static/images/processing.svg" alt="Mulher" />
     </div>
 
     {#else}
@@ -66,12 +66,12 @@
     {/if}
   </div>
 
-  <div class="flex flex-col w-full bg-black text-white rounded mt-4 p-5">
+  <div class="w-full bg-white shadow rounded mt-4 p-5">
     <h2
-      class="bg-blue-700 text-white font-bold rounded text-xs p-1 px-2 inline">
+      class="bg-blue-600 text-white text-center font-bold rounded text-xs p-1 px-2 inline">
       DESCRIÇÃO
     </h2>
-    <span class="mt-4">{video.description}</span>
+    <span class="block mt-4">{video.description}</span>
   </div>
 </div>
 

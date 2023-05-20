@@ -1,17 +1,15 @@
 {#include components/layout}{#pageTitle}Vídeos{/pageTitle}
 
-<div class="w-9/12 mx-auto flex content-center justify-end gap-2 flex-col">
+<div class="w-5/12 mx-auto flex content-center justify-end gap-2 flex-col">
   <div class="flex justify-end">
-    <a href="/video/create" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-2 rounded">
+    <a
+      href="/video/create"
+      class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-2 rounded">
       Criar novo
     </a>
   </div>
   <div class="flex items-center justify-center gap-2 flex-col">
-    {#for video in videos}
-    {#include components/video/card}
-    {video}
-    {/}
-    {/for}
+    {#for video in videos} {#include components/video/card} {video} {/} {/for}
   </div>
 </div>
 <script src="/static/js/video/card.js" />

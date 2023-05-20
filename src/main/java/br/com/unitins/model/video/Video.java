@@ -49,13 +49,13 @@ public class Video {
             return false;
         }
 
-        for (VideoResource resolutionPath : this.resources) {
-            if (resolutionPath.getPath() == null || resolutionPath.getPath().isBlank()) {
+        for (VideoResource resource : this.resources) {
+            if (resource.getPath() == null || resource.getPath().isBlank()) {
                 return false;
             }
 
             try {
-                String filePath = USER_HOME + resolutionPath.getPath();
+                String filePath = USER_HOME + resource.getPath();
                 File file = new File(filePath);
                 if (file.exists()) {
                     continue;
@@ -66,5 +66,16 @@ public class Video {
             }
         }
         return true;
+    }
+
+    public long getProcessingTime() {
+        long time = 0;
+
+        for (VideoResource resource : this.resources) {
+            if (resource.getProcessingTime() != 0) {
+                time += resource.getProcessingTime();
+            }
+        }
+        return time / 1000;
     }
 }

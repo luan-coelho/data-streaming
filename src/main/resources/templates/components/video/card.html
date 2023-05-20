@@ -3,35 +3,40 @@
   <div
     class="flex items-center mb-2 text-xl font-bold tracking-tight text-gray-900">
     <i class="fas fa-film mr-2"></i>
-    <span class="text-sm">{video.title}</span>
+    <span class="text-base">{video.title}</span>
   </div>
-  <div class="flex items-center justify-end mt-3 gap-2">
-    {#if video.hasValidResolution}
-    <div
-      class="flex items-center justify-items-center gap-3 bg-blue-700 text-white rounded px-2 py-1">
-      <div class="flex items-center gap-1">
-        <i class="fas fa-eye"></i>
-        <span class="text-sm font-bold">{video.views}</span>
-      </div>
-
-      <div class="flex items-center gap-1">
-        <i class="fas fa-hourglass-start"></i>
-        <span class="text-sm font-bold duration">{video.duration}</span>
-      </div>
-    </div>
-    {/if}
-
+  <div class="flex items-center justify-between mt-3 gap-2">
     <div class="flex items-center justify-items-end gap-2">
       <a
         href="/video/{video.id}"
-        class="bg-blue-500 text-xs hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-        Visualizar
+        class="bg-blue-500 text-xs hover:bg-blue-700 text-white font-bold p-2 rounded">
+        <i class="fas fa-play fa-lg"></i>
       </a>
       <a
         href="/video/edit/{video.id}"
-        class="bg-blue-700 text-xs hover:bg-blue-600 text-white font-bold py-1 px-2 rounded">
-        Editar
+        class="bg-gray-700 text-xs hover:bg-gray-600 text-white font-bold p-2 rounded">
+        <i class="fas fa-pen fa-lg text-purple-400"></i>
       </a>
     </div>
+    {#if video.hasValidResolution}
+    <div class="flex items-center gap-3">
+      <span class="font-bold text-sm bg-green-700 text-white rounded px-2 py-1">
+        Tempo de processamento: {video.getProcessingTime}s
+      </span>
+
+      <div
+        class="flex items-center justify-items-center gap-3 bg-gray-800 text-white rounded px-2 py-1">
+        <div class="flex items-center gap-1">
+          <i class="fas fa-eye"></i>
+          <span class="text-sm font-bold">{video.views}</span>
+        </div>
+
+        <div class="flex items-center gap-1">
+          <i class="fas fa-hourglass-start"></i>
+          <span class="text-sm font-bold duration">{video.duration}</span>
+        </div>
+      </div>
+    </div>
+    {/if}
   </div>
 </div>

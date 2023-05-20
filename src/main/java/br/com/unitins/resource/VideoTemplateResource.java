@@ -110,6 +110,14 @@ public class VideoTemplateResource {
         return Response.ok().build();
     }
 
+    @DELETE
+    @Path("/deleteResources/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteResourcesById(@RestPath Long id) {
+        videoService.deleteResourcesById(id);
+        return Response.ok().build();
+    }
+
     @POST
     @Path("/uploud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)

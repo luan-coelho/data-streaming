@@ -112,6 +112,24 @@ function remove(id) {
     .catch((error) => console.error(error));
 }
 
+function removeResources(id) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  fetch(`http://localhost:8080/video/deleteResources/${id}`, requestOptions)
+    .then((response) => {
+      if (response.status == 200 || response.status == 201) {
+        showToast('Recursos deletados com sucesso!', 'success');
+        location.reload();
+      } else {
+        showToast(data.detail, 'error');
+      }
+    })
+    .catch((error) => console.error(error));
+}
+
 function redirect(endpoint = '', timeout = 3000) {
   setTimeout(() => {
     window.location.href = `http://localhost:8080/${endpoint}`;

@@ -10,6 +10,7 @@ import br.com.unitins.model.video.Video;
 import br.com.unitins.model.video.VideoResource;
 import br.com.unitins.model.video.VideoWatchTime;
 import br.com.unitins.repository.video.VideoRepository;
+import br.com.unitins.repository.video.VideoResourceRepository;
 import br.com.unitins.service.log.LogService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,6 +18,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.UserTransaction;
 import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -42,6 +44,9 @@ public class VideoService {
 
     @Inject
     VideoRepository videoRepository;
+
+    @Inject
+    VideoResourceRepository videoResourceRepository;
 
     @Inject
     LogService logService;
@@ -135,11 +140,9 @@ public class VideoService {
     public void delete(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
 
-        if (video.getPath() != null && !video.getPath().isBlank() && video.getPath().contains(SEPARATOR + RESOURCES_DIRECTORY_PARENT)) {
+        if (video.getPath() != null && !video.getPath().isBlank() && video.getPath().contains(SEPARATOR + RESOURCES_DIRECTORY)) {
             try {
-                String fileFolder = USER_HOME + video.getPath();
-                File directory = new File(fileFolder).getParentFile();
-                FileUtils.deleteDirectory(directory);
+                deleteResources(video.getPath());
             } catch (IOException e) {
                 logService.addError("Falha ao deletar recursos de vídeo", String.format("Vídeo de id %d. Motivo: %s", video.getId(), e.getMessage()));
             }
@@ -147,6 +150,32 @@ public class VideoService {
 
         videoRepository.deleteById(video.getId());
         logService.addInfo("Deleção realizada com sucesso", String.format("Vídeo de id %d deletado com sucesso.", video.getId()));
+    }
+
+    @Transactional
+    public void deleteResourcesById(Long id) {
+        Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
+        try {
+            if (video.hasValidResolution()) {
+                deleteResources(video.getPath());
+                video.setPath(null);
+                for (VideoResource resource : video.getResources()) {
+                    videoResourceRepository.delete(resource);
+                }
+            }
+        } catch (Exception e) {
+            String message = "Falha ao deletar recursos de vídeo";
+            logService.addError(message, "Não foi possível deletar os recursos de vídeo");
+            throw new InternalServerErrorException(message);
+        }
+    }
+
+    private void deleteResources(String path) throws IOException {
+        String resourcesPath = USER_HOME + path;
+        File directory = new File(resourcesPath).getParentFile();
+        if (directory.toString().contains(RESOURCES_DIRECTORY) || directory.toString().contains(RESOURCES_DIRECTORY + SEPARATOR)) {
+            FileUtils.deleteDirectory(directory);
+        }
     }
 
     /**
@@ -180,7 +209,8 @@ public class VideoService {
 
             // Salva o arquivo de víde e preenche a instância de vídeo com este diretório
             Files.copy(multipartBody.inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            video.setPath(removeUserPath(filePath.toString()));
+            String path = removeUserPath(filePath.toString());
+            video.setPath(path);
 
             adjustResolutionAndSave(video, filePath.toString());
             logService.addInfo("Processamento realizado com sucesso", String.format("Vídeo de id %d processado com sucesso.", video.getId()));
@@ -196,7 +226,7 @@ public class VideoService {
      * @return Caminho do arquivo de vídeo
      */
     private String buildResourcePathAndCreate() throws IOException {
-        String outputPath = SEPARATOR + RESOURCES_DIRECTORY_PARENT + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
+        String outputPath = SEPARATOR + RESOURCES_DIRECTORY + SEPARATOR + "midia" + SEPARATOR + new Random().nextInt(1000);
         String pathBuilt = USER_HOME + outputPath;
         Path path = Paths.get(pathBuilt);
 
@@ -240,8 +270,8 @@ public class VideoService {
 
         long duration = getDuration(videoPath);
         video.setDuration(duration);
-
         video.setResources(new ArrayList<>());
+
         for (Resolution resolution : resolutions) {
             transaction.begin();
             generateResolution(video, videoPath, resolution);
