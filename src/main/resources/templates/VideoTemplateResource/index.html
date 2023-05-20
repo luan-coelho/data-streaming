@@ -8,9 +8,18 @@
       Criar novo
     </a>
   </div>
+  {#if !videos.isEmpty}
   <div class="flex items-center justify-center gap-2 flex-col">
     {#for video in videos} {#include components/video/card} {video} {/} {/for}
   </div>
+
+  {#else}
+  <div
+    class="bg-white p-3 flex items-center justify-center border border-gray-200 shadow rounded">
+    <span class="font-bold">Ainda não há nenhum vídeo</span>
+  </div>
+
+  {/if}
 </div>
 <script src="/static/js/video/card.js" />
 

@@ -162,6 +162,7 @@ public class VideoService {
                 for (VideoResource resource : video.getResources()) {
                     videoResourceRepository.delete(resource);
                 }
+                video.setResources(null);
             }
         } catch (Exception e) {
             String message = "Falha ao deletar recursos de vídeo";
