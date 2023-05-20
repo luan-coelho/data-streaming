@@ -2,7 +2,6 @@ package br.com.unitins.resource;
 
 import br.com.unitins.model.enums.task.TaskStatus;
 import br.com.unitins.model.log.Log;
-import br.com.unitins.model.log.LogType;
 import br.com.unitins.model.task.Task;
 import br.com.unitins.service.log.LogService;
 import br.com.unitins.service.task.TaskService;
@@ -39,14 +38,10 @@ public class LogTemplateResource {
         List<Log> logs = logService.getAll();
         List<Task> tasks = taskService.getAll();
 
-        Logs result = getResult(logs);
         TasksLogs tasksLogs = getTasksLogs(tasks);
 
         return Templates.index()
                 .data("logs", logs)
-                .data("countSuccess", result.countSuccess())
-                .data("countPending", result.countPending())
-                .data("countError", result.countError())
                 .data("tasks", tasks)
                 .data("countCompleted", tasksLogs.countCompleted())
                 .data("countProcessing", tasksLogs.countProcessing())
@@ -75,29 +70,5 @@ public class LogTemplateResource {
     }
 
     private record TasksLogs(int countCompleted, int countProcessing, int countInterrupted) {
-    }
-
-    private static Logs getResult(List<Log> logs) {
-        int countSuccess = 0;
-        int countPending = 0;
-        int countError = 0;
-
-        for (Log log : logs) {
-            if (log.getLogType() == LogType.INFO) {
-                countSuccess++;
-            }
-
-            if (log.getLogType() == LogType.WARN) {
-                countPending++;
-            }
-
-            if (log.getLogType() == LogType.ERROR) {
-                countError++;
-            }
-        }
-        return new Logs(countSuccess, countPending, countError);
-    }
-
-    private record Logs(int countSuccess, int countPending, int countError) {
     }
 }

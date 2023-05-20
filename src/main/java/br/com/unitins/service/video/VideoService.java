@@ -15,6 +15,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.transaction.UserTransaction;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -46,6 +48,9 @@ public class VideoService {
 
     @Inject
     EntityManager entityManager;
+
+    @Inject
+    UserTransaction transaction;
 
     @Transactional
     public void incrementViews(Long videoId) {
@@ -165,7 +170,6 @@ public class VideoService {
      * @param video         Instância que representa um vídeo
      * @param multipartBody recursos de vídeo
      */
-    @Transactional
     public void processResource(Video video, MultipartBody multipartBody) throws Exception {
         try {
             // Gera e cria o diretório no qual será salvo o arquivo de vídeo
@@ -224,7 +228,6 @@ public class VideoService {
      *
      * @param videoPath Caminho onde está o arquivo de vídeo original.
      */
-    @Transactional
     public void adjustResolutionAndSave(Video video, String videoPath) throws Exception {
         String originalVideoResolution = getResolution(videoPath);
         int width = Integer.parseInt(originalVideoResolution.split("x")[0]);
@@ -235,13 +238,16 @@ public class VideoService {
         }
         resolutions.add(Resolution.SD);
 
-        for (Resolution resolution : resolutions) {
-            generateResolution(video, videoPath, resolution);
-        }
         long duration = getDuration(videoPath);
         video.setDuration(duration);
 
-        entityManager.merge(video);
+        video.setResources(new ArrayList<>());
+        for (Resolution resolution : resolutions) {
+            transaction.begin();
+            generateResolution(video, videoPath, resolution);
+            video = entityManager.merge(video);
+            transaction.commit();
+        }
     }
 
     /**

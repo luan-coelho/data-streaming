@@ -11,4 +11,5 @@ public class ResolutionPathResponseDTO {
     private Long id;
     private Resolution resolution;
     private String path;
+    private long processingTime;
 }
