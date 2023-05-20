@@ -49,3 +49,10 @@ function submitUploudFile(id) {
     })
     .catch((error) => console.error(error));
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const description = document.getElementById('description');
+  if (description) {
+    description.innerHTML = description.innerText;
+  }
+});

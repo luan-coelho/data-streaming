@@ -17,11 +17,13 @@
       {/for}
     </div>
 
-    <video id="player" class="w-full rounded" controls crossorigin>
-      {#for resource in video.resources}
-      <source src="{resource.path}" type="video/mp4" />
-      {/for}
-    </video>
+    <div class="player-container max-w-7/12">
+      <video id="player" class="rounded w-full" controls crossorigin>
+        {#for resource in video.resources}
+        <source src="{resource.path}" type="video/mp4" />
+        {/for}
+      </video>
+    </div>
 
     {#else if videoProcessing}
     <div class="flex items-center justify-around flex-col p-4">
@@ -68,15 +70,17 @@
 
   <div class="w-full bg-white shadow rounded mt-4 p-5">
     <h2
-      class="bg-blue-600 text-white text-center font-bold rounded text-xs p-1 px-2 inline">
+      class="bg-blue-500 text-white text-center font-bold rounded text-xs p-1 px-2 inline">
       DESCRIÇÃO
     </h2>
-    <span class="block mt-4">{video.description}</span>
+    <span id="description" class="block mt-4 text-sm">{video.description}</span>
   </div>
 </div>
 
+<style></style>
+
 <script src="/static/js/plyr.js"></script>
 <script src="/static/js/video/crud.js"></script>
-<script src="/static/js/video/uploud.js"></script>
+<script src="/static/js/video/streaming.js"></script>
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 {/include}

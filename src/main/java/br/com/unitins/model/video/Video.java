@@ -24,6 +24,7 @@ public class Video {
     @GeneratedValue(generator = "VIDEO_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
     private String title;
+    @Column(columnDefinition = "text")
     private String description;
     private String path;
     private long duration = 0;

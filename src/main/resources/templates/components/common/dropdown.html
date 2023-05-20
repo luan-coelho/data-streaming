@@ -7,9 +7,16 @@
     <i class="fas fa-ellipsis-v"></i>
   </button>
   <ul
-    deleteResources
-    class="dropdown-menu absolute hidden mt-1 text-gray-700 bg-white shadow rounded w-36"
+    class="dropdown-menu absolute hidden mt-1 text-gray-700 text-sm bg-white shadow rounded w-48"
     id="dropdownMenu">
+    <li class="border-b-2">
+      <a
+        class="dropdown-item block px-4 py-2 hover:bg-gray-200"
+        href="/video/edit/{video.id}">
+        <i class="fas fa-pen text-purple-700 cursor-pointer mr-2"></i>
+        Editar vídeo
+      </a>
+    </li>
     <li onclick="removeById({video.id})">
       <span class="dropdown-item block px-4 py-2 hover:bg-gray-200" href="#">
         <i class="fas fa-trash text-red-700 cursor-pointer mr-2"></i>
@@ -32,7 +39,24 @@
 <script>
   function toggleDropdown() {
     const dropdownMenu = document.getElementById('dropdownMenu');
-    dropdownMenu.classList.toggle('hidden');
+    if (dropdownMenu.classList.contains('hidden')) {
+      dropdownMenu.classList.remove('hidden');
+      document.addEventListener('click', closeDropdown, false);
+    } else {
+      dropdownMenu.classList.add('hidden');
+    }
+  }
+
+  function closeDropdown(e) {
+    const dropdownMenuButton = document.getElementById('dropdownMenuButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    if (
+      !dropdownMenuButton.contains(e.target) &&
+      !dropdownMenu.contains(e.target)
+    ) {
+      dropdownMenu.classList.add('hidden');
+      document.removeEventListener('click', closeDropdown, false);
+    }
   }
 
   function removeById(id) {

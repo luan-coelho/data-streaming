@@ -3,7 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let videoSources = [];
   let videoResources = document.getElementById('video-resources');
-  const videoId = videoResources.getAttribute('videoId');
+  let videoId;
+
+  if (videoResources && videoResources.hasAttribute('videoId')) {
+    videoId = videoResources.getAttribute('videoId');
+  }
 
   if (videoResources) {
     let resources = videoResources.getElementsByTagName('div');

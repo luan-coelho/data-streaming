@@ -1,7 +1,7 @@
 function create(event) {
   event.preventDefault();
   const title = document.getElementById('title').value;
-  const description = document.getElementById('description').value;
+  const description = tinymce.get('description').getContent();
   const form = document.getElementById('form');
 
   const requestOptions = {
@@ -49,7 +49,7 @@ function create(event) {
 function update(event, id) {
   event.preventDefault();
   const title = document.getElementById('title').value;
-  const description = document.getElementById('description').value;
+  const description = tinymce.get('description').getContent();
 
   const requestOptions = {
     method: 'PUT',
