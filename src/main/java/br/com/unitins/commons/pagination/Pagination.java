@@ -21,7 +21,7 @@ public class Pagination<T> {
     private long totalElements;
     private Sort sort = new Sort();
 
-    public static final int DEFAULT_PAGINATION_SIZE = 10;
+    public static final int DEFAULT_PAGINATION_SIZE = 25;
 
     public static <T> Pagination<T> of(List<T> content, int page, int size, long totalElements) {
         Pagination<T> paginationInstance = new Pagination<>();

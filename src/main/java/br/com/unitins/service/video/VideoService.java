@@ -141,7 +141,7 @@ public class VideoService {
      * @param id Identificador do vídeo
      */
     @Transactional
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         Video video = videoRepository.findByIdOptional(id).orElseThrow(() -> new NotFoundException("Vídeo não encontrado pelo id"));
 
         if (video.getPath() != null && !video.getPath().isBlank() && video.getPath().contains(SEPARATOR + RESOURCES_DIRECTORY)) {

@@ -60,7 +60,7 @@ public class VideoResource {
     @DELETE
     @Path("/{id}")
     public Response delete(@RestPath Long id) {
-        videoService.delete(id);
+        videoService.deleteById(id);
         return Response.ok().build();
     }
 

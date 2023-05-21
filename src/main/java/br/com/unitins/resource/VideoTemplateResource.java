@@ -106,7 +106,7 @@ public class VideoTemplateResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@RestPath Long id) {
-        videoService.delete(id);
+        videoService.deleteById(id);
         return Response.ok().build();
     }
 
