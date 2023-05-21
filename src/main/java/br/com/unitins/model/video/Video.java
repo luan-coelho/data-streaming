@@ -1,5 +1,6 @@
 package br.com.unitins.model.video;
 
+import br.com.unitins.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import static br.com.unitins.commons.AppConstants.USER_HOME;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Video {
+public class Video extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "VIDEO_SEQ", sequenceName = "VIDEO_SEQ", allocationSize = 1)

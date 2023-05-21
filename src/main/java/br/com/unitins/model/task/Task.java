@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "TASK_SEQ", sequenceName = "TASK_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "TASK_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
     private TaskStatus status;
     private String details;
