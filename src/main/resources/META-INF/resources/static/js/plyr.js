@@ -65,10 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   let isPlayEventFired = false;
+  let videoStarted = false;
 
   player.on('play', () => {
     if (!isPlayEventFired) {
       isPlayEventFired = true;
+      videoStarted = true; // O vídeo começou a tocar
 
       fetch(`http://localhost:8080/video/incrementView?videoId=${videoId}`, {
         method: 'GET',
@@ -80,22 +82,52 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   let lastSavedTime = 0;
-  const saveInterval = 5;
+  let saveTimeout;
+  const saveInterval = 10000; // Intervalo de 10 segundos
 
   player.on('timeupdate', () => {
-    if (Math.floor(player.currentTime) - lastSavedTime >= saveInterval) {
-      lastSavedTime = Math.floor(player.currentTime);
+    if (
+      videoStarted &&
+      Math.floor(player.currentTime) - lastSavedTime >= saveInterval
+    ) {
+      // Cancela o timeout anterior, se existir
+      if (saveTimeout) clearTimeout(saveTimeout);
 
-      fetch('http://localhost:8080/video/updateWatchTime', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          videoId: videoId,
-          watchTime: player.currentTime
-        })
-      });
+      // Inicia um novo timeout para fazer a requisição
+      saveTimeout = setTimeout(() => {
+        lastSavedTime = Math.floor(player.currentTime);
+
+        fetch('http://localhost:8080/video/updateWatchTime', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            videoId: videoId,
+            watchTime: player.currentTime
+          })
+        });
+      }, saveInterval);
     }
+  });
+
+  // Detecta quando o usuário clica na barra de progresso do vídeo
+  player.on('seeked', () => {
+    // Cancela o timeout anterior
+    if (saveTimeout) clearTimeout(saveTimeout);
+
+    // Imediatamente atualiza o tempo de exibição
+    lastSavedTime = Math.floor(player.currentTime);
+
+    fetch('http://localhost:8080/video/updateWatchTime', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        videoId: videoId,
+        watchTime: player.currentTime
+      })
+    });
   });
 });
