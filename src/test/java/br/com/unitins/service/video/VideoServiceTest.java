@@ -1,5 +1,6 @@
 package br.com.unitins.service.video;
 
+import br.com.unitins.commons.MultipartBody;
 import br.com.unitins.commons.pagination.Pageable;
 import br.com.unitins.commons.pagination.Pagination;
 import br.com.unitins.filters.VideoFilter;
@@ -7,6 +8,7 @@ import br.com.unitins.model.video.Video;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
@@ -83,14 +85,36 @@ class VideoServiceTest {
         videoService.deleteById(persistedVideo.getId());
 
         // Then
-        assertThrows(NotFoundException.class, () -> {
-            videoService.getById(persistedVideo.getId());
-        });
+        assertThrows(NotFoundException.class, () -> videoService.getById(persistedVideo.getId()));
     }
 
     private Video getPersistedVideo() {
         Video videoDto = new Video("Java: Aula 1", "Introdução a linguagem");
         Video persistedVideo = videoService.create(videoDto);
         return videoService.getById(persistedVideo.getId());
+    }
+
+    void testIncrementViews() {
+        // Given
+        Video persistedVideo = getPersistedVideo();
+        int beforeViews = persistedVideo.getViews();
+
+        // When
+        videoService.incrementViews(persistedVideo.getId());
+        Video video = videoService.getById(persistedVideo.getId());
+        int afterViews = video.getViews();
+
+        // Then
+        assertEquals(beforeViews, afterViews - 1);
+    }
+
+    void testProcessResource() throws Exception {
+        // Given
+        Video persistedVideo = getPersistedVideo();
+        MultipartBody multipartBody = new MultipartBody();
+        multipartBody.fileName = "teste.mp4";
+        ClassLoader classLoader = getClass().getClassLoader();
+        multipartBody.inputStream = classLoader.getResourceAsStream("META-INF/resources/static/video/video.mp4");
+        videoService.processResource(persistedVideo, multipartBody);
     }
 }
