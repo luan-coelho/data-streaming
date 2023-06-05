@@ -1,14 +1,28 @@
 @startuml
 
 class Video {
-}
-
-class VideoMetrics {
     - id: Long
+    - title: String
+    - description: String
+    - path: String
+    - duration: long
     - views: long
-    - date: LocalDate
+    - createdAt: LocalDate
+    - updatedAt: LocalDate
 }
 
-VideoMetrics "*" o-> "1" Video
+class VideoResource {
+    - id: Long
+    - path: String
+    - processingTime: long
+}
+
+enum Resolution {
+    + HD
+    + SD
+}
+
+Video "1" *-right-> "*" VideoResource
+VideoResource "*" o-right-> "1" Resolution
 
 @enduml
